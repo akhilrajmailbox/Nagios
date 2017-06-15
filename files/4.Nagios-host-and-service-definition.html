@@ -1,0 +1,610 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" style="" class=" js no-touch csstransforms3d csstransitions"><head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>How to Configure  Nagios Server for Monitoring Apache Server</title>
+<meta name="description" content="How to Configure  Nagios Server for Monitoring Apache Server">
+<meta name="Keywords" content="Short, articles, tutorials, latest, technologies, simple, easy, steps, specialized, Mobile Computing, Cloud Computing, Open Source, Linux, Microsoft, General IT, Computer Hardware.">
+<link rel="stylesheet" type="text/css" href="4.Nagios-host-and-service-definition_files/style.css" media="screen">
+<!-- base href="https://www.tutorialspoint.com/" -->
+<link rel="shortcut icon" href="https://www.tutorialspoint.com/favicon.ico" type="image/x-icon">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<meta property="fb:app_id" content="471319149685276">
+<meta property="og:site_name" content="www.tutorialspoint.com">
+<meta name="robots" content="index, follow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="author" content="tutorialspoint.com">
+<script src="4.Nagios-host-and-service-definition_files/ca-pub-7133395778201029.js"></script><script type="text/javascript" src="4.Nagios-host-and-service-definition_files/script-min-v4.js"></script>
+<link rel="stylesheet" href="4.Nagios-host-and-service-definition_files/style-min.css">
+<!-- Head Libs -->
+<!--[if IE 8]>
+<link rel="stylesheet" type="text/css" href="/theme/css/ie8.css">
+<![endif]-->
+<style>
+select{ border:0 !important; outline: 1px inset black !important; outline-offset: -1px !important; }
+ul.nav-list.primary>li a.videolink{    background: none; margin: 0px; padding: 0px; border: 1px solid #d6d6d6;}
+div.feature-box div.feature-box-icon, .col-md-3 .course-box, li.heading, div.footer-copyright { background: #316441 url(/images/pattern.png) repeat center center !important;}
+.sub-main-menu .sub-menuu div:hover, .sub-main-menu .viewall, header nav ul.nav-main li a:hover, button.btn-responsive-nav, header div.search button.btn-default { background: #316441 !important;}
+.submenu-item{ border-bottom: 2px solid #316441 !important; border-top: 2px solid #316441 !important }
+.ace_scroller{overflow: auto!important;}
+</style>
+<script>
+$(document).ready(function() {
+  $('input[name="q"]').keydown(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
+});
+</script>
+</head>
+<body onload="prettyPrint()">
+<div class="wrapLoader">
+   <div class="imgLoader">
+      <img src="4.Nagios-host-and-service-definition_files/loading-cg.gif" alt="" width="70" height="70">
+   </div>
+</div>
+<header>
+   <div class="container">			
+      <h1 class="logo">
+      <a href="https://www.tutorialspoint.com/index.htm" title="tutorialspoint">
+      <img alt="tutorialspoint" src="4.Nagios-host-and-service-definition_files/logo.png">
+      </a>
+      </h1>			
+      <nav>
+         <ul class="nav nav-pills nav-top">
+            <li><a href="https://www.tutorialspoint.com/about/about_careers.htm" style="background: #fffb09; font-weight: bold;"><i class="icon icon-suitcase"></i> Jobs</a></li>
+            <li> <a href="http://www.sendfiles.net/"><i class="fa fa-send"></i> &nbsp;SENDFiles</a> </li>
+            <li> <a href="https://www.tutorialspoint.com/whiteboard.htm"><img src="4.Nagios-host-and-service-definition_files/image-editor.png" alt="Whiteboard" title="Whiteboard"> &nbsp;Whiteboard</a> </li>
+            <li> <a href="https://www.tutorialspoint.com/netmeeting.php"><i class="fa-camera"></i> &nbsp;Net Meeting</a> </li>
+            <li> <a href="https://www.tutorialspoint.com/online_dev_tools.htm"> <i class="dev-tools-menu" style="opacity:.5"></i> Tools </a> </li>
+            <li> <a href="https://www.tutorialspoint.com/articles/index.php"><i class="icon icon-file-text-o"></i> &nbsp;Articles</a> </li>            
+            <li class="top-icons">
+              <ul class="social-icons">
+              <li class="facebook"><a href="https://www.facebook.com/tutorialspointindia" target="_blank" data-placement="bottom" title="tutorialspoint @ Facebook">Facebook</a></li>
+              <li class="googleplus"><a href="https://plus.google.com/u/0/116678774017490391259/posts" target="_blank" data-placement="bottom" title="tutorialspoint @ Google+">Google+</a></li>
+              <li class="twitter"><a href="https://www.twitter.com/tutorialspoint" target="_blank" data-placement="bottom" title="tutorialspoint @ Twitter">Twitter</a></li>
+              <li class="linkedin"><a href="https://www.linkedin.com/company/tutorialspoint" target="_blank" data-placement="bottom" title="tutorialspoint @ Linkedin">Linkedin</a></li>
+              <li class="youtube"><a href="https://www.youtube.com/channel/UCVLbzhxVTiTLiVKeGV7WEBg" target="_blank" data-placement="bottom" title="tutorialspoint YouTube">YouTube</a></li>
+              </ul>
+           </li>
+         </ul>
+      </nav>
+         <!-- search code here  --> 
+      <button class="btn btn-responsive-nav btn-inverse" data-toggle="collapse" data-target=".nav-main-collapse" id="pull" style="top: 9224px!important"> <i class="icon icon-bars"></i> </button>
+   </div>
+  
+   <div class="navbar nav-main">
+      <div class="container">
+         <nav class="nav-main mega-menu">
+            <ul class="nav nav-pills nav-main" id="mainMenu">
+               <li class="dropdown no-sub-menu"> <a class="dropdown" href="https://www.tutorialspoint.com/index.htm"><i class="icon icon-home"></i> Home</a> </li>   
+               <li class="dropdown" id="liTL"><a class="dropdown" href="javascript:void(0);"><span class="tut-lib"> Tutorials Library <i class="fa-caret-down"></i></span></a></li>
+               <li class="dropdown no-sub-menu"><a class="dropdown" href="https://www.tutorialspoint.com/codingground.htm"><i class="fa-code"></i> Coding Ground </a> </li>
+               <li class="dropdown no-sub-menu"><a class="dropdown" href="https://www.tutorialspoint.com/tutor_connect/index.php"><i class="fa-user"> </i> Tutor Connect</a></li>
+               <li class="dropdown no-sub-menu"><a class="dropdown" href="https://www.tutorialspoint.com/videotutorials/index.htm"><i class="fa-toggle-right"></i> Videos </a></li>
+               <li class="dropdown no-sub-menu">
+                  <div class="searchform-popup">
+                     <input class="header-search-box" id="search-string" name="q" placeholder="Search your favorite tutorials..." onfocus="if (this.value == 'Search your favorite tutorials...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search your favorite tutorials...';}" autocomplete="off" type="text">
+                     <div class="magnifying-glass"><i class="icon-search"></i> Search </div>
+                 </div>
+               </li>
+            </ul>
+         </nav>
+         <div class="submenu-item sub-main-menu" id="top-sub-menu"></div>
+         
+      </div>
+   </div>	
+</header>
+<div style="clear:both;"></div>
+<div role="main" class="main">
+<div class="container">
+<!-- PRINTING STARTS HERE -->
+<div class="row">
+<div class="content">
+<div class="col-md-9 middle-col">
+<div class="post-header"> <h2 class="post-title">How to Configure  Nagios Server for Monitoring Apache Server</h2>
+<p class="post-date">
+<em id="author_title">
+<span style="display: inline-block;"><img src="4.Nagios-host-and-service-definition_files/2702.jpg" alt="Chandra Prakash" class="photo" width="35" height="48"></span>
+<a href="http://www.tutorialspoint.com/articles/author/ckadarla" title="Posts by Chandra Prakash" rel="author">Chandra Prakash</a>, Posted on   April 12, 2016, filed in: <a href="http://www.tutorialspoint.com/articles/category/information-technology" rel="category tag">Information Technology</a>, <a href="http://www.tutorialspoint.com/articles/category/linux-operating-system" rel="category tag">Linux</a></em>		    </p> <!--end .post-date-->	    	    </div> <!--end .post-header-->	    	   	<div class="clear"></div>	    		   	
+<div class="entry">	 
+<div class="clearer"></div>
+<br>
+<p style="text-align: justify;">In this article, we will be covering 
+about the installation of Nagios 4, a very popular and open source 
+monitoring tool on Centos 6.7. We shall cover some basic configuration 
+steps which might be useful to monitor a host of resources via the web 
+interface. Here, we shall also utilize the Nagios Remote Plugin Executor
+ (NRPE) that is installed as an agent on remote hosts to&nbsp;monitor 
+the local resources of Servers/clients.</p>
+<p style="text-align: justify;">Nagios is useful for keeping an 
+inventory of your servers, and making sure your critical services are up
+ and running. Using a monitoring system, Nagios is an essential tool for
+ any production server environment.</p>
+<h3><strong>Prerequisites</strong></h3>
+<p>To configure Nagios, &nbsp;we&nbsp;must have a root user privilege on the Linux server that will run Nagios Ideally.</p>
+<h3><strong>Installing Nagios 4</strong></h3>
+<p style="text-align: justify;"><strong>Creating Nagios User and Group</strong>:&nbsp;We
+ must create a user and group that will run the Nagios process. Create a
+ “Nagios” user and “nagcmd” group, then add the user to the group with 
+these commands</p>
+<pre># useradd nagios
+# groupadd nagcmd
+# usermod -a -G nagcmd nagios</pre>
+<h3>Install Build Dependencies</h3>
+<p style="text-align: justify;">As we are building Nagios Core from 
+source, we must install a few development libraries that will allow us 
+to complete the build. While we’re at it, we will also install <strong>apache2-utils,</strong> which will be used to set up the Nagios web interface.</p>
+<h3>First, Update your Yum Package Lists</h3>
+<pre># yum update</pre>
+<h3>Then, Install the Required Packages</h3>
+<pre># yum install -y httpd php gcc glibc glibc-common gd gd-devel make net-snmp perl-rrd xinetd openssl-devel package perl-GD* ntp perl-rrd*</pre>
+<h3>Download the Nagios 4.1.1 Core &amp; Plugin</h3>
+<pre># wget http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-4.1.1.tar.gz
+# wget https://www.nagios-plugins.org/download/nagios-plugins-2.1.1.tar.gz</pre>
+<h3>Installing Nagios Core 4.1.1</h3>
+<p>We need to extract downloaded package with tar command as follows.</p>
+<pre># tar –xvf nagios-4.1.1.tar.gz
+# cd nagios-*</pre>
+<p>Before building Nagios, we must configure it. If you want to 
+configure it to use postfix (which you can install with apt-get), add 
+–with-mail=/usr/sbin/sendmail to the following command:</p>
+<pre># ./configure --with-nagios-group=nagios --with-command-group=nagcmd
+
+<strong>Output</strong>:
+
+General Options:
+-------------------------
+Nagios executable:&nbsp; nagios
+Nagios user/group:&nbsp; nagios,nagios
+Command user/group:&nbsp; nagios,nagcmd
+Event Broker:&nbsp; yes
+Install ${prefix}:&nbsp; /usr/local/nagios
+Install ${includedir}:&nbsp; /usr/local/nagios/include/nagios
+Lock file:&nbsp; ${prefix}/var/nagios.lock
+Check result directory:&nbsp; ${prefix}/var/spool/checkresults
+Init directory:&nbsp; /etc/init.d
+Apache conf.d directory:&nbsp; /etc/httpd/conf.d
+Mail program:&nbsp; /usr/bin/mail
+Host OS:&nbsp; nagios.test.com
+Web Interface Options:
+------------------------
+HTML URL:&nbsp; http://localhost/nagios/
+CGI URL:&nbsp; http://localhost/nagios/cgi-bin/
+Traceroute (used by WAP):&nbsp; /usr/sbin/traceroute
+Review the options above for accuracy.&nbsp; If they look okay,
+type 'make all' to compile the main program and CGIs
+*** Main program, CGIs and HTML files installed ***
+Now compile Nagios with this command:
+
+<strong>Output:</strong>
+
+You can continue with installing Nagios as follows (type 'make'without any arguments for a list of all possible options):</pre>
+<pre># make install-init</pre>
+<p>– This installs the init script in /etc/rc.d/init.d</p>
+<pre># make install-commandmode</pre>
+<p>– This installs and configures permissions on the directory for holding the external command file</p>
+<pre># make install-init</pre>
+<p>To make nagios work from the command line we need to install command-mode.</p>
+<pre># make install-commandmode</pre>
+<p>Next, install sample nagios files, please run following command.</p>
+<pre># make install-config
+
+<strong>Output</strong>:
+/usr/bin/install -c -m 775 -o nagios -g nagios -d /usr/local/nagios/etc
+/usr/bin/install -c -m 775 -o nagios -g nagios -d /usr/local/nagios/etc/objects
+/usr/bin/install -c -b -m 664 -o nagios -g nagios sample-config/nagios.cfg /usr/local/nagios/etc/nagios.cfg
+/usr/bin/install -c -b -m 664 -o nagios -g nagios sample-config/cgi.cfg /usr/local/nagios/etc/cgi.cfg
+/usr/bin/install -c -b -m 660 -o nagios -g nagios sample-config/resource.cfg /usr/local/nagios/etc/resource.cfg
+/usr/bin/install -c -b -m 664 -o nagios -g nagios sample-config/template-object/templates.cfg 
+/usr/local/nagios/etc/objects/templates.cfg/usr/bin/install -c -b -m 664 -o nagios -g nagios sample-config/template-object/commands.cfg 
+/usr/local/nagios/etc/objects/commands.cfg
+/usr/bin/install -c -b -m 664 -o nagios -g nagios sample-config/template-object/contacts.cfg /usr/local/nagios/etc/objects/contacts.cfg
+/usr/bin/install -c -b -m 664 -o nagios -g nagios sample-config/template-object/timeperiods.cfg /usr/local/nagios/etc/objects/timeperiods.cfg
+/usr/bin/install -c -b -m 664 -o nagios -g nagios sample-config/template-object/localhost.cfg /usr/local/nagios/etc/objects/localhost.cfg
+/usr/bin/install -c -b -m 664 -o nagios -g nagios sample-config/template-object/windows.cfg /usr/local/nagios/etc/objects/windows.cfg
+/usr/bin/install -c -b -m 664 -o nagios -g nagios sample-config/template-object/printer.cfg /usr/local/nagios/etc/objects/printer.cfg
+/usr/bin/install -c -b -m 664 -o nagios -g nagios sample-config/template-object/switch.cfg /usr/local/nagios/etc/objects/switch.cfg
+*** Config files installed ***</pre>
+<h3>Install Nagios Plugins</h3>
+<p>Find the latest release of Nagios Plugins here: Nagios Plugins 
+Download. Copy the link address for the latest version, and copy the 
+link address so you can download it to your Nagios server.</p>
+<p>At the time of this writing, the latest version is Nagios Plugins 2.1.1.</p>
+<pre># cd /root/nagios
+# cd tar –xvf nagios-plugins-2.1.1.tar.gz
+# ./configure --with-nagios-user=nagios --with-nagios-group=nagios --with-openssl=/usr/bin/openssl --enable-perl-modules --enable-libtap
+# make
+# make install</pre>
+<h3>Install NRPE</h3>
+<p>Find the source code for the latest stable release of NRPE at the 
+NRPE downloads page. Download the latest version to your Nagios server.</p>
+<p>At the time of this writing, the latest release is 2.15.</p>
+<pre># mkdir -p /usr/local/src/nrpe
+# cd /usr/local/src/nrpe</pre>
+<h3>Download the Files and Extract</h3>
+<pre># wget http://kent.dl.sourceforge.net/project/nagios/nrpe-2.x/nrpe-2.15/nrpe-2.15.tar.gz
+# tar -xf nrpe-2.15.tar.gz
+# cd nrpe-2.15</pre>
+<p>Because of an issue with the OpenSSL library folder, we need to use another path than /usr/lib:</p>
+<pre>#./configure --with-ssl=/usr/bin/openssl --with-ssl-lib=/usr/lib/x86_64-linux-gnu</pre>
+<p>Now make and make install</p>
+<pre># make all</pre>
+<p>Next, install the NRPE plugin daemon, and sample daemon config file.</p>
+<pre># make install-plugin
+# make install-daemon
+# make install-daemon-config</pre>
+<p>Install the NRPE daemon under xinetd as a service.</p>
+<pre># make install-xinetd</pre>
+<p>Next, open /etc/services file, add the following entry for the NRPE daemon at the bottom of the file.</p>
+<pre># vi /etc/services
+nrpe&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5666/tcp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NRPE</pre>
+<p>Restart the xinetd service.</p>
+<pre># service xinetd restart</pre>
+<p>Verify NRPE Daemon Locally</p>
+<p>Run the following command to verify the NRPE daemon working correctly under xinetd.</p>
+<pre># netstat -at | grep nrpe
+tcp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 *:nrpe&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *:*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LISTEN</pre>
+<p>Verify the NRPE daemon is functioning properly.</p>
+<pre># /usr/local/nagios/libexec/check_nrpe -H localhost
+<strong>Output:</strong>
+NRPE v2.15</pre>
+<p>Now that Nagios 4.1.1 is installed, we need to configure it.</p>
+<h3>Configure Nagios</h3>
+<p>Now let’s perform the initial Nagios configuration. You only need to perform this section once, on your Nagios server.</p>
+<p>Open the main Nagios configuration file in your favorite text editor. We’ll use vi to edit the file:</p>
+<pre># &nbsp;vi /usr/local/nagios/etc/nagios.cfg</pre>
+<p>Now find an uncomment this line by deleting the #</p>
+<pre># cfg_dir=/usr/local/nagios/etc/servers</pre>
+<p>Now create the directory that will store the configuration file for each server that you will monitor:</p>
+<pre># &nbsp;mkdir /usr/local/nagios/etc/servers</pre>
+<h3>Configure Nagios Contacts</h3>
+<p>Open the Nagios contacts configuration in your favorite text editor. We’ll use vi to edit the file</p>
+<pre># &nbsp;vi /usr/local/nagios/etc/objects/contacts.cfg</pre>
+<p>Find the email directive, and replace its value (the highlighted part) with your own email address</p>
+<pre>email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nagios@localhost&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; &lt;&lt;***** CHANGE THIS TO YOUR EMAIL ADDRESS ******</pre>
+<h3>Configure check_nrpe Command</h3>
+<p>Let’s add a new command to our Nagios configuration</p>
+<pre># &nbsp;vi /usr/local/nagios/etc/objects/commands.cfg</pre>
+<p>Add the following to the end of the file</p>
+<pre>define command{
+              command_name           check_nrpe
+              command_line           $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$
+              }</pre>
+<h3><strong>Install and Configure Web Interface for Nagios</strong></h3>
+<p>We are done with all configurations in the back end, now we will 
+configure Web Interface For Nagios with following command. The below 
+command will Configure Web interface for Nagios and a web admin user 
+will be created “nagiosadmin”.</p>
+<pre># make install-webconf</pre>
+<p>In this step, we will be creating a password for “nagiosadmin”. After
+ executing this command, please&nbsp;provide a password twice and keep 
+it remember because this password will be used when you login in the 
+Nagios Web interface.</p>
+<pre># htpasswd -s -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
+New password:************
+Re-type new password:************</pre>
+<p>Adding password for user nagiosadmin</p>
+<p>Restart Apache to make the new settings take effect.</p>
+<pre># service httpd start</pre>
+<p>Nagios is now running, so let’s try and log in.</p>
+<h3>Accessing the Nagios Web Interface</h3>
+<p>Open your favorite web browser, and go to your Nagios server http://nagios_server_public_IP &nbsp;or private IP address/nagios.</p>
+<p>Because we configured Apache to use htpasswd, you must enter the 
+login credentials that you created earlier. We used “nagiosadmin” as the
+ username:</p>
+<a href="http://www.tutorialspoint.com/articles/wp-content/uploads/2016/04/Nagios-Admin-password2.png"><img class="alignnone size-full wp-image-17152" src="4.Nagios-host-and-service-definition_files/Nagios-Admin-password2.png" alt="Nagios Admin password" srcset="http://www.tutorialspoint.com/articles/wp-content/uploads/2016/04/Nagios-Admin-password2.png 559w, http://www.tutorialspoint.com/articles/wp-content/uploads/2016/04/Nagios-Admin-password2-300x196.png 300w" sizes="(max-width: 559px) 100vw, 559px" width="559" height="365"></a>
+<p>&nbsp;</p>
+<p>After authenticating, you will be seeing the default Nagios home 
+page. Click on the Hosts link, in the left navigation bar, to see which 
+hosts Nagios is monitoring</p>
+<a href="http://www.tutorialspoint.com/articles/wp-content/uploads/2016/04/nagiso-home-page.png"><img class="alignnone wp-image-17148 size-large" src="4.Nagios-host-and-service-definition_files/nagiso-home-page-1024x479.png" alt="nagiso home page" srcset="http://www.tutorialspoint.com/articles/wp-content/uploads/2016/04/nagiso-home-page-1024x479.png 1024w, http://www.tutorialspoint.com/articles/wp-content/uploads/2016/04/nagiso-home-page-300x140.png 300w" sizes="(max-width: 1024px) 100vw, 1024px" width="1024" height="479"></a>
+<p>As you can see, Nagios is monitoring only “localhost”, or itself.</p>
+<a href="http://www.tutorialspoint.com/articles/wp-content/uploads/2016/04/localhost.png"><img class="alignnone size-large wp-image-17150" src="4.Nagios-host-and-service-definition_files/localhost-1024x351.png" alt="localhost" srcset="http://www.tutorialspoint.com/articles/wp-content/uploads/2016/04/localhost-1024x351.png 1024w, http://www.tutorialspoint.com/articles/wp-content/uploads/2016/04/localhost-300x103.png 300w" sizes="(max-width: 1024px) 100vw, 1024px" width="1024" height="351"></a>
+<p>&nbsp;</p>
+<h3>Monitor / Adding a new host with NRPE</h3>
+<p>In this section, we’ll show you how to add a new host to Nagios, so 
+it will be monitored. Repeat this section for each server you wish to 
+monitor.</p>
+<p>On a server that you want to monitor, update apt-get:</p>
+<pre># &nbsp;yum update</pre>
+<p>Now install Nagios Plugins and NRPE:</p>
+<pre># &nbsp;yum install nagios-plugins nagios-nrpe-server</pre>
+<h3>Configure Allowed Hosts</h3>
+<p>Now, let’s update the NRPE configuration file. Open it in your favorite editor (we’re using vi)</p>
+<pre># &nbsp;vi /etc/nagios/nrpe.cfg</pre>
+<p>Find the allowed_hosts directive, and add the private IP address of 
+your Nagios server to the comma-delimited list (substitute it in place 
+of the highlighted example)</p>
+<pre>allowed_hosts=127.0.0.1,10.132.224.168</pre>
+<p>Save and exit. This configures NRPE to accept requests from your Nagios server, via its private IP &nbsp;or public IP address.</p>
+<p>To add the host:</p>
+<pre># cd /usr/local/nagios/etc
+# vi /usr/local/nagios/etc/hosts.cfg</pre>
+<pre>define host{
+            name&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux-box&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Name of this template
+            use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generic-host&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Inherit default values 
+            check_period&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24x7 
+            check_interval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5
+            retry_interval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1
+            max_check_attempts&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10 
+            check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check-host-alive
+            notification_period&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24x7
+            notification_interval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 30
+            notification_options&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d,r 
+            contact_groups&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; admins
+            register&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0
+           }
+define host{
+           use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; linux-box&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Inherit default values from a template
+           host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Testbox&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; The name we're giving to this server
+           alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CentOS 6.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; A longer name for the server
+           address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 192.168.1.84&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; IP address of Remote Linux host
+           }</pre>
+<p>To add the services we needed to edit the services.cfg file we are 
+adding CPU Load, Total Process, Current Users, Root&nbsp;Partition, 
+Home&nbsp;Partition,&nbsp;Ping status</p>
+<pre># vi /usr/local/nagios/etc/services.cfg
+define service{
+              use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   generic-service
+              host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TestBox
+              service_description&nbsp;&nbsp;&nbsp;&nbsp; CPU Load
+              check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_nrpe!check_load
+              }
+define service{ 
+              use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generic-service
+              host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Testbox
+              service_description&nbsp;&nbsp;&nbsp;&nbsp; Total Processes
+              check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_nrpe!check_total_procs
+              }
+define service{
+              use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generic-service
+              host_name&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Testbox
+              service_description&nbsp;&nbsp;&nbsp;&nbsp; Current Users
+              check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_nrpe!check_users
+              }
+define service{
+              use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;generic-service
+              host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Testbox
+              service_description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Root Partition
+              check_command&nbsp;&nbsp;         check_nrpe!check_disk
+              }
+define service{
+              use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;generic-service
+              host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Testbox
+              service_description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Home Partition
+              check_command&nbsp;&nbsp; check_nrpe!check_disk_home
+}
+define service{
+              use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generic-service
+              host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Testbox
+              service_description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ping Status
+              check_command&nbsp;&nbsp; check_ping!10.0,80%!50.0,90%
+              }</pre>
+<p>We needed to add this configuration file&nbsp;in nagios.cfg</p>
+<pre># vi /usr/local/nagios/nagios.cfg
+
+cfg_file=/usr/local/nagios/etc/hosts.cfg
+cfg_file=/usr/local/nagios/etc/services.cfg</pre>
+<p>Now NRPE commands should definition needs to be created in commands.cfg file.</p>
+<pre># vi /usr/local/nagios/etc/objects/commands.cfg
+
+define command{
+command_name check_nrpe
+command_line $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$
+}</pre>
+<p>Finally, verify Nagios Configuration files for any errors.</p>
+<h3>Verify Nagios Configuration Files</h3>
+<p>Now we are all done with Nagios configuration and its time to verify 
+it and to do so please run&nbsp;below&nbsp;command. If everything goes 
+smoothly it will show up similar to below output.</p>
+<pre># /usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
+<strong>Output:</strong>
+Nagios Core 4.1.1
+Copyright (c) 2009-present Nagios Core Development Team and Community Contributors
+Copyright (c) 1999-2009 Ethan Galstad
+Last Modified: 08-19-2015
+License: GPL
+Website: https://www.nagios.org
+Reading configuration data...
+Read main config file okay...
+Read object config files okay...
+Running pre-flight check on configuration data...
+Checking objects...
+Checked 7 services.
+Checked 1 hosts.
+Checked 1 host groups.
+Checked 0 service groups.
+Checked 1 contacts.
+Checked 1 contact groups.
+Checked 7 commands.
+Checked 5 time periods.
+Checked 0 host escalations.
+Checked 0 service escalations.
+Checking for circular paths...
+Checked 1 hosts
+Checked 0 service dependencies
+Checked 0 host dependencies
+Checked 1 timeperiods
+Checking global event handlers...
+Checking obsessive compulsive processor commands...
+Checking misc settings...
+Total Warnings: 0
+Total Errors:&nbsp;&nbsp; 0
+Things look okay - No serious problems were detected during the pre-flight check</pre>
+<h3>Restarting the Nagios Server</h3>
+<pre># &nbsp;service nagios reload
+Running configuration check...
+Stopping nagios: done.
+Starting nagios: done.</pre>
+<h3>Monitor Apache Web Server</h3>
+<p>Nagios can be used to monitor Apache web server as well.</p>
+<h3>Apache Monitoring Requirements</h3>
+<p>Monitor whether the apache server is available.&nbsp;This task is 
+really easy as Nagios has a built-in command for this we needed to edit 
+below file.</p>
+<pre># vi /etc/nagios3/conf.d/services.cfg
+define service{
+              use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;generic-service
+              host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Webserver
+              service_description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check Apache Web Server
+              check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_http
+              }</pre>
+<p>Once we are done, please check the Nagios configuration and restart 
+the services when we open web interfaces and click on services, we can 
+see Apache services are monitoring.<img class="alignnone wp-image-17157 size-large" src="4.Nagios-host-and-service-definition_files/host-with-services-1024x336.png" alt="host with services" srcset="http://www.tutorialspoint.com/articles/wp-content/uploads/2016/04/host-with-services-1024x336.png 1024w, http://www.tutorialspoint.com/articles/wp-content/uploads/2016/04/host-with-services-300x98.png 300w, http://www.tutorialspoint.com/articles/wp-content/uploads/2016/04/host-with-services.png 1528w" sizes="(max-width: 1024px) 100vw, 1024px" width="1024" height="336"></p>
+<h3>Conclusion</h3>
+<p>Now that you know about Nagios and its features like monitoring your 
+hosts and some of the services, you might want to spend some time to 
+figure out which services are critical to you so you can start 
+monitoring these servers. You may also want to set up notifications so, 
+for example, you receive an email when your disk utilization reaches a 
+warning or critical threshold or your main website is down, so you can 
+resolve the situation promptly or before a problem even occurs.</p>
+	   
+<script async="" src="4.Nagios-host-and-service-definition_files/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:inline-block;width:735px;height:300px" data-ad-client="ca-pub-7133395778201029" data-ad-slot="4907341328" data-adsbygoogle-status="done"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:300px;margin:0;padding:0;position:relative;visibility:visible;width:735px;background-color:transparent"><ins id="aswift_0_anchor" style="display:block;border:none;height:300px;margin:0;padding:0;position:relative;visibility:visible;width:735px;background-color:transparent"><iframe marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;width:735px;height:300px;" frameborder="0" width="735" height="300"></iframe></ins></ins></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="postnavi"> <div class="left"> <a href="http://www.tutorialspoint.com/articles/top-mobile-marketing-trends-of-2016" rel="prev">« Previous</a></div>    <div class="right"> <a href="http://www.tutorialspoint.com/articles/how-to-format-a-hard-disk-on-linux-os" rel="next">Next »</a></div> 
+<div class="clear"></div></div> <!--end .postnavi-->
+<div class="clear"></div>
+<div class="tags">	 
+</div> <!--end .tags--></div> <!--end .entry-->
+<div class="bottomgooglead">
+<div class="bottomadtag">Advertisements</div>
+<script type="text/javascript"><!--
+var width = 580;
+var height = 400;
+var format = "580x400_as";
+if( window.innerWidth < 468 ){
+   width = 300;
+   height = 250;
+   format = "300x250_as";
+}
+google_ad_client = "pub-7133395778201029";
+google_ad_width = width;
+google_ad_height = height;
+google_ad_format = format;
+google_ad_type = "image";
+google_ad_channel ="";
+//--></script>
+<script type="text/javascript" src="4.Nagios-host-and-service-definition_files/show_ads.js">
+</script><ins id="aswift_1_expand" style="display:inline-table;border:none;height:400px;margin:0;padding:0;position:relative;visibility:visible;width:580px;background-color:transparent"><ins id="aswift_1_anchor" style="display:block;border:none;height:400px;margin:0;padding:0;position:relative;visibility:visible;width:580px;background-color:transparent"><iframe marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;width:580px;height:400px;" frameborder="0" width="580" height="400"></iframe></ins></ins>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-md-3" id="rightbar">
+<div class="simple-ad">
+<a href="javascript:void(0)" onclick="var sTop = window.screen.height/2-(218); var sLeft = window.screen.width/2-(313);window.open('https://www.facebook.com/sharer.php?u=' + 'http://www.tutorialspoint.com/articles/how-to-configure-nagios-server-for-monitoring-apache-server','sharer','toolbar=0,status=0,width=626,height=456,top='+sTop+',left='+sLeft);return false;">
+<img src="4.Nagios-host-and-service-definition_files/facebookIcon.jpg" alt="img">
+</a>
+<a href="javascript:void(0)" onclick="var sTop = window.screen.height/2-(218); var sLeft = window.screen.width/2-(313);window.open('https://twitter.com/share?url=' + 'http://www.tutorialspoint.com/articles/how-to-configure-nagios-server-for-monitoring-apache-server','sharer','toolbar=0,status=0,width=626,height=456,top='+sTop+',left='+sLeft);return false;">
+<img src="4.Nagios-host-and-service-definition_files/twitterIcon.jpg" alt="img">
+</a>
+<a href="javascript:void(0)" onclick="var sTop = window.screen.height/2-(218); var sLeft = window.screen.width/2-(313);window.open('https://www.linkedin.com/cws/share?url=' + 'http://www.tutorialspoint.com/articles/how-to-configure-nagios-server-for-monitoring-apache-server&amp;title='+ document.title,'sharer','toolbar=0,status=0,width=626,height=456,top='+sTop+',left='+sLeft);return false;">
+<img src="4.Nagios-host-and-service-definition_files/linkedinIcon.jpg" alt="img">
+</a>
+<a href="javascript:void(0)" onclick="var sTop = window.screen.height/2-(218); var sLeft = window.screen.width/2-(313);window.open('https://plus.google.com/share?url=http://www.tutorialspoint.com/articles/how-to-configure-nagios-server-for-monitoring-apache-server','sharer','toolbar=0,status=0,width=626,height=456,top='+sTop+',left='+sLeft);return false;">
+<img src="4.Nagios-host-and-service-definition_files/googlePlusIcon.jpg" alt="img">
+</a>
+<a href="javascript:void(0)" onclick="var sTop = window.screen.height/2-(218); var sLeft = window.screen.width/2-(313);window.open('https://www.stumbleupon.com/submit?url=http://www.tutorialspoint.com/articles/how-to-configure-nagios-server-for-monitoring-apache-server&amp;title='+ document.title,'sharer','toolbar=0,status=0,width=626,height=456,top='+sTop+',left='+sLeft);return false;">
+<img src="4.Nagios-host-and-service-definition_files/StumbleUponIcon.jpg" alt="img">
+</a>
+<a href="javascript:void(0)" onclick="var sTop = window.screen.height/2-(218); var sLeft = window.screen.width/2-(313);window.open('https://reddit.com/submit?url=http://www.tutorialspoint.com/articles/how-to-configure-nagios-server-for-monitoring-apache-server&amp;title='+ document.title,'sharer','toolbar=0,status=0,width=626,height=656,top='+sTop+',left='+sLeft);return false;">
+<img src="4.Nagios-host-and-service-definition_files/reddit.jpg" alt="img">
+</a>
+</div>
+<div class="rightgooglead">
+<script type="text/javascript"><!--
+google_ad_client = "pub-7133395778201029";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "image";
+google_ad_channel ="";
+//--></script>
+<script type="text/javascript" src="4.Nagios-host-and-service-definition_files/show_ads.js">
+</script><ins id="aswift_2_expand" style="display:inline-table;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent"><ins id="aswift_2_anchor" style="display:block;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent"><iframe marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_2" name="aswift_2" style="left:0;position:absolute;top:0;width:300px;height:250px;" frameborder="0" width="300" height="250"></iframe></ins></ins>
+</div>
+<div class="rightgooglead">
+<script type="text/javascript"><!--
+google_ad_client = "pub-7133395778201029";
+google_ad_width = 300;
+google_ad_height = 600;
+google_ad_format = "300x600_as";
+google_ad_type = "image";
+google_ad_channel ="";
+//--></script>
+<script type="text/javascript" src="4.Nagios-host-and-service-definition_files/show_ads.js">
+</script><ins id="aswift_3_expand" style="display:inline-table;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent"><ins id="aswift_3_anchor" style="display:block;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent"><iframe marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_3" name="aswift_3" style="left:0;position:absolute;top:0;width:300px;height:600px;" frameborder="0" width="300" height="600"></iframe></ins></ins>
+</div>
+<div class="rightgooglead">
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-2537027957187252";
+/* Right Side Ad */
+google_ad_slot = "right_side_ad";
+google_ad_width = 300;
+google_ad_height = 250;
+//-->
+</script>
+<script type="text/javascript" src="4.Nagios-host-and-service-definition_files/show_ads.js">
+</script><ins id="aswift_4_expand" style="display:inline-table;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent"><ins id="aswift_4_anchor" style="display:block;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent"><iframe marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_4" name="aswift_4" style="left:0;position:absolute;top:0;width:300px;height:250px;" frameborder="0" width="300" height="250"></iframe></ins></ins>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="footer-copyright">
+<div class="container">
+<div class="row">
+<div class="col-md-1">
+<a href="https://www.tutorialspoint.com/index.htm" class="logo"> <img alt="Tutorials Point" class="img-responsive" src="4.Nagios-host-and-service-definition_files/logo-footer.png"> </a>
+</div>
+<div class="col-md-4 col-sm-12 col-xs-12">
+   <nav id="sub-menu">
+      <ul>
+         <li><a href="https://www.tutorialspoint.com/about/tutorials_writing.htm">Write for us</a></li>
+         <li><a href="https://www.tutorialspoint.com/about/faq.htm">FAQ's</a></li>
+         <li><a href="https://www.tutorialspoint.com/about/about_helping.htm">Helping</a></li>
+         <li><a href="https://www.tutorialspoint.com/about/contact_us.htm">Contact</a></li>
+      </ul>
+   </nav>
+</div>
+<div class="col-md-3 col-sm-12 col-xs-12">
+<p>© Copyright 2017. All Rights Reserved.</p>
+</div>
+<div class="col-md-4 col-sm-12 col-xs-12">
+   <div class="news-group">
+      <input class="form-control-foot search" name="textemail" id="textemail" autocomplete="off" placeholder="Enter email for newsletter" onfocus="if (this.value == 'Enter email for newsletter...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Enter email for newsletter...';}" type="text">
+      <span class="input-group-btn"> <button class="btn btn-default btn-footer" id="btnemail" type="submit" onclick="javascript:void(0);">go</button> </span>
+      <div id="newsresponse"></div>
+   </div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Libs -->
+<script type="text/javascript" src="4.Nagios-host-and-service-definition_files/custom-min.js"></script><a class="scroll-to-top visible" href="#" id="scrollToTop"><i class="icon icon-chevron-up icon-white"></i></a>
+<script src="4.Nagios-host-and-service-definition_files/urchin.js">
+</script>
+<script type="text/javascript">
+_uacct = "UA-232293-6";
+urchinTracker();
+$('.pg-icon').click(function(){
+   $('.wrapLoader').show();
+});
+</script>
+
+
+
+<div class="autocomplete-suggestions "></div></body></html>

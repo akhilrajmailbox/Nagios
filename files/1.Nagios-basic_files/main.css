@@ -1,0 +1,608 @@
+#left {
+
+	width: 900px;
+	float: left;
+	margin-right: 40px;
+
+	}
+
+#right {
+
+	width: 250px;
+	float: left;
+
+	}
+
+body {
+	margin: 0;
+	padding: 0;
+
+	cursor: default;
+}
+
+#masthead {
+	background: url(/themes/tuxradar/header_bg.png);
+	background-color: #3e3e3e;
+	background-position: bottom;
+	background-repeat: repeat-x;
+	height: 100px;
+}
+
+#top_nav {
+	background: url(/themes/tuxradar/topnav.png);
+	background-color: #00BBEE;
+	height: 70px;
+	clear: both;
+
+	background: url(/themes/tuxradar/topnav_inner.png);
+	margin: auto;
+	vertical-align: middle;
+}
+
+div#logo h1 {
+	font-family: sans-serif;
+	color: white;
+	font-size: 220%;
+	margin: 0;
+	margin-top: 30px;
+	margin-left: 0px;
+	padding: 0;
+}
+
+#content {
+	background: url(/themes/tuxradar/white_bg.png);
+	background-repeat: repeat-x;
+	clear: both;
+
+	font-family: Sans-serif;
+
+	padding: 20px;
+
+	overflow: auto;
+	width: 1200px;
+
+	margin: 0 auto;
+}
+
+div#olderposts {
+	float: right;
+	padding: 10px;
+	border: 1px dashed #00bb33;
+	margin-top: 20px;
+}
+
+#prefooter {
+	background-color: #3e3e3e;
+	height: 35px;
+	font-family: sans-serif;
+	color: white;
+	font-size: 80%;
+	font-weight: bold;
+	padding-top: 10px;
+}
+
+#prefooter	a {
+	color: white;
+	font-weight: bold;
+	font-family: sans-serif;
+	text-decoration: none;
+}
+
+#prefooter .login {
+	display: inline;
+	float: right;
+}
+
+#footer {
+	background: url(/themes/tuxradar/white_bg.png);
+	background-repeat: repeat-x;
+	clear: both;
+	margin: auto;
+	font-family: Sans-serif;
+	padding-top: 20px;
+	font-size: 80%;
+}
+
+
+#logo {
+	padding-top: 5px;
+	margin-left: 8px;
+
+	display: inline;
+	float: left;
+}
+
+div#search_box {
+	float: right;
+	margin-top: 25px;
+	margin-right: 0px;
+}
+
+#menubar {
+	display: inline;
+}
+
+div#menubar ul {
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+
+div#menubar li {
+	display: block;
+	font-size: 20px;
+	float: left;
+	padding-right: 15px;
+	padding-top: 25px;
+}
+
+div#menubar	a {
+	color: #FFFFFF;
+	text-decoration: none;
+	font-family: sans-serif;
+	font-size: 80%;
+	font-weight: normal;
+}
+
+div#menubar	a.active {
+	color: #FFFFFF;
+	text-decoration: underline;
+	font-family: sans-serif;
+	font-size: 80%;
+	font-weight: bold;
+}
+
+div#topstories {
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	background-color: steelblue;
+	height: 50px;
+	color: white;
+	font-family: Sans-serif;
+	font-size: 80%;
+	vertical-align: middle;
+}
+
+div#topstories	a {
+	color: white;
+	margin-right: 20px;
+}
+
+div#topstories	p {
+	display: inline;
+	position: relative;
+	top: 3px;
+}
+
+div#topstories	img {
+	padding-top: 5px;
+}
+
+div#future_footer {
+	float: left;
+}
+
+div#wrap {
+    float: left;
+    position: relative;
+    left: 50%;
+}
+
+div#host_footer {
+    float: left;
+    position: relative;
+    left: -50%;
+}
+
+h1 {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+h2 {
+	margin-top: 40px;
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+h3 {
+	margin-top: 30px;
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+h3.tight {
+	margin-top: 0;
+}
+
+h4 {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+
+h2.comments {
+	background-color: #0099cc;
+	color: white;
+	margin-top: 0;
+	padding: 10px;
+	font-size: 130%;
+}
+
+div#comments	h2 {
+	font-size: 120%;
+	margin-top: 0;
+}
+
+h2 a {
+	text-decoration: none;
+	color: #0099CC;
+}
+
+p {
+	padding-top: 0;
+	margin-top: 0;
+}
+
+.screenshot {
+	margin-bottom: 5px;
+	border: 2px solid black;
+}
+
+div.error {
+	border: 1px dashed red!important;
+	background-color: #ffdddd!important;
+	padding: 20px;
+	margin: 20px;
+}
+
+div.error a {
+	color: red;
+}
+
+.submitted {
+	color: #aaaaaa;
+	margin-bottom: 10px;
+}
+
+.submitted	a {
+	/* color: #999999; */
+	font-weight: bold;
+}
+
+.inner {
+	max-width: 980px;
+	margin: auto;
+}
+
+a	{ 
+	color: #0088BB;
+}
+
+a:visited	{
+	color: #0088BB;
+}
+
+div.pager {
+	margin-top: 50px;
+	font-size: 120%;
+}
+
+div#comments {
+	border: 1px solid #0099cc;
+	margin-top: 110px;
+}
+
+div#comments	div.box {
+	margin: 20px;
+	margin-top: 40px;
+}
+
+div.comment {
+	border: 1px solid #aaaaaa;
+	margin: 20px;
+	padding: 10px;
+}
+
+div.comment-hi {
+	border: 1px solid #aaaaaa;
+	margin: 20px;
+	padding: 10px;
+	background-color: #f6f6ff;
+}
+
+div.comment	h3, div.comment-hi	h3	{
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+div.image {
+	text-align: center;
+	margin: 30px;
+}
+
+div.image	img {
+	border: 1px solid #333333;
+}
+
+div.image	p {
+	font-weight: bold;
+	font-size: 80%;
+	width: 550px;
+	margin: auto;
+	text-align: left;
+	margin-top: 10px;
+}
+
+div.image	strong {
+	text-decoration: underline;
+}
+
+
+
+div.pullquoteleft {
+	float: left;
+	text-align: center;
+	margin: 30px;
+}
+
+div.pullquoteleft	img {
+	border: 1px solid #333333;
+}
+
+div.pullquoteleft	p {
+	font-weight: bold;
+	font-size: 80%;
+	width: 220px;
+	margin: auto;
+	text-align: left;
+	margin-top: 10px;
+}
+
+div.pullquoteleft	strong {
+	text-decoration: underline;
+}
+
+
+div.pullquoteright {
+	float: right;
+	text-align: center;
+	margin: 30px;
+}
+
+div.pullquoteright	img {
+	border: 1px solid #333333;
+}
+
+div.pullquoteright	p {
+	font-weight: bold;
+	font-size: 80%;
+	width: 220px;
+	margin: auto;
+	text-align: left;
+	margin-top: 10px;
+}
+
+div.pullquoteright	strong {
+	text-decoration: underline;
+}
+
+
+pre.command, pre.code {
+	padding: 10px;
+	margin: 10px;
+	border: 1px dashed #bb8888;
+	background-color: #fff5f5;
+}
+
+
+div.lxf {
+	margin: 40px auto;
+	border-top: 1px dashed #666666;
+	padding: 20px;
+	text-align: center;
+}
+
+div.lxf	p {
+	font-weight: bold;
+	margin: 10px;
+}
+
+div.download {
+	margin: 10px auto;
+	padding: 10px;
+	width: 500px;
+	border: 2px outset blue;
+	text-align: center;
+}
+
+blockquote {
+	font-style: italic;
+	font-family: serif;
+	font-size: 170%;
+}
+
+div.podcastdownload {
+	margin-top: 40px;
+	text-align: center;
+}
+
+div.podcastdownload	a {
+	font-size: 120%;
+	font-weight: bold;
+}
+
+
+div.boxout {
+	border: 3px solid #0099CC;
+	margin: 30px;
+}
+
+div.boxout	h2 {
+	margin-top: 0;
+	background-color: #0099CC;
+	color: white;
+	padding: 5px;
+	padding-left: 15px;
+}
+
+div.boxout	p {
+	margin: 10px;
+}
+
+div.tip {
+	border: 1px dashed #555555;
+	padding: 10px;
+	margin: 10px;
+}
+
+div.tip	h2 {
+	margin-top: 0;
+	padding-top: 0;
+	font-size: 110%;
+}
+
+div.tip	p {
+	margin-bottom: 0;
+}
+
+pre.prettyprint {
+	padding: 10px;
+	margin: 10px;
+	border: 1px dashed #8888bb;
+	background-color: #f5f5ff;
+}
+
+table.mag {
+	border: 1px solid black!important;
+	border-spacing: 0;
+	border-collapse: collapse!important;
+	margin: 10px;
+}
+
+table.mag	thead {
+	background-color: black;
+	color: white;
+	font-weight: bold;
+}
+
+table.mag	td {
+	border: 1px solid black!important;
+	border-top: 1px solid black!important;
+	border-bottom: 1px solid black!important;
+	padding: 5px!important;
+}
+
+table.mag	tr.odd	{
+	border: 1px solid black!important;
+	border-top: 1px solid black!important;
+	border-bottom: 1px solid black!important;
+	background-color: #f5f5f5!important;
+}
+
+table.mag	tr.even {
+	border: 1px solid black!important;
+	background-color: #ffffff!important;
+}
+
+
+
+/* STYLES FOR ANSWERS */
+
+p.answers_question {
+	margin-top: 10px;
+}
+
+p.answers_question:first-letter {
+	font-size: 200%;
+	float: left;
+	margin: 0 10px 5px 0;
+	background-color: darkred;
+	color: white;
+	padding: 0 5px 0 5px;
+}
+
+p.answers_answer {
+	margin-top: 40px;
+}
+
+p.answers_answer:first-letter {
+	font-size: 200%;
+	float: left;
+	margin: 0 10px 5px 0;
+	background-color: darkgreen;
+	color: white;
+	padding: 0 5px 0 5px;
+}
+
+
+
+/* STYLES FOR CODE SECTION */
+
+div#code_main_hot	{ float: left; width: 300px; margin-bottom: 10px; }
+div#code_main_recommended	{ float: left; margin-left: 10px; width: 650px; margin-bottom: 10px; }
+
+div#code_main_hot	h3	{
+	margin-top: 0;
+}
+
+div#code_main_hot	div	{
+	margin-bottom: 5px;
+}
+
+#code_main_recommended_content	{ padding: 10px; border: 1px solid #777777; }
+#code_main_recommended	ul	{ list-style-type: none; margin: 0; padding: 0; }
+#code_main_recommended	h3	{ margin: 0; }
+#code_main_recommended	h3	a	{ text-decoration: none; }
+#code_main_recommended	p.strap	{ margin: 0; margin-bottom: 10px; font-size: 80%; }
+
+#code_main_recommended	p#other_stuff	{ text-align: right; font-weight: bold; font-size: 140%; margin-bottom: 0; margin-top: 40px; }
+
+#code_main_recommended_title	{ background: url(/themes/tuxradar/code/grey_grad.png); padding: 5px 0px 0px 10px; color: white; font-weight: bold; text-transform: uppercase; vertical-align: bottom; }
+
+
+/* STYLES FOR PRACTICAL PHP */
+
+div.programlisting	{background-color: #efefff; padding: 10px; border: 1px solid #aaaaaa; margin: 5px; margin-bottom: 20px;}
+div.computeroutput	{background-color: #ffffdc; padding: 10px; border: 1px solid #aaaaaa; margin: 5px;}
+div.funcprototypes	{background-color: #ededed; padding: 10px; border: 1px solid #aaaaaa; margin: 5px;}
+div.caution		{background-color: #ffdddd; padding: 10px; border: 1px dashed #aaaaaa; margin-top: 10px; margin-bottom: 10px;}
+
+p.funcprototype		{font-family: serif; margin: 0;}
+
+table.bodytext	{
+	border: 1px solid black!important;
+	border-spacing: 0;
+	border-collapse: collapse!important;
+	margin-bottom: 10px;
+}
+
+table.bodytext	td {
+	border: 1px solid black!important;
+	padding: 3px;
+}
+
+
+div.tight	p {
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+div.tight	{
+	margin-left: 10px;
+	margin-bottom: 20px;
+}
+/* PRETTY PRINTING FOR PRETTIFY.JS */
+.str { color: #ff00ff; }
+.kwd { color: #a52a2a; font-weight: bold; }
+.com { color: #0000ff; }
+.typ { color: black; }
+.lit { color: black; }
+.pun { color: black; }
+.pln { color: black; }
+.tag { color: black; }
+.atn { color: black; }
+.atv { color: black; }
+.dec { color: black; }

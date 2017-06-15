@@ -1,0 +1,921 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Nagios made easy | TuxRadar Linux</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="shortcut icon" href="http://www.tuxradar.com/misc/favicon.ico" type="image/x-icon">
+<style type="text/css" media="all">@import "/modules/node/node.css";</style>
+<style type="text/css" media="all">@import "/modules/poll/poll.css";</style>
+<style type="text/css" media="all">@import "/modules/system/defaults.css";</style>
+<style type="text/css" media="all">@import "/modules/system/system.css";</style>
+<style type="text/css" media="all">@import "/modules/taxonomy_browser/taxonomy_browser.css";</style>
+<style type="text/css" media="all">@import "/modules/user/user.css";</style>
+<style type="text/css" media="all">@import "/modules/comment/comment.css";</style>
+<meta name="google-site-verification" content="xZ2M8SMe6WqpICqlZWgO6uMoCXkCPr3uCHD0A4u1RqA">
+<link rel="stylesheet" type="text/css" href="1.Nagios-basic_files/main.css">
+
+
+<!--<link href="http://assets.futurecdn.net/css/future_branding.min.css" rel="stylesheet" type="text/css" > -->
+<link href="1.Nagios-basic_files/future_branding.css" rel="stylesheet" type="text/css">
+
+<!--DFP integration + audience_sci-->
+<script type="text/javascript" async="" src="1.Nagios-basic_files/cs.js"></script><script src="1.Nagios-basic_files/ads_002"></script><script src="1.Nagios-basic_files/ads_005"></script><script src="1.Nagios-basic_files/ads_004"></script><script src="1.Nagios-basic_files/ads_003"></script><script src="1.Nagios-basic_files/osd.js"></script><script type="text/javascript" async="" src="1.Nagios-basic_files/linkid.js"></script><script type="text/javascript" async="" src="1.Nagios-basic_files/analytics.js"></script><script src="1.Nagios-basic_files/ads"></script><script async="" src="1.Nagios-basic_files/gtm.js"></script><script async="" type="text/javascript" src="1.Nagios-basic_files/gpt.js"></script><script>var asi_segs=[];var segs_beg=document.cookie.indexOf("asi_segs=");if(segs_beg>=0){segs_beg=document.cookie.indexOf("=",segs_beg)+1;if(segs_beg>0){var segs_end=document.cookie.indexOf(";",segs_beg);if(segs_end==-1){segs_end=document.cookie.length}asi_segs=document.cookie.substring(segs_beg,segs_end).split("|")}}if((asi_segs==null)||(asi_segs.length==0)){asi_segs="null"};</script>
+<script>var googletag=googletag||{};googletag.cmd=googletag.cmd||[];(function(){var gads=document.createElement("script");gads.async=true;gads.type="text/javascript";var useSSL="https:"==document.location.protocol;gads.src=(useSSL?"https:":"http:")+"//www.googletagservices.com/tag/js/gpt.js";var node=document.getElementsByTagName("script")[0];node.parentNode.insertBefore(gads,node)})();</script>
+<script>googletag.cmd.push(function() {googletag.pubads().enableAsyncRendering();dfp_leaderboard = googletag.defineSlot('/8644/tech_linuxformat', [ [728,90] ], 'dfp-advert-1').addService(googletag.pubads()).setTargeting("format","roadblock").setTargeting("pos","1");dfp_mpu = googletag.defineSlot('/8644/tech_linuxformat', [ [300,250] ], 'dfp-advert-2').addService(googletag.pubads()).setTargeting("mpu","top").setTargeting("format","roadblock").setTargeting("pos","1");dfp_skyscraper = googletag.defineSlot('/8644/tech_linuxformat', [ [160,600] ], 'dfp-advert-3').addService(googletag.pubads()).setTargeting("mpu","bottom").setTargeting("pos","1");dfp_takeovertop_oop = googletag.defineOutOfPageSlot('/8644/tech_linuxformat', 'dfp-advert-4-oop').addService(googletag.pubads()).setTargeting("pos","1");dfp_takeover_oop = googletag.defineOutOfPageSlot('/8644/tech_linuxformat', 'dfp-advert-5-oop').addService(googletag.pubads()).setTargeting("format","roadblock").setTargeting("pos","2");googletag.pubads().setTargeting("asi", asi_segs);googletag.pubads().collapseEmptyDivs();googletag.enableServices();});</script><script src="1.Nagios-basic_files/pubads_impl_121.js" async=""></script><link rel="prefetch" href="1.Nagios-basic_files/container_002.html">
+<!--END DFP integration + audience_sci-->
+
+
+<script src="1.Nagios-basic_files/prettify.js" type="text/javascript"></script>
+
+</head>
+
+<body onload="prettyPrint();">
+
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-T83L7M"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-T83L7M');</script>
+<!-- End Google Tag Manager -->
+
+	
+<div id="masthead">
+	<div class="inner">
+		<div id="logo">
+			<a href="http://www.tuxradar.com/"><img src="1.Nagios-basic_files/tuxradar.png" alt="TuxRadar" title="TuxRadar"></a>
+		</div>
+
+		<div style="float: right; margin-top: 5px">
+
+<!--DFP Leaderboard -->
+<div id="dfp-advert-1" data-google-query-id="CPW-t6fjv9QCFQUVaAod0EAIrw"><script>googletag.cmd.push(function(){googletag.display('dfp-advert-1')});</script><div id="google_ads_iframe_/8644/tech_linuxformat_0__container__" style="border: 0pt none; display: inline-block; width: 728px; height: 90px;"><iframe style="border: 0px none; vertical-align: bottom;" src="1.Nagios-basic_files/container_002.html" id="google_ads_iframe_/8644/tech_linuxformat_0" title="3rd party ad content" name="" scrolling="no" marginwidth="0" marginheight="0" data-is-safeframe="true" frameborder="0" width="728" height="90"></iframe></div></div>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="top_nav">
+	<div class="inner">
+		<div id="menubar">
+			<ul class="links"><li class="first $key"><a href="http://www.tuxradar.com/" class="menu-1-1-2">Latest News</a></li>
+<li class="$key"><a href="http://www.tuxradar.com/podcast" class="menu-1-2-2">Podcast</a></li>
+<li class="$key"><a href="http://www.tuxradar.com/features" class="menu-1-3-2">Features</a></li>
+<li class="$key"><a href="http://www.tuxradar.com/distros" class="menu-1-4-2">Distros</a></li>
+<li class="$key"><a href="http://www.tuxradar.com/code" class="menu-1-5-2">Code</a></li>
+<li class="$key"><a href="http://www.tuxradar.com/apps" class="menu-1-6-2">Apps</a></li>
+<li class="$key"><a href="http://www.tuxradar.com/content/open-ballot-have-you-converted-anyone-linux" class="menu-1-7-2">Convert Corner</a></li>
+<li class="last $key"><a href="http://www.tuxradar.com/content/distro-picker-0" title="Discover your perfect distro!" class="menu-1-8-2">Distro Picker</a></li>
+</ul>		&nbsp;&nbsp;&nbsp;<a href="http://www.tuxradar.com/rss"><img src="1.Nagios-basic_files/rss-small.png" style="border: 0;margin-top:16px;"></a>
+		</div>
+
+		<div id="search_box">
+			<form id="search-block-form" method="post" accept-charset="UTF-8" action="/search/node">
+				<input id="searchterm" name="keys" size="10" type="text">
+				<input name="form_token" id="edit-search-form-form-token" value="552064bcb60159bdcb62eda22dffc226" type="hidden">
+				<input name="form_id" id="edit-search-form" value="search_form" type="hidden">
+				<input id="search_button" value="Search" type="submit">
+			</form>
+		</div>
+	</div>
+</div>
+
+<!--
+<div id="topstories">
+	<div class="inner" style="text-align: center;">
+		<p>
+
+		
+		</p>
+
+	</div>
+</div>
+//-->
+
+<div id="content">
+	<div id="left" class="inner">
+		<div id="node-148" class="node">
+
+<h1>Nagios made easy</h1><div class="submitted">Posted at 9:53pm on Monday March 30th 2009</div><div class="content" style="clear: both;"><div style="float: left; text-align: center;"><img src="1.Nagios-basic_files/apps.png" alt="Apps" style="margin-bottom: 2px;"><br></div>
+	<div style="margin-left: 110px; margin-bottom: 40px;"><p><strong>In depth:</strong>
+ What's the best way to monitor multiple Linux servers for configuration
+ errors, high load or other problems? The answer is Nagios, which is a 
+fantastic (and free!) networking monitoring system that lets you track 
+multiple servers (HTTP, SMTP, SSH and more) across multiple machines, 
+all backed by a neat user interface.</p>
+			<p style="text-align: center;">
+</p><div style="float: right; margin: 20px">
+<!-- begin ad tag
+//<script language="JavaScript" type="text/javascript">
+//if (typeof ord=='undefined') {ord=Math.random()*10000000000000000;}
+//document.write('<script language="JavaScript" src="http://ad.doubleclick.net/adj/fut.gb.tuxradar/home;tile=3;sz=300x250;tile=;ord=' + ord + '?" type="text/javascript"><\/script>');
+//</script><noscript><a href="http://ad.doubleclick.net/jump/fut.gb.tuxradar/home;tile=3;sz=300x250;ord=123456789?" target="_blank"><img src="http://ad.doubleclick.net/ad/fut.gb.tuxradar/home;tile=3;sz=300x250;ord=123456789?" width="300" height="250" border="0" alt=""></a></noscript>
+ End ad tag -->
+</div>
+				<p></p>
+
+				
+
+<p>Nagios gives you an unbeatable overview of all your machines, meaning
+ that you can fix upcoming problems before they turn critical and be 
+certain that you're not missing anything about your network. The basic 
+structure of Nagios is pretty simple: you set up one machine as your 
+Nagios server, and it gathers information on the client machines you 
+point it at, then displays it in a neat web page format. Read on to 
+learn how to get started with Nagios on your own network!</p>
+
+
+
+<p>You can get basic service information on the client machines (whether
+ they're pingable, whether SSH is OK, whether HTTP is OK) without 
+needing to install any software on them; the server alone will do the 
+work. Or you can get centralised reports on further information (such as
+ disk space or CPU usage), if you install client-side software. The 
+server can react to alert situations by sending email or text to inform a
+ human person, or by doing more or less anything else that you can write
+ a script to make happen.</p>
+
+<p>It's incredibly versatile, configurable, and powerful. The flipside 
+to this, inevitably, is that it can also be difficult to set up 
+correctly. This tutorial will walk you through getting the central 
+server and a single client machine set up (all other client machines can
+ be set up exactly the same) and will touch briefly on the other 
+possibilities you can investigate once you have it running. It's 
+complicated, but it's worth the effort you put in to get it going, as 
+once Nagios is running it needs very little maintenance.  </p>
+
+
+<h2>Initial server setup</h2>
+
+<p>First of all we'll tackle getting the central Nagios server set up, 
+and enable reporting via the web front-end. You can install from source 
+from <a href="http://www.nagios.org/">www.nagios.org</a>, or there 
+should be a package available for your system. For Debian, this is the 
+nagios2 package (not nagios, which is the old version), and you should 
+also install nagios-plugins (we'll talk about plugins later). On setup, 
+it'll ask you for the admin password - remember this! - and whether you 
+want version 1 backwards compatibility (there's no need for this if 
+you're performing a new setup). </p>
+
+<p>You'll also need to install apache2 if you don't already have it 
+installed (we're not going to cover this in any detail here). Once both 
+Nagios and Apache are installed, go to /etc/nagios2 and copy the config 
+sections from the apache2.conf file into the config file belonging to 
+your installation of Apache.</p>
+
+<p>This will provide a basic configuration that should work with the 
+default install to get the web reporting working. If you've personalised
+ your Apache or Nagios install or moved any files around, you'll need to
+ check that the various directives and aliases are pointing to the 
+correct places. Restart Apache, and that's the web side of things set 
+up. Of course, now you need to get the server set up so that there's 
+information being delivered to that webpage.</p>
+
+<p><em>Note: from here on in, assume that all files or directories live in /etc/nagios2 unless otherwise stated.</em></p>
+
+<p>The Debian configuration setup - which I'd recommend as an approach 
+worth taking even if you're installing from another system or from 
+source - is to create a conf.d directory in which the majority of the 
+config files are put. Within this directory, configuration can be broken
+ out into separate files as much as you like. We find this far more 
+manageable than using one enormous file, although you can do that if you
+ prefer! </p>
+
+<div class="image">
+<img src="1.Nagios-basic_files/LXF111_002.jpg" alt="The Nagios screen from the basic initial install.">
+<p>The Nagios screen from the basic initial install.</p>
+</div>
+
+<p>Within the main config file - nagios.cfg , you refer to this config file directory with this line:</p>
+
+<pre class="command">cfg_dir=/etc/nagios2/conf.d
+</pre>
+
+<p>You can add any other directories with a similar line - use as many as you like. </p>
+
+<p>For the basic server setup, monitoring only the server itself 
+(localhost), from a package install, most of the default settings should
+ be OK. All you need to do is to edit the conf.d/contacts_nagios2.cfg 
+file to put your email address in under the first defined contact.</p>							
+							<p align="CENTER">
+
+										
+<!--DFP MPU -->
+</p><div id="dfp-advert-2" data-google-query-id="CNaKhqjjv9QCFVekaAod0WgA2w"><script>googletag.cmd.push(function(){googletag.display('dfp-advert-2')});</script><div id="google_ads_iframe_/8644/tech_linuxformat_1__container__" style="border: 0pt none; display: inline-block; width: 300px; height: 250px;"><iframe style="border: 0px none; vertical-align: bottom;" src="1.Nagios-basic_files/container_002.html" id="google_ads_iframe_/8644/tech_linuxformat_1" title="3rd party ad content" name="" scrolling="no" marginwidth="0" marginheight="0" data-is-safeframe="true" frameborder="0" width="300" height="250"></iframe></div></div>
+
+							<p></p>
+				
+
+<p>This means that if an alert is triggered, Nagios will send you an 
+email. Before you start Nagios though, take a look at the defaults 
+defined for the localhost in conf.d/localhost_nagios2.cfg . The host 
+definition and the first service definition should look a bit like this:</p>
+
+<pre class="command">define host{
+ use  generic-host 
+ host_name localhost
+ alias localhost
+ address 127.0.0.1
+}
+# Define a service to check the disk space of the root partition
+# Warning if &lt; 20% free, critical if &lt; 10% free space on partition.
+define service{
+ use   generic-service  
+ e template to use
+ host_name  localhost 
+ service_description Disk Space
+ check_command check_all_disks!20%!10%
+}
+</pre>
+
+<p>After that there will be another couple of service definitions. </p>
+
+
+<h2>Templates</h2>
+
+<p>The use keyword in that code snippet refers to a very useful function
+ of Nagios: the ability to set up templates. Templates mean that you can
+ set your service or host defaults in a single place rather than having 
+to retype them constantly. Config reuse, like any other code reuse, is 
+always a better bet - less hassle, more maintainability! </p>
+
+<p>The generic-host template lives in the 
+conf.d/generic-host_nagios2.cfg file. It sets a bunch of defaults, 
+including notification enablement, various aspects of dealing with 
+notifications and events, and so on. However, in the individual host 
+definition you can override any of these. generic-service works as a 
+per-service (rather than per-host) template in exactly the same way 
+(check out conf.d/generic-service_nagios2.cfg to see what this looks 
+like and what defaults are set).</p>
+
+<p>The check_command keyword refers to a command found in 
+/etc/nagios-plugins/config/disk.cfg. This plugin directory contains all 
+the commands for checking various services, and there are an enormous 
+number of plugins that you can add, on top of the ones that a default 
+package install will give you (if installing from source you may need to
+ get more of these by hand). </p>
+
+<p>For the moment, leave our basic install's defaults as they are. We'll
+ add another host to the various groups in a moment. Restart Nagios, and
+ go look at http://server.example.com/nagios2 (you'll be asked for that 
+nagiosadmin password that you set at install). You'll get a welcome page
+ - click on 'Tactical Overview' in the left-hand menu, and the report 
+screen will come up, as in the screenshot over the page. </p>
+
+<p>The tactical overview shows the hosts, services, and their states. 
+For Nagios, hosts and services can be in one of several states. Pending 
+means that it's not done checking yet. OK means, unsurprisingly, that 
+all is well. Then there are various levels of not-OK state: yellow is 
+Warning, and red is Critical. You can set these levels yourself in the 
+config files. If you click on a service, you'll get a detailed page up 
+of information about that service (or host).</p>
+
+
+<div class="boxout">
+<h2>Change the front page</h2>
+
+<p>To make the front page of the Nagios web interface show the tactical 
+overview rather than a home page, edit 
+/usr/share/nagios2/htdocs/index.html and replace this line:</p>
+
+<pre class="command">FRAME SRC="main.html" NAME="main"&gt;
+</pre>
+
+<p>with this one:</p>
+
+<pre class="command">&lt;FRAME SRC="/cgi-bin/nagios2/tac.cgi" NAME="main"&gt;
+</pre>
+
+</div>
+
+
+
+<h2>Hosts and services</h2>
+
+<p>So far all  Nagios is doing is monitoring itself and that one default
+ gateway. Next, you need to add a host (client). The best way to do this
+ is to create a conf.d/host-client1.cfg file, named for your client 
+machine, which should initially look a bit like this:</p>
+
+<pre class="command">define host{
+ use  generic-host  
+ host_name client1
+ address 10.0.0.2
+}
+</pre>
+
+<p>As you can see, this can be very basic - almost all of the information is taken from the host template. Reload Nagios 
+(/etc/init.d/nagios2 reload), then give it a minute or two to run the various checks before you check out the web page. </p>
+
+
+<h2>Hostgroups, and defining services</h2>
+
+<p>Nagios can see your client now, but right at the moment you don't 
+have any actual checks defined for this host. You could add them 
+individually to the host config file - in the same way that checks are 
+defined in the localhost config file that we looked at initially. 
+However, it would be a lot of hassle to have to go through for every 
+host.</p>
+
+<p>As with the templates, you want to type things once only. This means 
+using host groups, which enable you to define a service per hostgroup 
+rather than per host. </p>
+
+<p>Edit conf.d/hostgroups_nagios2.cfg to add the short name of the host 
+to the relevant groups. You can, if you want to, create a new group. For
+ example, we have this group setup:</p>
+
+<pre class="command">define hostgroup {
+ hostgroup_name debian-servers
+ alias  Debian GNU/Linux Servers
+ members  localhost,webserver,ldapserver
+}
+</pre>
+
+<p>There are many more options than this that you can set for the host 
+group - the Nagios documentation page is very helpful. However, the 
+minimal setup above will do the job just fine.</p>
+
+<p>Now you have your client host, and you've added it to a webgroup - 
+let's call it debian-servers, as per the code snippet above. Now, edit 
+the conf.d/services_nagios2.cfg file to set up a couple of service 
+checks for that host group. Let's check for pingability and for SSH 
+connectability:</p>
+
+<pre class="command">define service {
+ hostgroup_name   debian-servers
+ service_description  SSH
+ check_command   check_ssh
+ use    generic-service
+ notification_interval  0 
+}
+
+define service {
+ hostgroup_name   debian-servers
+ service_description  PING
+ check_command   check_ping!100.0,20%!500.0,60%
+ use    generic-service
+ notification_interval  0 
+}
+</pre>
+
+<p>You will probably want to define a group of machines that you expect 
+to be SSH-accessible, and a group that you expect to be ping-accessible.
+ For example, the default setup has the gateway pingable but you don't 
+necessarily expect it to be SSH-accessible.</p>
+
+<p>But here we'll just use the single group, as we currently only have 
+one client machine. Nagios will now check the machines in those groups, 
+for the services in the check_command statement, with the 
+generic-service settings, and complain if a problem is found.</p>
+
+<div class="image">
+<img src="1.Nagios-basic_files/LXF111.jpg" alt="Here's the feedback from Nagios showing a happy service...">
+<p>Here's the feedback from Nagios showing a happy service...</p>
+</div>
+
+<div class="image">
+<img src="1.Nagios-basic_files/LXF111_003.jpg" alt="...and here's a less happy service, in a warning state.">
+<p>...and here's a less happy service, in a warning state.</p>
+</div>
+
+<div class="boxout">
+<h2>Checking multiple websites</h2>
+
+<p>If you just want to check that a webserver is responding to HTTP 
+requests, the existing check_http command is fine. However, you may have
+ more than one domain running on a single server and want to check them 
+all separately. To do this, first edit commands.cfg and add the 
+following lines: </p>
+
+<pre class="command">define command{
+ command_name check_http-website1
+ command_line /usr/lib/nagios/plugins/check_http -H website1.example.com
+}
+</pre>
+
+<p>Create similar commands for as many websites as you have. Then edit 
+the webserver's host config file (eg conf.d/host-webserver.cfg ) to 
+include service for each command:</p>
+
+<pre class="command">define service{
+ host_name  webserver
+ service_description website1
+ check_command  check_http-website1
+ use   generic-service
+ notification_interval 1440
+}
+</pre>
+</div>
+
+
+
+<h2>Alerts</h2>
+
+<p>Now you have Nagios set up so you can monitor your systems from a 
+centralised web page. Now we want to set up an email alert, so that you 
+get told if anything's wrong, without having to go looking. You've 
+already set up your contacts_nagios2.cfg file above.</p>
+
+<p>This file also defines an 'admin' contact group. It's better to use 
+contact groups than individual users, as again this increases 
+maintainability. If you want a change in personnel, you need change only
+ the group membership, not the references in all the other config files.
+ The default case is for admins to contain only the root user, which we 
+set up already, so we'll stick with that.</p>
+
+<p>The generic service definition is once again your friend. Our 
+preferred default is for everything to drop us an email if it goes wrong
+ in some way, as we check our email pretty often and certainly more 
+often than we would remember to hit a web page. So that's what we'll set
+ up here. In the conf.d/generic-service_nagios2.cfg file, add the 
+following to the service definition:</p>
+
+<pre class="command">notification_interval  1440 
+is_volatile   0
+check_period   24x7
+normal_check_interval  5
+retry_check_interval  1
+max_check_attempts  10
+notification_period  24x7
+notification_options  c,r
+contact_groups   admins
+</pre>
+
+<p>The notification interval defines how often you get reminded (in 
+minutes) - here it's every 24 hours. Time periods are defined in 
+conf.d/timeperiods_nagios2.cfg. check_period defines when the service is
+ expected to run - here, all the time. </p>
+
+<p>The normal_check_interval and retry_check_interval are in minutes: 
+the service here is set to be checked every five minutes, but if an 
+answer isn't forthcoming and a retry is made, the retry should happen 
+every minute. Ten retry attempts will be made before Nagios concludes 
+that there's something wrong with the service, though you can of course 
+reduce this number if you prefer.</p>
+
+<p>The notification_period sets when alerts should be set - again, we've
+ set this to all the time - and notification_options sets when you 
+should receive an alert. For hosts, d = notify on down states; u = 
+notify on unreachable states; r = notify on host recoveries; and f = 
+notify when host starts and stops flapping. For services, w = notify on 
+warning states; u = unknown states; c = critical states; and again r = 
+recovery and f = start/stop of flapping. Finally, contact_groups defines
+ who to contact when a notification is required.</p>
+
+<p>Once you have all that in place, reload Nagios, then try turning off 
+SSH on your test client. You should receive a message to the address you
+ set in the contacts file, telling you that the client is not SSH 
+accessible. Turn it back on, and you'll get another alert, telling you 
+it's OK again. </p>
+
+
+<div class="boxout">
+<h2>Configuring the From line</h2>
+
+<p>The default From: line in the email alerts is the Nagios user - this 
+may not be good if you have a mail server that wants a registered 
+address before it will send. If you're using Exim 4, you need to set the
+ 'untrusted user' option, and then add </p>
+
+<pre class="command">-- -f address@example.com
+</pre>
+
+<p>to the end of the host-notify-by-email and notify-by-email commands in the commands.cfg file. </p>
+
+</div>
+
+
+<h2>Plugins</h2>
+
+<p>So, now you have a basic Nagios system up and running, and you have 
+it set up to be easy to add further hosts and services at the same 
+fairly basic level. However, there's a lot more that it can do. </p>
+
+<p>As an example, let's look at the plugin that enables you to monitor 
+disk usage, CPU usage, and other similar things on remote hosts. At 
+present, on your remote/client hosts, you can only monitor whether or 
+not they're up. Ideally you want more than that - you want to know if 
+they're about to run out of disk space, for example, or if the mail 
+delivery is down.</p>
+
+<p>What you want for this is the NRPE plugin. Install the NRPE plugin on
+ your Nagios server (it's the nagios-nrpe-plugin package on Debian), and
+ install the NRPE server on your remote host/client (the 
+nagios-nrpe-server package on Debian). The NRPE server will collect 
+information from the machine, and pass it on to the plugin when it is 
+contacted by the main server. </p>
+
+
+<h2>Check it's working...</h2>
+
+<p>To test the communication between server and client, run</p>
+
+<pre class="command">/usr/lib/nagios/plugins/check_nrpe -H client -c check_users 
+</pre>
+
+<p>...on the server, and it should tell you how many users are logged in
+ on the client. Next, check /etc/nagios-plugins/config/check_nrpe.cfg on
+ the server, if necessary - on Debian this is already set up, so no need
+ to edit it. It should look like this:</p>
+
+<pre class="command">define command {
+ command_name check_nrpe
+ command_line /usr/lib/nagios/plugins/check_nrpe -H 
+$HOSTADDRESS$ -c $
+ARG1$ -a $ARG2$
+}
+# this command runs a program $ARG1$ with only one argument
+define command {
+ command_name check_nrpe_1arg
+ command_line /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c $
+ARG1$
+}
+</pre>
+
+<p>Edit conf.d/services_nagios2.cfg on the remote host to add the 
+services you want to monitor on the remote host. Our configuration looks
+ like this:</p>
+
+<pre class="command">define service {
+ service_description SMTP
+ use   generic-service
+ hostgroup_name  nrpe
+ check_command  check_nrpe_1arg!check_smtp
+}
+define service {
+ service_description LOAD
+ use   generic-service
+ hostgroup_name  nrpe
+ check_command  check_nrpe_1arg!check_load
+}
+define service {
+ service_description DISK
+ use   generic-service
+ hostgroup_name  nrpe
+ check_command  check_nrpe!check_disk!/
+}
+</pre>
+
+<p>(Note that this requires an nrpe hostgroup to be set up.)</p> 
+
+<p>Arguments that take only one argument - the service to check - use 
+the check_nrpe_1arg command (see 
+/etc/nagios-plugins/config/check_nrpe.cfg ). If you want to give further
+ arguments, you need to edit /etc/nagios/nrpe.cfg on the client machine 
+so that the dont_blame_nrpe keyword has the value 1. Then use the 
+check_nrpe command.</p>
+
+<p>In the code above, we use it to pass the disk mount point to be 
+checked. Restart Nagios, and you should be able to start seeing 
+information from your client.</p>
+
+<p>Possible commands are at /usr/lib/nagios/plugins on the client - or 
+you can create your own in /etc/nagios/nrpe-local.cfg. I've created a 
+couple of arguments that look like this:</p>
+
+<pre class="command">command[check_disk]=/usr/lib/nagios/plugins/check_disk -w 10% -c 5% -p $ARG1$
+command[check_smtp]=/usr/lib/nagios/plugins/check_smtp -w 1 -c 2
+</pre>
+
+<p>...as this means that we can check whichever local disk we want, 
+rather than being restricted to / as with the default check_disk 
+command; and can make sure that SMTP is running happily on all machines.
+ You can create other commands in a very similar way. (One thing to 
+watch for: the check_disk command warns on percentage of disk space 
+free, rather than percentage used.) </p>
+
+<p>So, that's your first very basic Nagios setup done - checking itself 
+and an external client, and alerting you to any problems. Adding extra 
+hosts and services is straightforward, and you can check out the plugin 
+directory if you want to do more. Running 
+/usr/lib/nagios/plugins/plugin_name -h will get you help output for that
+ plugin. For now though, sit back and enjoy as your network monitors 
+itself!</p>
+
+<div class="lxf">
+<a href="http://www.linuxformat.com/"><img src="1.Nagios-basic_files/lxf.png" alt="First published in Linux Format" style="border: 0;"></a>
+<p>First published in <a href="http://www.linuxformat.com/">Linux Format magazine</a></p>
+</div><p></p>
+			<p style="text-align: center; font-weight: bold;">You should follow us on <a href="http://identi.ca/tuxradar">Identi.ca</a> or <a href="http://twitter.com/tuxradar">Twitter</a></p>
+
+			<div style="text-align: center; margin-top: 20px;">
+				<!-- <script src="http://digg.com/tools/diggthis.js" type="text/javascript"></script> -->
+				<!-- <script type="text/javascript" src="http://www.reddit.com/button.js?t=2"></script> -->
+			</div>
+
+
+			<p style="text-align: center; margin-top: 5px;">
+
+			<script type="text/javascript">
+				document.write ('<a href="');
+				document.write('http://www.stumbleupon.com/submit?url=' +document.URL +'&title='+document.title.replace(/ /g,'+')+'">');
+				document.write ('<img border="0" src="http://cdn.stumble-upon.com/images/160x30_su_blue.gif"></a>');
+			</script><a href="http://www.stumbleupon.com/submit?url=http://www.tuxradar.com/content/nagios-made-easy&amp;title=Nagios+made+easy+%7C+TuxRadar+Linux"><img src="1.Nagios-basic_files/160x30_su_blue.gif" border="0"></a>
+
+			<br style="margin-bottom: 5px">
+
+			<script src="1.Nagios-basic_files/slashdot-it.js" type="text/javascript"></script><iframe src="1.Nagios-basic_files/slashdot-it.html" scrolling="no" frameborder="0" width="130" height="25"></iframe>
+
+			</p>
+
+
+			</div>  </div>
+</div>
+<div id="comments"><h2 class="comments">Your comments</h2><a id="comment-1679"></a>
+<div class="comment-hi"><h3 class="title">Great tutorial, thank you.</h3><p class="submitted">Anonymous Penguin (not verified) - March 31, 2009 @ 6:41pm</p><p>Great tutorial, thank you.</p>
+</div><a id="comment-1901"></a>
+<div class="comment"><h3 class="title">Nagios is awsome for system monitoring</h3><p class="submitted">Anonymous Penguin (not verified) - April 11, 2009 @ 12:01am</p><p>The
+ tutorial is great. I would recommend deploying the solution with your 
+enterprise to see how it works. I have been configuring Nagios for a 
+major retailer. Thus far I have configured over 400 server and 2800 
+services. </p>
+<p>Nagios is straight forward in appearance, so you will need to think 
+outside the box for solutions. However, due to the simplicity of Nagios 
+almost any solution will work.</p>
+<p>Mike Kniaziewicz, MIS</p>
+</div><a id="comment-8010"></a>
+<div class="comment-hi"><h3 class="title">thanks, it seems tho the --</h3><p class="submitted">Anonymous Penguin (not verified) - May 20, 2010 @ 10:20am</p><p>thanks,
+ it seems tho the -- -f trick doesnt work on freebsd.  Crazy its this 
+hard to change the from address on nagios and crazy that the freebsd 
+mail binary has no way of changing the from address.  exim itself can 
+change it but the exim binary doesnt allow the subject to be set so I 
+cannot use that for nagios.</p>
+</div><form action="/content/nagios-made-easy" accept-charset="UTF-8" method="post" id="comment-controls">
+<div><div class="box">
+
+  <h2>Comment viewing options</h2>
+
+  <div class="content"><div class="container-inline"><input name="form_id" id="edit-comment-controls" value="comment_controls" type="hidden">
+<div class="form-item">
+ <select name="mode" class="form-select" id="edit-mode"><option value="1">Flat list - collapsed</option><option value="2">Flat list - expanded</option><option value="3">Threaded list - collapsed</option><option value="4" selected="selected">Threaded list - expanded</option></select>
+</div>
+<div class="form-item">
+ <select name="order" class="form-select" id="edit-order"><option value="1">Date - newest first</option><option value="2" selected="selected">Date - oldest first</option></select>
+</div>
+<div class="form-item">
+ <select name="comments_per_page" class="form-select" id="edit-comments-per-page"><option value="10">10 comments per page</option><option value="30">30 comments per page</option><option value="50" selected="selected">50 comments per page</option><option value="70">70 comments per page</option><option value="90">90 comments per page</option><option value="150">150 comments per page</option><option value="200">200 comments per page</option><option value="250">250 comments per page</option><option value="300">300 comments per page</option></select>
+</div>
+<input name="op" id="edit-submit" value="Save settings" class="form-submit" type="submit">
+</div><div class="description">Select your preferred way to display the comments and click "Save settings" to activate your changes.</div></div>
+</div>
+
+</div></form>
+</div><p></p>	</div>
+
+	<div id="right"> 
+
+				
+<!--DFP SKY - THIN -->
+<div id="dfp-advert-3" data-google-query-id="CJf5n67jv9QCFUsQaAodGdkCqw" style="display: none;"><script>googletag.cmd.push(function(){googletag.display('dfp-advert-3')});</script><div id="google_ads_iframe_/8644/tech_linuxformat_2__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/8644/tech_linuxformat_2" title="3rd party ad content" name="google_ads_iframe_/8644/tech_linuxformat_2" scrolling="no" marginwidth="0" marginheight="0" style="border: 0px none; vertical-align: bottom;" srcdoc="" frameborder="0" width="160" height="600"></iframe></div></div>
+
+
+
+		<!-- End ad tag -->
+
+
+
+
+	</div>
+</div>
+
+<!--
+<div style="clear: both; margin-top: 30px; text-align: center;">
+<script type="text/javascript" language="JavaScript">
+         google_ad_client = 'ca-futurepublishing_html'; 
+         google_ad_width = 728;
+         google_ad_height = 90;
+         google_ad_format = '728x90_pas_abgc';
+         google_ad_type = 'text';
+         google_encoding = 'latin1'; 
+         google_safe = 'high';
+         google_color_bg = 'cccccc';
+         google_color_text = '000000';
+         google_color_link = '3a89af';
+         google_color_url = '3a89af'; 
+         google_color_border = '666666';
+         google_color_line = 'd3dade';
+         google_alternate_color = '00FFFF';
+</script>
+<script type="text/javascript" language="JavaScript" src='http://pagead2.googlesyndication.com/pagead/show_ads.js'></script>
+<noscript>
+    <img height="1" width="1" border="0" src="http://pagead2.googlesyndication.com/pagead/imp.gif?client=ca-futurepublishing_html&event=noscript" /> 
+</noscript>
+</div>
+-->
+
+<div id="prefooter" style="margin-top: 50px;">
+	<div class="inner" style="text-align:center;">
+
+		
+			<div style="display: inline;">	
+			<form action="/frontpage?destination=frontpage" accept-charset="UTF-8" method="post" style="margin-top: 0; padding-top: 0; display: inline;" id="user-login-form">
+	 			Username: <input maxlength="60" name="name" id="edit-name" size="15" class="form-text required" type="text"> &nbsp; 
+	 			Password: <input name="pass" id="edit-pass" maxlength="60" size="15" class="form-text required" type="password">
+				<input name="op" id="edit-submit" value="Log in" class="form-submit" type="submit">
+				<input name="form_id" id="edit-user-login-block" value="user_login_block" type="hidden">
+			</form>
+			</div>
+
+<!--
+			<div style="display: inline; margin-left: 100px">
+				<a href="/user/register">Create Account</a> |
+				<a href="/about">About TuxRadar</a>
+			</div>
+//-->
+			</div>
+</div>
+
+
+<div id="future_company_footer">
+
+<div>
+<ul class="foot_images">
+<li class="footer_logo" title="Future Publishing">
+<a href="http://www.futureplc.com/" class="future-logo"></a>
+</li>
+</ul>
+
+<div class="text">
+<div class="backtotop">
+<a href="javascript:window.scrollTo(0,0);">Top&nbsp;▲</a>
+</div>
+
+<ul class="footertext">
+<li>Linux Format&nbsp;is part of Future plc, an international media group 
+and leading digital publisher. <a href="http://www.futureplc.com/">Visit 
+our corporate site.</a></li>
+</ul>
+
+<ul class="foot_legals">
+<li title="Terms and conditions">
+<a href="http://www.futureplc.com/terms-conditions/" title="Terms and 
+conditions" rel="nofollow">Terms and conditions</a>
+</li>
+
+<li title="Privacy policy">
+<a href="http://www.futureplc.com/privacy-policy/" title="Privacy policy" rel="nofollow">Privacy policy</a>
+</li>
+
+<li title="Cookie policy">
+<a href="http://www.futureplc.com/cookies-policy/" title="Cookie policy" rel="nofollow">Cookie policy</a>
+</li>
+
+<li title="Advertise with us">
+<a href="http://www.futureplc.com/advertising/" title="Advertise with us" rel="nofollow">Advertise with us</a></li>
+
+<p>
+© Future Publishing Limited, Quay House, The Ambury, Bath BA1 1UA. 
+All rights reserved. England and Wales company registration number 
+2008885.
+</p>
+</ul></div></div>
+
+<!--DFP OOP1 -->
+<div id="dfp-advert-4-oop" data-google-query-id="CJqQqa_jv9QCFVOmaAodpFwERw" style="display: none;"><script>googletag.cmd.push(function(){googletag.display('dfp-advert-4-oop')});</script><div id="google_ads_iframe_/8644/tech_linuxformat_3__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/8644/tech_linuxformat_3" title="3rd party ad content" name="google_ads_iframe_/8644/tech_linuxformat_3" scrolling="no" marginwidth="0" marginheight="0" style="border: 0px none; vertical-align: bottom;" srcdoc="" frameborder="0" width="1" height="1"></iframe></div></div>
+<!--DFP OOP2-->
+<div id="dfp-advert-5-oop" data-google-query-id="CN7Fv6_jv9QCFVgQaAod40cPsg" style="display: none;"><script>googletag.cmd.push(function(){googletag.display('dfp-advert-5-oop')});</script><div id="google_ads_iframe_/8644/tech_linuxformat_4__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/8644/tech_linuxformat_4" title="3rd party ad content" name="google_ads_iframe_/8644/tech_linuxformat_4" scrolling="no" marginwidth="0" marginheight="0" style="border: 0px none; vertical-align: bottom;" srcdoc="" frameborder="0" width="1" height="1"></iframe></div></div>
+
+
+<div id="wrap">
+		<div id="host_footer">
+
+<!--
+<object type="application/x-shockwave-flash"
+        data="/files/ukfast_mycloudstack3.swf"
+        width="468" height="60">
+        <param name="movie" value="/files/ukfast_mycloudstack3.swf" />
+        <param name="quality" value="high"/>
+</object>
+
+
+
+
+
+<br /><strong><a href="http://www.ukfast.co.uk/mycloudstack.html#utm_source=tux-mycloudstack-offers&utm_medium=tux-mycloudstack-offers-leader&utm_campaign=tux-mycloudstack-offers">Web hosting by UKFast</a></strong>
+		</div>
+
+</div>
+
+-->
+
+	</div>
+</div>
+
+
+
+
+<br>
+
+
+
+<!--OMNITURE CODE HBX2.5 (Universal)-->
+<!-- Copyright 1997 - 2008. Omniture, Inc. All Rights Reserved.  Omniture is a registered trademark of Omniture, Inc. in the United States, Canada, Japan, and the European Community. -->
+<script type="text/javascript" language="javascript">
+var _hbEC=0,_hbE=new Array;function _hbEvent(a,b){b=_hbE[_hbEC++]=new Object();b._N=a;b._C=0;return b;}
+var hbx=_hbEvent("pv");hbx.vpc="HBX0250u";hbx.gn="ehg-futurepub.hitbox.com";
+
+//BEGIN EDITABLE SECTION
+//CONFIGURATION VARIABLES
+hbx.acct="DM570213BNZR71EN3";//ACCOUNT NUMBER(S)
+hbx.pn="TuxRadar_Nagios made easy";//PAGE NAME(S)
+hbx.mlc="/TuxRadar/ROS";//MULTI-LEVEL CONTENT CATEGORY
+
+hbx.pndef="title";//DEFAULT PAGE NAME
+hbx.ctdef="full";//DEFAULT CONTENT CATEGORY
+
+//OPTIONAL PAGE VARIABLES
+//ACTION SETTINGS
+hbx.fv="";//FORM VALIDATION MINIMUM ELEMENTS OR SUBMIT FUNCTION NAME
+hbx.lt="auto_pos";//LINK TRACKING
+hbx.dlf="n";//DOWNLOAD FILTER
+hbx.dft="n";//DOWNLOAD FILE NAMING
+hbx.elf="n";//EXIT LINK FILTER
+
+//SEGMENTS AND FUNNELS
+hbx.seg="";//VISITOR SEGMENTATION
+hbx.fnl="";//FUNNELS
+
+//CAMPAIGNS
+hbx.cmp="_P::cid";//CAMPAIGN ID
+hbx.cmpn="";//CAMPAIGN ID IN QUERY
+hbx.dcmp="";//DYNAMIC CAMPAIGN ID
+hbx.dcmpn="";//DYNAMIC CAMPAIGN ID IN QUERY
+hbx.dcmpe="";//DYNAMIC CAMPAIGN EXPIRATION
+hbx.dcmpre="";//DYNAMIC CAMPAIGN RESPONSE EXPIRATION
+hbx.hra="_P::attr";//RESPONSE ATTRIBUTE
+hbx.hqsr="";//RESPONSE ATTRIBUTE IN REFERRAL QUERY
+hbx.hqsp="";//RESPONSE ATTRIBUTE IN QUERY
+hbx.hlt="";//LEAD TRACKING
+hbx.hla="";//LEAD ATTRIBUTE
+hbx.gp="";//CAMPAIGN GOAL
+hbx.gpn="";//CAMPAIGN GOAL IN QUERY
+hbx.hcn="";//CONVERSION ATTRIBUTE
+hbx.hcv="";//CONVERSION VALUE
+hbx.cp="null";//LEGACY CAMPAIGN
+hbx.cpd="";//CAMPAIGN DOMAIN
+
+//CUSTOM VARIABLES
+hbx.ci="";//CUSTOMER ID
+hbx.hc1="";//CUSTOM 1
+hbx.hc2="";//CUSTOM 2
+hbx.hc3="";//CUSTOM 3
+hbx.hc4="";//CUSTOM 4
+hbx.hrf="";//CUSTOM REFERRER
+hbx.pec="";//ERROR CODES
+
+</script>
+<script type="text/javascript" language="javascript" src="1.Nagios-basic_files/hbx.js"></script>
+<!--END OMNITURE CODE-->
+
+
+<!-- Begin Google Analytics code -->
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="1.Nagios-basic_files/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-4487960-2");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+<!-- End Google Analytics code -->
+
+<!-- Begin Sitestat4 code -->
+
+<script language="JavaScript1.1" type="text/javascript">
+<!--
+function sitestat(ns_l){ns_l+='&amp;ns__t='+(new Date()).getTime();ns_pixelUrl=ns_l;
+ns_0=document.referrer;
+ns_0=(ns_0.lastIndexOf('/')==ns_0.length-1)?ns_0.substring(ns_0.lastIndexOf('/'),0):ns_0;
+if(ns_0.length>0)ns_l+='&amp;ns_referrer='+escape(ns_0);
+if(document.images){ns_1=new Image();ns_1.src=ns_l;}else
+document.write('<img src="'+ns_l+'" width="1" height="1" alt="">');}
+var countername = "ros.content.nagios-made-easy.page";
+sitestat("http://uk.sitestat.com/future/tuxradar/s?"+countername);
+//-->
+</script>
+<noscript>
+<img src="http://uk.sitestat.com/future/tuxradar/s?ros.content.nagios-made-easy.page"
+width="1" height="1" alt="">
+</noscript>
+
+
+<!-- End Sitestat4 code -->
+
+	
+
+
+
+
+
+
+</div><iframe id="google_osd_static_frame_3018278226753" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;"></iframe></body></html>
