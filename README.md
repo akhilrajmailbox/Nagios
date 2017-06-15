@@ -11,7 +11,7 @@ docker run -e MAIL_ADDRESS=<<<mail-address>>> -e HTPASSWORD=<<<password>>> -e HO
 environment variable ::
 
 ```
-MAIL_ADDRESS	=	The mail address for getting the notifications
+MAIL_ADDRESS		=	The mail address for getting the notifications
 HTPASSWORD		=	The password for web user (the web user is 'nagiosadmin')
 HOST_IP			=	The docker-running host ip address 
 
