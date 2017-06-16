@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Security Considerations · Nagios Core Documentation</title>
+    <link rel="shortcut icon" type="image/png" href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/images/core.png">
+    <link rel="icon" type="image/png" href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/images/core.png">
+    <link rel="stylesheet" type="text/css" href="6.Security-Considerations_files/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="6.Security-Considerations_files/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="6.Security-Considerations_files/nagios.css">
+    <script async="" src="6.Security-Considerations_files/analytics.js"></script><script type="text/javascript" src="6.Security-Considerations_files/jquery-3.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="top-logo">
+                    <img src="6.Security-Considerations_files/nagios.jpg" alt="Nagios" title="Nagios" border="0">
+                    <h2>Security Considerations</h2>
+                </div>
+
+                <hr>
+
+                <p>
+                    <img src="6.Security-Considerations_files/upto.gif" alt="Up To" title="Up To" border="0" align="middle">Up To: <a href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/toc.html">Contents</a><br>
+                    <img src="6.Security-Considerations_files/seealso.gif" alt="See Also" title="See Also" border="0" align="middle"> See Also: <a href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/cgisecurity.html">CGI Security</a>
+                </p>
+
+                <img src="6.Security-Considerations_files/security.png" style="float: right; margin: 6rem 0 3rem 3rem;" alt="Security" title="Security" border="0">
+
+                <div class="section">
+                    <a name="intro"></a>
+                    <h4>Introduction</h4>
+                    <p>
+                        This is intended to be a brief overview of some 
+things you should keep in mind when installing Nagios, so as set it up 
+in a secure manner.
+                    </p>
+                    <p>
+                        Your monitoring box should be viewed as a 
+backdoor into your other systems. In many cases, the Nagios server might
+ be allowed access through firewalls in order to monitor remote servers.
+ In most all cases, it is allowed to query those remote servers for 
+various information. Monitoring servers are always given a certain level
+ of trust in order to query remote systems. This presents a potential 
+attacker with an attractive backdoor to your systems. An attacker might 
+have an easier time getting into your other systems if they compromise 
+the monitoring server first. This is particularly true if you are making
+ use of shared SSH keys in order to monitor remote systems.
+                    </p>
+                    <p>
+                        If an intruder has the ability to submit check 
+results or external commands to the Nagios daemon, they have the 
+potential to submit bogus monitoring data, drive you nuts you with bogus
+ notifications, or cause event handler scripts to be triggered. If you 
+have event handler scripts that restart services, cycle power, etc. this
+ could be particularly problematic.
+                    </p>
+                    <p>
+                        Another area of concern is the ability for 
+intruders to sniff monitoring data (status information) as it comes 
+across the wire. If communication channels are not encrypted, attackers 
+can gain valuable information by watching your monitoring information. 
+Take as an example the following situation: An attacker captures 
+monitoring data on the wire over a period of time and analyzes the 
+typical CPU and disk load usage of your systems, along with the number 
+of users that are typically logged into them. The attacker is then able 
+to determine the best time to compromise a system and use its resources 
+(CPU, etc.) without being noticed.
+                    </p>
+                    <p>
+                        Here are some tips to help ensure that you keep 
+your systems secure when implementing a Nagios-based monitoring 
+solution...
+                    </p>
+                </div>
+
+                <div class="section">
+                    <a name="bestpractices"></a>
+                    <h4>Best Practices</h4>
+                    <ol>
+                        <li>
+                            <strong>Use a Dedicated Monitoring Box</strong>.
+ I would recommend that you install Nagios on a server that is dedicated
+ to monitoring (and possibly other admin tasks). Protect your monitoring
+ server as if it were one of the most important servers on your network.
+ Keep running services to a minimum and lock down access to it via TCP 
+wrappers, firewalls, etc. Since the Nagios server is allowed to talk to 
+your servers and may be able to poke through your firewalls, allowing 
+users access to your monitoring server can be a security risk.  
+Remember, its always easier to gain root access through a system 
+security hole if you have a local account on a box.
+                            <div style="margin: 1rem 0;"><img src="6.Security-Considerations_files/security3.png" alt="Monitoring Box" title="Monitoring Box" border="0"></div>
+                        </li>
+                        <li>
+                            <strong>Don't Run Nagios As Root</strong>. 
+Nagios doesn't need to run as root, so don't do it. You can tell Nagios 
+to drop privileges after startup and run as another user/group by using 
+the <a href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/configmain.html#nagios_user">nagios_user</a> and <a href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/configmain.html#nagios_group">nagios_group</a>
+ directives in the main config file. If you need to execute event 
+handlers or plugins which require root access, you might want to try 
+using <a href="http://www.courtesan.com/sudo/sudo.html">sudo</a>.
+                        </li>
+                        <li>
+                            <strong>Lock Down The Check Result Directory</strong>. Make sure that only the <i>nagios</i> user is able to read/write in the <a href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/configmain.html#check_result_path">check result path</a>. If users other than <i>nagios</i> (or <i>root</i>)
+ are able to write to this directory, they could send fake host/service 
+check results to the Nagios daemon.  This could result in annoyances 
+(bogus notifications) or security problems (event handlers being kicked 
+off).
+                        </li>
+                        <li>
+                            <strong>Lock Down The External Command File</strong>. If you enable <a href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/extcommands.html">external commands</a>, make sure you set proper permissions on the <i>/usr/local/nagios/var/rw</i> directory. You only want the Nagios user (usually <i>nagios</i>) and the web server user (usually <i>nobody</i>, <i>httpd</i>, <i>apache2</i>, or <i>www-data</i>)
+ to have permissions to write to the command file. If you've installed 
+Nagios on a machine that is dedicated to monitoring and admin tasks and 
+is not used for public accounts, that should be fine. If you've 
+installed it on a public or multi-user machine (not recommended), 
+allowing the web server user to have write access to the command file 
+can be a security problem. After all, you don't want just any user on 
+your system controlling Nagios through the external command file. In 
+this case, I would suggest only granting write access on the command 
+file to the <i>nagios</i> user and using something like <a href="http://cgiwrap.sourceforge.net/">CGIWrap</a> to run the CGIs as the <i>nagios</i> user instead of <i>nobody</i>.
+                        </li>
+                        <li>
+                            <strong>Require Authentication In The CGIs</strong>.
+ I would strongly suggest requiring authentication for accessing the 
+CGIs. Once you do that, read the documentation on the default rights 
+that authenticated contacts have, and only authorize specific contacts 
+for additional rights as necessary. Instructions on setting up 
+authentication and configuring authorization rights can be found <a href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/cgiauth.html">here</a>. If you disable the CGI authentication features using the <a href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/configcgi.html#use_authentication">use_authentication</a> directive in the CGI config file, the <a href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/cgis.html#cmd_cgi">command CGI</a> will refuse to write any commands to the <a href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/configmain.html#command_file">external command file</a>. After all, you don't want the world to be able to control Nagios do you?
+                        </li>
+                        <li>
+                            <strong>Implement Enhanced CGI Security Measures</strong>. I would strongly suggest that you consider implementing enhanced security measures for the CGIs as described <a href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/cgisecurity.html">here</a>.
+ These measures can help ensure that the username/password you use to 
+access the Nagios web interface are not intercepted by third parties.
+                        </li>
+                        <li>
+                            <strong>Use Full Paths In Command Definitions</strong>. When you define commands, make sure you specify the <i>full path</i> (not a relative one) to any scripts or binaries you're executing.
+                        </li>
+                        <li>
+                            <strong>Hide Sensitive Information With $USERn$ Macros</strong>. The CGIs read the <a href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/configmain.html">main config file</a> and <a href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/configobject.html">object config file(s)</a>,
+ so you don't want to keep any sensitive information (usernames, 
+passwords, etc) in there.  If you need to specify a username and/or 
+password in a command definition use a $USERn$ <a href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/macros.html">macro</a> to hide it. $USERn$ macros are defined in one or more <a href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/configmain.html#resource_file">resource files</a>.
+ The CGIs will not attempt to read the contents of resource files, so 
+you can set more restrictive permissions (600 or 660) on them. See the 
+sample <i>resource.cfg</i> file in the base of the Nagios distribution for an example of how to define $USERn$ macros.
+                        </li>
+                        <li>
+                            <strong>Strip Dangerous Characters From Macros</strong>. Use the <a href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/configmain.html#illegal_macro_output_chars">illegal_macro_output_chars</a>
+ directive to strip dangerous characters from the $HOSTOUTPUT$, 
+$SERVICEOUTPUT$, $HOSTPERFDATA$, and $SERVICEPERFDATA$ macros before 
+they're used in notifications, etc. Dangerous characters can be anything
+ that might be interpreted by the shell, thereby opening a security 
+hole. An example of this is the presence of backtick (`) characters in 
+the $HOSTOUTPUT$, $SERVICEOUTPUT$, $HOSTPERFDATA$, and/or 
+$SERVICEPERFDATA$ macros, which could allow an attacker to execute an 
+arbitrary command as the nagios user (one good reason not to run Nagios 
+as the root user).
+                        </li>
+                        <li>
+                            <strong>Secure Access to Remote Agents</strong>.
+ Make sure you lock down access to agents (NRPE, NSClient, SNMP, etc.) 
+on remote systems using firewalls, access lists, etc. You don't want 
+everyone to be able to query your systems for status information. This 
+information could be used by an attacker to execute remote event handler
+ scripts or to determine the best times to go unnoticed.
+                            <div style="margin: 1rem 0;"><img src="6.Security-Considerations_files/security1.png" alt="Remote Agents" title="Remote Agents" border="0"></div>
+                        </li>
+                        <li>
+                            <strong>Secure Communication Channels</strong>.
+ Make sure you encrypt communication channels between different Nagios 
+installations and between your Nagios servers and your monitoring agents
+ whenever possible. You don't want someone to be able to sniff status 
+information going across your network. This information could be used by
+ an attacker to determine the best times to go unnoticed.
+                            <div style="margin: 1rem 0;"><img src="6.Security-Considerations_files/security2.png" alt="Communication Channels" title="Communication Channels" border="0"></div>
+                        </li>
+                    </ol>
+                </div>
+
+                <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-2887186-1', 'auto', {'allowLinker': true});
+      ga('require', 'linker');
+      ga('require', 'displayfeatures');
+
+      // List of every domain to share linker parameters.
+      ga('linker:autoLink', ['nagios.com', 'nagios.org', 'nagios-plugins.org'], true);
+      ga('send', 'pageview');
+    </script>
+
+
+
+</body></html>

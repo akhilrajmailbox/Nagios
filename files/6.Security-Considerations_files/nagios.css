@@ -1,0 +1,103 @@
+body { padding: 5rem 0; font-size: 1.2rem; font-family: verdana, sans-serif; }
+a { color: #4d89f9; }
+a:hover, a:focus, a:active { text-decoration: underline; color: #1b59cd; }
+.fl { float: left; }
+.fr { float: right; }
+.clear { clear: both; }
+.fa-l { margin-right: 2px; }
+.fa-r { margin-left: 2px; }
+.fa-14 { font-size: 13px; }
+.fa-18 { font-size: 18px; }
+.fa.green { color: green; }
+.fa-btn { font-size: 14px; vertical-align: middle; }
+
+/* Bootstrap overrides */
+.form-control { border-radius: 0; height: 30px; line-height: 1.2rem; vertical-align: middle; }
+select.form-control { padding: 4px 5px; }
+input.form-control { padding: 4px 8px; }
+.form-control:focus { border-color: #BBB; box-shadow: none; }
+.btn { border-radius: 0; }
+.btn:focus, .btn:active, .btn:active:focus { outline: none; }
+.alert { padding: 10px; border-radius: 0; margin: 0; }
+.table { margin: 0; }
+.table-condensed>tbody>tr>td { padding: 4px 8px; }
+.well { border-radius: 0; }
+.modal-content { border-radius: 0; }
+.modal-header { font-weight: bold; font-size: 18px; }
+.navbar-inverse { background: url('../img/footer_lodyas.png'); border: none; }
+.navbar-inverse .navbar-brand { font-size: 24px; font-weight: bold; color: #EEE; letter-spacing: 2px; }
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:hover { background-color: #222; }
+.navbar { margin-bottom: 0; }
+.table-border { border: 1px solid #DDD; }
+.navbar-inverse .navbar-nav>li>a { color: #BBB; }
+input[type=checkbox], input[type=radio] { margin: 2px 0 0; }
+.checkbox input[type=checkbox], .checkbox-inline input[type=checkbox], .radio input[type=radio], .radio-inline input[type=radio] { margin-left: -18px; }
+.form-horizontal .checkbox, .form-horizontal .checkbox-inline, .form-horizontal .radio, .form-horizontal .radio-inline, .form-horizontal .control-label { padding-top: 0; }
+.nav-tabs>li>a { border-radius: 0; }
+.btn-primary { background-color: #4d89f9; border-color: #3371e6; }
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus, .btn-primary:active:focus { background-color: #3371e6; border-color: #1b59cd; }
+input.form-control, select.form-control, .btn { font-size: 1.2rem; }
+.input-group-addon { border-radius: 0; }
+.popover, .popover h3, .input-group-addon { font-size: 1.2rem; }
+i.fa-question-circle { font-size: 1.3rem; cursor: pointer; }
+.form-control[readonly] { background-color: #FFF; }
+.dropdown-menu { font-size: 1.2rem; border-radius: 0; box-shadow: none; width: 100%; }
+.dropdown-menu > li > a { padding: 3px 12px 3px 9px; cursor: pointer; }
+.popover { max-width: 350px; }
+.popover-content p:last-child { margin-bottom: 0; }
+h3.popover-title { font-weight: bold; font-size: 1.3rem; }
+pre { border-radius: 0; padding: 0.4rem 0.6rem; }
+.tooltip { z-index: 10000; }
+.well .table { background-color: #FFF; }
+
+/* New Nagios Core doc styling */
+
+h5 { font-weight: bold; font-size: 1.25rem; }
+ol > li, ul > li { margin-bottom: 1rem; }
+
+.table-small { font-size: 1.05rem; }
+.table-auto-width { width: auto; }
+
+td.yes { background: #e1f8e0; }
+td.no {  }
+
+.block { margin-bottom: 2.5rem; }
+.disclaimer { font-size: 1rem; }
+.top-logo { text-align: center; padding-bottom: 20px; }
+.section { margin: 4rem 0; }
+.sec-pad { margin: 2rem 0; }
+
+/* Original core doc styling below */
+
+.PageTitle { font-weight: bold; }
+
+.SectionTitle {
+	font-weight: bold;
+}
+
+.AttributeName {
+	font-weight: bold;
+}
+
+.core4new {
+	color: #007f00;
+    text-decoration: underline;
+}
+
+.deprecated {
+	color: red;
+    text-decoration: line-through;
+}
+
+#content{
+	}
+#sidebar{
+    float: right;
+	width: 400px;
+		}
+		
+.splashbox {
+    border: 1px solid #AAAAAA;
+    margin: 5px;
+    padding: 5px;
+}

@@ -30,3 +30,7 @@ admin		=		nagiosadmin
 password	=		HTPASSWORD (you need to provide with docker run command)
 
 ```
+
+IMPORTANT ::
+
+for using 'check_nrpe' you need to configure in remote machine also, and do not configure with 'argument enable option in remote machine' (security issue)

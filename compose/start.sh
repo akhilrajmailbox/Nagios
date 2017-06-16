@@ -94,6 +94,11 @@ service apache2 restart & wait
 service postfix restart & wait
 
 echo "##################################"
+echo ""
+echo -e '\E[32m'"The config file should be under '/usr/local/nagios/etc/servers/' with '.cfg' extension $A"
+echo -e '\E[32m'"You can find a reference file 'monitor.cfg-reference' under '/usr/local/nagios/etc/servers/' $A"
+echo -e '\E[32m'"Configure your config file and reload the server with 'service nagios reload' $A"
+echo ""
 echo "##################################"
 echo "##################################"
 tailf /usr/local/nagios/var/nagios.log
