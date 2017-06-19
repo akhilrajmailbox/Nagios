@@ -1,0 +1,675 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#" xmlns:addthis="http://www.addthis.com/help/api-spec" lang="en-US"><head profile="http://purl.org/uF/2008/03/ http://purl.org/uF/hAtom/0.1/">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="template" content="K2 1.0">
+	<title>Exploring the New JSON CGIs in Nagios Core 4.0.7! (Part 1) «  Nagios Labs</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="7.nagios_api_files/style.css">
+		<link rel="pingback" href="https://labs.nagios.com/xmlrpc.php">
+	<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Nagios Labs » Feed" href="https://labs.nagios.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Nagios Labs » Comments Feed" href="https://labs.nagios.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Nagios Labs » Exploring the New JSON CGIs in Nagios Core 4.0.7! (Part 1) Comments Feed" href="https://labs.nagios.com/2014/06/19/exploring-the-new-json-cgis-in-nagios-core-4-0-7-part-1/feed/">
+		<script async="" src="7.nagios_api_files/analytics.js"></script><script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/labs.nagios.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.7.5"}};
+			!function(a,b,c){function d(a){var b,c,d,e,f=String.fromCharCode;if(!k||!k.fillText)return!1;switch(k.clearRect(0,0,j.width,j.height),k.textBaseline="top",k.font="600 32px Arial",a){case"flag":return k.fillText(f(55356,56826,55356,56819),0,0),!(j.toDataURL().length<3e3)&&(k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,65039,8205,55356,57096),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,55356,57096),0,0),c=j.toDataURL(),b!==c);case"emoji4":return k.fillText(f(55357,56425,55356,57341,8205,55357,56507),0,0),d=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55357,56425,55356,57341,55357,56507),0,0),e=j.toDataURL(),d!==e}return!1}function e(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i,j=b.createElement("canvas"),k=j.getContext&&j.getContext("2d");for(i=Array("flag","emoji4"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="7.nagios_api_files/wp-emoji-release.js" type="text/javascript" defer="defer"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="crayon-css" href="7.nagios_api_files/crayon.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-theme-github-css" href="7.nagios_api_files/github.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-font-courier-new-css" href="7.nagios_api_files/courier-new.css" type="text/css" media="all">
+<link rel="stylesheet" id="cptch_stylesheet-css" href="7.nagios_api_files/front_end_style.css" type="text/css" media="all">
+<link rel="stylesheet" id="dashicons-css" href="7.nagios_api_files/dashicons.css" type="text/css" media="all">
+<link rel="stylesheet" id="cptch_desktop_style-css" href="7.nagios_api_files/desktop_style.css" type="text/css" media="all">
+<link rel="stylesheet" id="YoutubeShortcodeMargenn-css" href="7.nagios_api_files/youtube-shortcode.css" type="text/css" media="all">
+<script type="text/javascript" src="7.nagios_api_files/jquery.js"></script>
+<script type="text/javascript" src="7.nagios_api_files/jquery-migrate.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"_2.7.2_beta","is_admin":"0","ajaxurl":"https:\/\/labs.nagios.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="7.nagios_api_files/crayon.js"></script>
+<script type="text/javascript" src="7.nagios_api_files/k2.js"></script>
+<link rel="https://api.w.org/" href="https://labs.nagios.com/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://labs.nagios.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://labs.nagios.com/wp-includes/wlwmanifest.xml">
+<link rel="prev" title="Using the New SLA Report within Nagios XI 2014" href="https://labs.nagios.com/2014/05/29/using-the-new-sla-report-within-nagios-xi-2014/">
+<link rel="next" title="Monitoring Website Defacement with Nagios XI 2014" href="https://labs.nagios.com/2014/06/26/monitoring-website-defacement-with-nagios-xi-2014/">
+<meta name="generator" content="WordPress 4.7.5">
+<link rel="canonical" href="https://labs.nagios.com/2014/06/19/exploring-the-new-json-cgis-in-nagios-core-4-0-7-part-1/">
+<link rel="shortlink" href="https://labs.nagios.com/?p=1897">
+<link rel="alternate" type="application/json+oembed" href="https://labs.nagios.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Flabs.nagios.com%2F2014%2F06%2F19%2Fexploring-the-new-json-cgis-in-nagios-core-4-0-7-part-1%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://labs.nagios.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Flabs.nagios.com%2F2014%2F06%2F19%2Fexploring-the-new-json-cgis-in-nagios-core-4-0-7-part-1%2F&amp;format=xml">
+<script type="text/javascript" src="7.nagios_api_files/audio-player.js"></script>
+<script type="text/javascript">AudioPlayer.setup("https://labs.nagios.com/wp-content/plugins/audio-player/assets/player.swf?ver=2.0.4.1", {width:"290",animation:"yes",encode:"yes",initialvolume:"60",remaining:"no",noinfo:"no",buffer:"5",checkpolicy:"no",rtl:"no",bg:"E5E5E5",text:"333333",leftbg:"CCCCCC",lefticon:"333333",volslider:"666666",voltrack:"FFFFFF",rightbg:"B4B4B4",rightbghover:"999999",righticon:"333333",righticonhover:"FFFFFF",track:"FFFFFF",loader:"009900",border:"CCCCCC",tracker:"DDDDDD",skip:"666666",pagebg:"FFFFFF",transparentpagebg:"yes"});</script><style type="text/css" media="screen">p.audioplayer_container span {visibility:hidden;height:24px;overflow:hidden;padding:0;border:none;}</style>
+		<style type="text/css">
+				#header .blog-title a,
+		#header .description {
+			color: #ffffff;
+		}
+				</style>
+			<link rel="stylesheet" type="text/css" media="screen" href="7.nagios_api_files/nagios.css">
+		<link rel="archives" title="March 2017" href="https://labs.nagios.com/2017/03/">
+	<link rel="archives" title="October 2016" href="https://labs.nagios.com/2016/10/">
+	<link rel="archives" title="July 2016" href="https://labs.nagios.com/2016/07/">
+	<link rel="archives" title="June 2016" href="https://labs.nagios.com/2016/06/">
+	<link rel="archives" title="April 2016" href="https://labs.nagios.com/2016/04/">
+	<link rel="archives" title="February 2016" href="https://labs.nagios.com/2016/02/">
+	<link rel="archives" title="November 2015" href="https://labs.nagios.com/2015/11/">
+	<link rel="archives" title="August 2015" href="https://labs.nagios.com/2015/08/">
+	<link rel="archives" title="July 2015" href="https://labs.nagios.com/2015/07/">
+	<link rel="archives" title="March 2015" href="https://labs.nagios.com/2015/03/">
+	<link rel="archives" title="October 2014" href="https://labs.nagios.com/2014/10/">
+	<link rel="archives" title="August 2014" href="https://labs.nagios.com/2014/08/">
+	<link rel="archives" title="July 2014" href="https://labs.nagios.com/2014/07/">
+	<link rel="archives" title="June 2014" href="https://labs.nagios.com/2014/06/">
+	<link rel="archives" title="May 2014" href="https://labs.nagios.com/2014/05/">
+	<link rel="archives" title="April 2014" href="https://labs.nagios.com/2014/04/">
+	<link rel="archives" title="March 2014" href="https://labs.nagios.com/2014/03/">
+	<link rel="archives" title="February 2014" href="https://labs.nagios.com/2014/02/">
+	<link rel="archives" title="January 2014" href="https://labs.nagios.com/2014/01/">
+	<link rel="archives" title="December 2013" href="https://labs.nagios.com/2013/12/">
+	<link rel="archives" title="November 2013" href="https://labs.nagios.com/2013/11/">
+	<link rel="archives" title="October 2013" href="https://labs.nagios.com/2013/10/">
+	<link rel="archives" title="September 2013" href="https://labs.nagios.com/2013/09/">
+	<link rel="archives" title="August 2013" href="https://labs.nagios.com/2013/08/">
+	<link rel="archives" title="July 2013" href="https://labs.nagios.com/2013/07/">
+	<link rel="archives" title="May 2013" href="https://labs.nagios.com/2013/05/">
+	<link rel="archives" title="April 2013" href="https://labs.nagios.com/2013/04/">
+	<link rel="archives" title="January 2013" href="https://labs.nagios.com/2013/01/">
+	<link rel="archives" title="December 2012" href="https://labs.nagios.com/2012/12/">
+	<link rel="archives" title="November 2012" href="https://labs.nagios.com/2012/11/">
+	<link rel="archives" title="October 2012" href="https://labs.nagios.com/2012/10/">
+	<link rel="archives" title="September 2012" href="https://labs.nagios.com/2012/09/">
+	<link rel="archives" title="August 2012" href="https://labs.nagios.com/2012/08/">
+	<link rel="archives" title="June 2012" href="https://labs.nagios.com/2012/06/">
+	<link rel="archives" title="May 2012" href="https://labs.nagios.com/2012/05/">
+	<link rel="archives" title="April 2012" href="https://labs.nagios.com/2012/04/">
+	<link rel="archives" title="March 2012" href="https://labs.nagios.com/2012/03/">
+	<link rel="archives" title="February 2012" href="https://labs.nagios.com/2012/02/">
+	<link rel="archives" title="January 2012" href="https://labs.nagios.com/2012/01/">
+	<link rel="archives" title="December 2011" href="https://labs.nagios.com/2011/12/">
+	<link rel="archives" title="November 2011" href="https://labs.nagios.com/2011/11/">
+	<link rel="archives" title="September 2011" href="https://labs.nagios.com/2011/09/">
+	<link rel="archives" title="August 2011" href="https://labs.nagios.com/2011/08/">
+	<link rel="archives" title="July 2011" href="https://labs.nagios.com/2011/07/">
+	<link rel="archives" title="June 2011" href="https://labs.nagios.com/2011/06/">
+	<link rel="archives" title="May 2011" href="https://labs.nagios.com/2011/05/">
+	<link rel="archives" title="April 2011" href="https://labs.nagios.com/2011/04/">
+	<link rel="archives" title="March 2011" href="https://labs.nagios.com/2011/03/">
+	<link rel="archives" title="February 2011" href="https://labs.nagios.com/2011/02/">
+</head>
+<body class="wordpress k2 y2017 m06 d19 h02 animations single postid-1897 s-slug-exploring-the-new-json-cgis-in-nagios-core-4-0-7-part-1 s-y2014 s-m06 s-d19 s-h04 s-category-development s-category-nagios-core s-category-ui s-category-visualizations s-tag-api s-tag-json s-tag-json-cgi s-tag-nagios s-tag-nagios-core-4 s-tag-nagios-ui s-tag-ui s-author-andy-brist columns-two lang-en wpmu-1 gecko linux">
+<div id="sidebar-tagline"></div>
+<div id="page">
+	<div id="header">
+<div class="blog-title">	<a href="https://labs.nagios.com/" accesskey="1">Nagios Labs</a>
+</div>
+<p class="description">Tech news from the Nagios team</p>
+		<div id="headernavbar">
+		<div class="headnav">
+		<a href="https://network.nagios.org/">Network:</a>
+		<ul>
+		<li><a href="https://www.nagios.com/">Enterprise</a>
+		</li><li><a href="https://support.nagios.com/">Support</a>
+		</li><li><a href="https://library.nagios.com/">Library</a>
+		</li><li><a href="https://labs.nagios.com/">Labs</a>
+		</li><li><a href="https://www.nagios.org/">Project</a>
+		</li><li><a href="https://exchange.nagios.org/">Exchange</a>
+		</li><li><a title="More Nagios Network Sites" href="https://network.nagios.org/">[+]</a>
+		</li></ul>
+		</div>
+		</div>
+<div id="nagioslogo">
+<a href="https://labs.nagios.com/">
+<img id="logo" alt="Nagios" style="border: 0pt none;" src="7.nagios_api_files/Nagios.png">
+</a>
+</div>
+<div id="sitelogo">
+<a href="https://labs.nagios.com/">
+<img title="Nagios Labs" src="7.nagios_api_files/labs-logo.png" alt="Nagios Labs" border="0">
+</a>
+</div>
+<div id="menucontainer">
+<ul class="menu">
+	<li class="page_item blogtab">
+		<a href="https://labs.nagios.com/" title="Home">
+			Home		</a>
+	</li>
+	<li class="page_item page-item-10"><a href="https://labs.nagios.com/archivepage/">Archives</a></li>
+	</ul><!-- .menu -->
+</div>
+	</div> <!-- #header -->
+	<hr>
+<div class="content">
+<div id="primary-wrapper">
+	<div id="primary">
+		<div id="notices"></div>
+		<a name="startcontent" id="startcontent"></a>
+		<div id="current-content" class="hfeed">
+	<div id="nav-above" class="navigation">
+			<div class="nav-previous"><a href="https://labs.nagios.com/2014/05/29/using-the-new-sla-report-within-nagios-xi-2014/" rel="prev"><span class="meta-nav">«</span> Using the New SLA Report within Nagios XI 2014</a></div>
+		<div class="nav-next"><a href="https://labs.nagios.com/2014/06/26/monitoring-website-defacement-with-nagios-xi-2014/" rel="next">Monitoring Website Defacement with Nagios XI 2014 <span class="meta-nav">»</span></a></div>
+		<div class="clear"></div>
+	</div>
+			<div id="post-1897" class="post-1897 post type-post status-publish format-standard hentry category-development category-nagios-core category-ui category-visualizations tag-api tag-json tag-json-cgi tag-nagios tag-nagios-core-4 tag-nagios-ui tag-ui p1 y2014 m06 d19 h04">
+				<div class="entry-head">
+					<h1 class="entry-title">
+						<a href="https://labs.nagios.com/2014/06/19/exploring-the-new-json-cgis-in-nagios-core-4-0-7-part-1/" rel="bookmark" title="Permanent Link to Exploring the New JSON CGIs in Nagios Core 4.0.7! (Part 1)">Exploring the New JSON CGIs in Nagios Core 4.0.7! (Part 1)</a>
+					</h1>
+					<div class="entry-meta">
+						By <span class="vcard author entry-author"><a href="https://labs.nagios.com/author/andybrist/" class="url fn" title="View all posts by Andy Brist">Andy Brist</a></span> on <abbr class="published entry-date" title="2014-06-19T09:00:27-0500">June 19, 2014</abbr> 					</div> <!-- .entry-meta -->
+									</div><!-- .entry-head -->
+				<div class="entry-content">
+										<!-- AddThis Sharing Buttons above --><p>The JSON CGIs, from the JSON branch of core, have been officially released with <a title="Nagios Core Download Link" href="http://www.nagios.org/download?utm_source=Nagios%20Labs&amp;utm_medium=Text%20Link&amp;utm_content=Exploring%20the%20New%20JSON%20CGIs%20in%20Nagios%20Core%204.0.7&amp;utm_campaign=Nagios%20Core" target="_blank">Nagios Core 4.0.7</a>!</p>
+<p><strong>The original design goals were</strong>:</p>
+<ol>
+<li>To provide all information available in current CGIs in JSON format.</li>
+<li>Place the presentation responsibility on the client to minimize network traffic and server load.</li>
+<li>Perform operations on the server side that are significantly more easily done there.</li>
+<li>Spark community developers to create new Nagios Core UI’s from the easy to work with JSON from the CGIs.</li>
+</ol>
+<p>The CGIs provide an API to query object, status, and historical 
+information through GET requests.&nbsp; They use the same authentication
+ as other CGIs.&nbsp; Once queried, they return valid JSON that can be 
+parsed into JavaScript objects for client side models and 
+processing.&nbsp; The API is very robust, providing multiple ways to 
+limit queries – name/descriptions, host/service groups,&nbsp; 
+update/changes times, among many others.</p>
+<p><strong>The three new CGIs are</strong>:</p>
+<ol>
+<li>objectjson.cgi&nbsp; (object configuration)</li>
+<li>statusjson.cgi&nbsp; (status information)</li>
+<li>archivejson.cgi&nbsp; (historical logs)</li>
+</ol>
+<p>Additionally, a new web app is included – jsonquery.html &amp; 
+jsonquery.js.&nbsp; This is a small UI for crafting GET requests, it can
+ be used to trial specific parameters for GET requests, or to just 
+explore the api.&nbsp; It is also the easiest way to get acquainted with
+ the new CGIs.</p>
+<p><span id="more-1897"></span></p>
+<p><strong>Installing the JSON CGIs</strong>:<br>
+<code><br>
+</code></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+		<div id="crayon-5947790e9b449948893623" class="crayon-syntax crayon-theme-github crayon-font-courier-new crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style="max-width: 655px; margin-top: 12px; margin-bottom: 12px; font-size: 12px ! important; line-height: 15px ! important; height: auto;">
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea class="crayon-plain print-no" data-settings="dblclick" readonly="readonly" style="-moz-tab-size: 4; font-size: 12px ! important; line-height: 15px ! important; z-index: 0; opacity: 0; overflow: hidden;" wrap="soft">cd /tmp
+wget http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-4.0.7.tar.gz
+tar vfxz nagios-4.0.7.tar.gz
+cd nagios-4.0.7
+./configure&nbsp;&nbsp; (specify extra configure options as needed)
+make all
+make install</textarea></div>
+			<div class="crayon-main" style="max-width: 655px; position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table" style="">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5947790e9b449948893623-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-5947790e9b449948893623-2">2</div><div class="crayon-num" data-line="crayon-5947790e9b449948893623-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-5947790e9b449948893623-4">4</div><div class="crayon-num" data-line="crayon-5947790e9b449948893623-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-5947790e9b449948893623-6">6</div><div class="crayon-num" data-line="crayon-5947790e9b449948893623-7">7</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5947790e9b449948893623-1"><span class="crayon-v">cd</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-e">tmp</span></div><div class="crayon-line crayon-striped-line" id="crayon-5947790e9b449948893623-2"><span class="crayon-e">wget </span><span class="crayon-v">http</span><span class="crayon-o">:</span><span class="crayon-c">//prdownloads.sourceforge.net/sourceforge/nagios/nagios-4.0.7.tar.gz</span></div><div class="crayon-line" id="crayon-5947790e9b449948893623-3"><span class="crayon-e">tar </span><span class="crayon-e">vfxz </span><span class="crayon-v">nagios</span><span class="crayon-o">-</span><span class="crayon-cn">4.0.7.tar.gz</span></div><div class="crayon-line crayon-striped-line" id="crayon-5947790e9b449948893623-4"><span class="crayon-e">cd </span><span class="crayon-v">nagios</span><span class="crayon-o">-</span><span class="crayon-cn">4.0.7</span></div><div class="crayon-line" id="crayon-5947790e9b449948893623-5"><span class="crayon-sy">.</span><span class="crayon-o">/</span><span class="crayon-i">configure</span>&nbsp;&nbsp;<span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">specify </span><span class="crayon-e">extra </span><span class="crayon-e">configure </span><span class="crayon-e">options </span><span class="crayon-st">as</span><span class="crayon-h"> </span><span class="crayon-v">needed</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5947790e9b449948893623-6"><span class="crayon-e">make </span><span class="crayon-e">all</span></div><div class="crayon-line" id="crayon-5947790e9b449948893623-7"><span class="crayon-e">make </span><span class="crayon-v">install</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0015 seconds] -->
+<p>You can run the <code>"./configure"</code> command with extra configuration options&nbsp; as needed.</p>
+<p>Post install, you should find the 3 new CGIs in <code>/usr/local/nagios/sbin</code>, and the jsonquery html and js files in /usr/local/nagios/share.</p>
+<p><strong>To get started using the CGIs</strong>: Browse to the jsonquery.html url in your web browser:</p>
+<p style="text-align: left;">http://&lt;nagios server&gt;/nagios/jsonquery.html</p>
+<p style="text-align: left;">You should see a small UI just waiting to be explored:</p>
+<p style="text-align: center;"><img class=" wp-image-2565 aligncenter" title="JSON Query Generator" src="7.nagios_api_files/jsonquery11.png" alt="json-query-generator" srcset="https://labs.nagios.com/wp-content/uploads/2014/06/jsonquery11.png 750w, https://labs.nagios.com/wp-content/uploads/2014/06/jsonquery11-300x72.png 300w" sizes="(max-width: 480px) 100vw, 480px" width="480" height="115"></p>
+<ol>
+<li>Choose&nbsp;<em>Status JSON CGI</em> from the <strong>CGI</strong> dropdown</li>
+<li>Select <em>hostlist</em> for the <strong>query</strong> dropdown</li>
+<li>Click the <strong>Send Query</strong> button</li>
+<li>The right hand pane should now display a prettified JavaScript object</li>
+<li>You can then save the url, parametrize it, etc for use in ajax calls and/or integration into custom front-ends.</li>
+</ol>
+<p><img class="alignleft  wp-image-2566" title="jsonquery2" src="7.nagios_api_files/jsonquery2.png" alt="" srcset="https://labs.nagios.com/wp-content/uploads/2014/06/jsonquery2.png 299w, https://labs.nagios.com/wp-content/uploads/2014/06/jsonquery2-101x300.png 101w" sizes="(max-width: 167px) 100vw, 167px" width="167" height="494">&nbsp;<img class="alignleft  wp-image-2567" title="jsonquery3" src="7.nagios_api_files/jsonquery3.png" alt="" width="192" height="316"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>The query above was fairly basic. &nbsp;Let’s query some more specific information:</p>
+<ol>
+<li>Choose&nbsp;<em>Status JSON CGI</em> from the <strong>CGI</strong> dropdown</li>
+<li>Select <em>host</em> for the <strong>query</strong> dropdown</li>
+<li>Select a <em>hostname</em> from the <strong>Host Name</strong> dropdown</li>
+<li>Click the <strong>Send Query</strong> button</li>
+<li>You should now see detailed information for the specific host returned in the JSON</li>
+</ol>
+<p><img class="alignleft  wp-image-2568" title="jsonquery4" src="7.nagios_api_files/jsonquery4.png" alt="" width="208" height="186"><img class="wp-image-2569 alignnone" title="jsonquery5" src="7.nagios_api_files/jsonquery5.png" alt="" srcset="https://labs.nagios.com/wp-content/uploads/2014/06/jsonquery5.png 450w, https://labs.nagios.com/wp-content/uploads/2014/06/jsonquery5-145x300.png 145w" sizes="(max-width: 221px) 100vw, 221px" width="221" height="455"></p>
+<p>Feel free to play around with the numerous options.&nbsp; The CGIs 
+are highly versatile and work well with ajax loops for custom front-ends
+ and client-side models.&nbsp; This is version 1 of the CGIs, so if you 
+find any bugs, please report them to <a title="Nagios Open Source Bug Tracker" href="http://tracker.nagios.org/?utm_source=Nagios%20Labs&amp;utm_medium=Text%20Link&amp;utm_content=Exploring%20the%20New%20JSON%20CGIs%20in%20Nagios%20Core%204.0.7&amp;utm_campaign=Nagios%20Core" target="_blank">http://tracker.nagios.org</a>.&nbsp; More features are planned, so stay tuned!</p>
+<p>If you utilize the new feature to create a new addon for Nagios, please share it back with the community by posting it on the <a title="Nagios Exchange - Nagios Addons" href="http://exchange.nagios.org/?utm_source=Nagios%20Labs&amp;utm_medium=Text%20Link&amp;utm_content=Exploring%20the%20New%20JSON%20CGIs%20in%20Nagios%20Core%204.0.7&amp;utm_campaign=Nagios%20Core" target="_blank">Nagios Exchange</a>.</p>
+<p>In part 2 (coming soon) I will cover some use cases for the new CGIs 
+and provide a short walk-through covering the creation of a (small) 
+custom front-end.</p>
+<p>Remember,&nbsp;<strong>Nagios World Conference 2014</strong> is coming up in October. <strong><a title="Save 10% On Your Nagios World Conference 2014 Conference Pass" href="http://www.nagios.com/events/nagiosworldconference/northamerica/2014/registration?discount=LABS10?utm_source=Nagios%20Labs&amp;utm_medium=text%20link&amp;utm_content=Exploring%20the%20New%20JSON%20CGIs%20in%20Nagios%20Core%204.0.7&amp;utm_campaign=Nagios%20World%20Conference%202014" target="_blank">Register here for 10% off your conference pass</a></strong>. Act now, because this offer won’t last long!</p>
+<p><a href="http://www.nagios.com/events/nagiosworldconference/northamerica/2014?utm_source=Nagios%20Labs&amp;utm_medium=Signature%20Link&amp;utm_content=Exploring%20the%20New%20JSON%20CGIs%20in%20Nagios%20Core%204.0.6&amp;utm_campaign=Nagios%20World%20Conference%202014"><img title="Come see Andy Brist present at Nagios World Conference 2014" src="7.nagios_api_files/Andy-Signature-Badge.png" alt="Come see Andy Brist present at Nagios World Conference 2014" width="240" height="120"></a></p>
+<p>&nbsp;</p>
+				</div><!-- .entry-content -->
+				<div class="entry-foot">
+					<div class="entry-meta">
+						Category: <span class="entry-categories"><a href="https://labs.nagios.com/category/development/" title="View all posts in Development">Development</a>, <a href="https://labs.nagios.com/category/nagios-core/" title="View all posts in Nagios Core">Nagios Core</a>, <a href="https://labs.nagios.com/category/ui/" title="View all posts in UI">UI</a> and <a href="https://labs.nagios.com/category/visualizations/" title="View all posts in Visualizations">Visualizations</a></span>. <span class="entry-comments"><a href="https://labs.nagios.com/2014/06/19/exploring-the-new-json-cgis-in-nagios-core-4-0-7-part-1/#comments" class="commentslink">3 <span>Comments</span></a></span> <span class="entry-tags"><span>Tags:</span> <a href="https://labs.nagios.com/tag/api/" rel="tag">API</a>, <a href="https://labs.nagios.com/tag/json/" rel="tag">JSON</a>, <a href="https://labs.nagios.com/tag/json-cgi/" rel="tag">JSON CGI</a>, <a href="https://labs.nagios.com/tag/nagios/" rel="tag">nagios</a>, <a href="https://labs.nagios.com/tag/nagios-core-4/" rel="tag">Nagios Core 4</a>, <a href="https://labs.nagios.com/tag/nagios-ui/" rel="tag">Nagios UI</a>, <a href="https://labs.nagios.com/tag/ui/" rel="tag">UI</a>.</span>					</div><!-- .entry-meta -->
+									</div><!-- .entry-foot -->
+			</div><!-- #post-ID -->
+			<div class="comments">
+		<h4><span id="comments">3</span> Responses to “Exploring the New JSON CGIs in Nagios Core 4.0.7! (Part 1)”</h4>
+		<div class="metalinks">
+			<span class="commentsrsslink"><a href="https://labs.nagios.com/2014/06/19/exploring-the-new-json-cgis-in-nagios-core-4-0-7-part-1/feed/">Feed for this Entry</a></span>
+					</div>
+		<hr>
+			<ul id="commentlist">
+	<li id="comment-8449">
+		<div class="comment even thread-even depth-1 c-y2014 c-m08 c-d26 c-h03">
+			<div class="comment-head">
+									<span class="gravatar">
+						<img alt="" src="7.nagios_api_files/8d44c38a359c5a8763e041eb33547a2d.jpeg" srcset="https://secure.gravatar.com/avatar/8d44c38a359c5a8763e041eb33547a2d?s=64&amp;d=mm&amp;r=g 2x" class="avatar avatar-32 photo" width="32" height="32">					</span>
+				<span class="comment-author">Tom Welsh</span>
+				<div class="comment-meta">
+					<a href="#comment-8449" title="Permanent Link to this Comment">
+						August 26, 2014 at 8:29 am					</a>
+				</div><!-- .comment-meta -->
+			</div><!-- .comment-head -->
+			<div class="comment-content">
+				<p>Hi,</p>
+<p>Good tool. I can see numerous possibilities.<br>
+When are you publishing Part 2?</p>
+<p>Regards</p>
+<p>Tom</p>
+			</div><!-- .comment-content -->
+			<div class="buttons">
+								<div id="comment-reply-8449" class="comment-reply">
+									</div>
+							</div><!-- .buttons -->
+		</div><!-- comment -->
+</li><!-- #comment-## -->
+	<li id="comment-8784">
+		<div class="comment odd alt thread-odd thread-alt depth-1 c-y2014 c-m12 c-d23 c-h09">
+			<div class="comment-head">
+									<span class="gravatar">
+						<img alt="" src="7.nagios_api_files/9bebd421dcf04206e36fea9fda18b1bb.jpeg" srcset="https://secure.gravatar.com/avatar/9bebd421dcf04206e36fea9fda18b1bb?s=64&amp;d=mm&amp;r=g 2x" class="avatar avatar-32 photo" width="32" height="32">					</span>
+				<span class="comment-author">Angel Gutierrez</span>
+				<div class="comment-meta">
+					<a href="#comment-8784" title="Permanent Link to this Comment">
+						December 23, 2014 at 2:32 pm					</a>
+				</div><!-- .comment-meta -->
+			</div><!-- .comment-head -->
+			<div class="comment-content">
+				<p>Hi,</p>
+<p>Is it possible to obtain all the current services in critical status 
+applying filters such as “Not Flapping” or “Not In Scheduled Downtime” 
+???</p>
+<p>At this moment i’m able to obtain this data but without any filter, something like this.</p>
+<p><a href="http://locaclhost/nagios/cgi-bin/statusjson.cgi?query=servicelist&amp;formatoptions=whitespace&amp;parenthost=none&amp;childhost=none&amp;hoststatus=up&amp;servicestatus=pending&amp;parentservice=none&amp;childservice=none" rel="nofollow">http://locaclhost/nagios/cgi-bin/statusjson.cgi?query=servicelist&amp;formatoptions=whitespace&amp;parenthost=none&amp;childhost=none&amp;hoststatus=up&amp;servicestatus=pending&amp;parentservice=none&amp;childservice=none</a></p>
+<p>As you can see this json query returns all services in pending status.</p>
+<p>Greetings</p>
+			</div><!-- .comment-content -->
+			<div class="buttons">
+								<div id="comment-reply-8784" class="comment-reply">
+									</div>
+							</div><!-- .buttons -->
+		</div><!-- comment -->
+</li><!-- #comment-## -->
+	<li id="comment-8974">
+		<div class="comment even thread-even depth-1 c-y2015 c-m02 c-d27 c-h03">
+			<div class="comment-head">
+									<span class="gravatar">
+						<img alt="" src="7.nagios_api_files/3ae4fa130b2274c51983ade85e0adf1c.jpeg" srcset="https://secure.gravatar.com/avatar/3ae4fa130b2274c51983ade85e0adf1c?s=64&amp;d=mm&amp;r=g 2x" class="avatar avatar-32 photo" width="32" height="32">					</span>
+				<span class="comment-author">Menashè Eliezer</span>
+				<div class="comment-meta">
+					<a href="#comment-8974" title="Permanent Link to this Comment">
+						February 27, 2015 at 8:40 am					</a>
+				</div><!-- .comment-meta -->
+			</div><!-- .comment-head -->
+			<div class="comment-content">
+				<p>Hi,<br>
+Thank you for this post.<br>
+I’ve tried it with Nagios 4.0.8 (as is, out of the box!) and it works 
+fine also with filters, as asked by Angel. For example, all the services
+ with critical status:  
+/cgi-bin/statusjson.cgi?query=servicelist&amp;servicestatus=critical&amp;details=true<br>
+The allowed values and syntax can be found at /cgi-bin/statusjson.cgi</p>
+<p>—<br>
+Regards,<br>
+Menashè</p>
+			</div><!-- .comment-content -->
+			<div class="buttons">
+								<div id="comment-reply-8974" class="comment-reply">
+									</div>
+							</div><!-- .buttons -->
+		</div><!-- comment -->
+</li><!-- #comment-## -->
+		</ul>
+	<div id="nav-comments" class="navigation">
+			<div class="nav-previous"><a href="https://labs.nagios.com/2014/05/29/using-the-new-sla-report-within-nagios-xi-2014/" rel="prev"><span class="meta-nav">«</span> Using the New SLA Report within Nagios XI 2014</a></div>
+		<div class="nav-next"><a href="https://labs.nagios.com/2014/06/26/monitoring-website-defacement-with-nagios-xi-2014/" rel="next">Monitoring Website Defacement with Nagios XI 2014 <span class="meta-nav">»</span></a></div>
+		<div class="clear"></div>
+	</div>
+			<div id="comments-closed-msg">Comments are currently closed.</div>
+				</div><!-- .comments -->
+	<div id="nav-below" class="navigation">
+			<div class="nav-previous"><a href="https://labs.nagios.com/2014/05/29/using-the-new-sla-report-within-nagios-xi-2014/" rel="prev"><span class="meta-nav">«</span> Using the New SLA Report within Nagios XI 2014</a></div>
+		<div class="nav-next"><a href="https://labs.nagios.com/2014/06/26/monitoring-website-defacement-with-nagios-xi-2014/" rel="next">Monitoring Website Defacement with Nagios XI 2014 <span class="meta-nav">»</span></a></div>
+		<div class="clear"></div>
+	</div>
+		</div><!-- #current-content -->
+		<div id="dynamic-content"></div>
+	</div><!-- #primary -->
+</div><!-- #primary-wrapper -->
+<hr>
+<div id="sidebar-1" class="secondary">
+<div id="text-6" class="widget widget_text">			<div class="textwidget"><a title="Nagios Log Server Now Available - Download Now" href="https://go.nagios.com/logserver?utm_source=Nagios+Labs&amp;utm_medium=Banner&amp;utm_content=Nagios-Log-Server-Now-Available-Download-Now&amp;utm_campaign=Nagios+Log+Server"><img title="Nagios Log Server Now Available - Download Now" style="margin-top: 5px; " alt="Nagios Log Server Now Available - Download Now" src="7.nagios_api_files/Nagios-Log-Server-Side-Bar-Promo.png" align="middle" width="174" height="54"></a></div>
+		</div><div id="search-3" class="widget widget_search"><h4>Search</h4><form method="get" id="searchform" action="https://labs.nagios.com">
+	<div id="search-form-wrap">
+		<label for="s" id="search-label">Search for:</label>
+		<input id="s" name="s" accesskey="4" type="text">
+		<input id="searchsubmit" value="Search »" type="submit">
+			</div>
+</form>
+</div><div id="text-4" class="widget widget_text"><h4>Connect With Us</h4>			<div class="textwidget"><a target="_blank" href="https://www.facebook.com/pages/Nagios/194145247332208">
+<img title="Facebook" src="7.nagios_api_files/facebook-32x32.png">
+</a>
+<a target="_blank" href="https://twitter.com/#%21/nagiosinc">
+<img title="Twitter" src="7.nagios_api_files/twitter-32x32.png">
+</a>
+<a target="_blank" href="https://www.youtube.com/nagiosvideo">
+<img title="YouTube" src="7.nagios_api_files/youtube-32x32.png">
+</a>
+<a target="_blank" href="https://www.linkedin.com/groups?gid=131532">
+<img title="LinkedIn" src="7.nagios_api_files/linkedin-32x32.png">
+</a>
+<a target="_blank" href="https://www.flickr.com/photos/nagiosinc">
+<img title="Flickr" src="7.nagios_api_files/flickr-32x32.png">
+</a></div>
+		</div><div id="text-3" class="widget widget_text"><h4>About Nagios Labs</h4>			<div class="textwidget"><!--<img src="https://assets.nagios.com/images/Nagios-whitebg-212x50.png" style="float: left; margin: 0 10px 10px 0;" width="140px" height="35px">
+<br clear="all">-->
+<strong>Nagios</strong> is the industry standard in IT infrastructure monitoring.
+<p>
+<strong>Nagios Labs</strong> is where our techs talk about new projects, support issues, best practices, and the cool stuff that's coming.</p></div>
+		</div>		<div id="recent-posts-3" class="widget widget_recent_entries">		<h4>Latest Articles</h4>		<ul>
+					<li>
+				<a href="https://labs.nagios.com/2017/03/30/will-it-monitor/">Will It Monitor?</a>
+						</li>
+					<li>
+				<a href="https://labs.nagios.com/2016/10/05/nagios-xi-5-3-0-released/">Nagios XI 5.3.0 Released</a>
+						</li>
+					<li>
+				<a href="https://labs.nagios.com/2016/07/13/announcing-the-nagios-knowledge-base/">Announcing the Nagios Knowledge Base</a>
+						</li>
+					<li>
+				<a href="https://labs.nagios.com/2016/06/16/passing-key-value-pairs-through-kernel-messages-with-libnagios/">Passing key value pairs through kernel messages with libnagios</a>
+						</li>
+					<li>
+				<a href="https://labs.nagios.com/2016/04/25/extending-nagios-functionality-with-libnagios/">Extending Nagios functionality with libnagios</a>
+						</li>
+				</ul>
+		</div>		<div id="tag_cloud-3" class="widget widget_tag_cloud"><h4>Article Categories</h4><div class="tagcloud"><a href="https://labs.nagios.com/category/alerts/" class="tag-link-27 tag-link-position-1" title="9 topics" style="font-size: 14.20253164557pt;">Alerts</a>
+<a href="https://labs.nagios.com/category/awards/" class="tag-link-45 tag-link-position-2" title="3 topics" style="font-size: 10.658227848101pt;">Awards</a>
+<a href="https://labs.nagios.com/category/awesome/" class="tag-link-46 tag-link-position-3" title="17 topics" style="font-size: 16.506329113924pt;">Awesome</a>
+<a href="https://labs.nagios.com/category/business-monitoring/" class="tag-link-47 tag-link-position-4" title="3 topics" style="font-size: 10.658227848101pt;">Business Monitoring</a>
+<a href="https://labs.nagios.com/category/community/" class="tag-link-41 tag-link-position-5" title="8 topics" style="font-size: 13.759493670886pt;">Community</a>
+<a href="https://labs.nagios.com/category/components/" class="tag-link-31 tag-link-position-6" title="17 topics" style="font-size: 16.506329113924pt;">Components</a>
+<a href="https://labs.nagios.com/category/configuration/" class="tag-link-7 tag-link-position-7" title="20 topics" style="font-size: 17.037974683544pt;">Configuration</a>
+<a href="https://labs.nagios.com/category/cool-stuff/" class="tag-link-29 tag-link-position-8" title="29 topics" style="font-size: 18.455696202532pt;">Cool Stuff</a>
+<a href="https://labs.nagios.com/category/databases/" class="tag-link-37 tag-link-position-9" title="4 topics" style="font-size: 11.544303797468pt;">Databases</a>
+<a href="https://labs.nagios.com/category/deployment/" class="tag-link-57 tag-link-position-10" title="12 topics" style="font-size: 15.177215189873pt;">Deployment</a>
+<a href="https://labs.nagios.com/category/development/" class="tag-link-32 tag-link-position-11" title="21 topics" style="font-size: 17.215189873418pt;">Development</a>
+<a href="https://labs.nagios.com/category/distributed-monitoring/" class="tag-link-18 tag-link-position-12" title="12 topics" style="font-size: 15.177215189873pt;">Distributed Monitoring</a>
+<a href="https://labs.nagios.com/category/events/" class="tag-link-21 tag-link-position-13" title="5 topics" style="font-size: 12.253164556962pt;">Events</a>
+<a href="https://labs.nagios.com/category/graphs/" class="tag-link-19 tag-link-position-14" title="5 topics" style="font-size: 12.253164556962pt;">Graphs</a>
+<a href="https://labs.nagios.com/category/internationalization/" class="tag-link-121 tag-link-position-15" title="1 topic" style="font-size: 8pt;">Internationalization</a>
+<a href="https://labs.nagios.com/category/jobs/" class="tag-link-39 tag-link-position-16" title="1 topic" style="font-size: 8pt;">Jobs</a>
+<a href="https://labs.nagios.com/category/maps-and-diagrams/" class="tag-link-8 tag-link-position-17" title="4 topics" style="font-size: 11.544303797468pt;">Maps and Diagrams</a>
+<a href="https://labs.nagios.com/category/mobile/" class="tag-link-51 tag-link-position-18" title="1 topic" style="font-size: 8pt;">Mobile</a>
+<a href="https://labs.nagios.com/category/nagios-core/" class="tag-link-5 tag-link-position-19" title="17 topics" style="font-size: 16.506329113924pt;">Nagios Core</a>
+<a href="https://labs.nagios.com/category/nagios-fusion/" class="tag-link-26 tag-link-position-20" title="2 topics" style="font-size: 9.5949367088608pt;">Nagios Fusion</a>
+<a href="https://labs.nagios.com/category/nagios-log-server/" class="tag-link-288 tag-link-position-21" title="4 topics" style="font-size: 11.544303797468pt;">Nagios Log Server</a>
+<a href="https://labs.nagios.com/category/nagios-network-analyzer/" class="tag-link-216 tag-link-position-22" title="3 topics" style="font-size: 10.658227848101pt;">Nagios Network Analyzer</a>
+<a href="https://labs.nagios.com/category/nagios-xi/" class="tag-link-4 tag-link-position-23" title="75 topics" style="font-size: 22pt;">Nagios XI</a>
+<a href="https://labs.nagios.com/category/ncpa/" class="tag-link-208 tag-link-position-24" title="2 topics" style="font-size: 9.5949367088608pt;">NCPA</a>
+<a href="https://labs.nagios.com/category/notifications/" class="tag-link-10 tag-link-position-25" title="6 topics" style="font-size: 12.873417721519pt;">Notifications</a>
+<a href="https://labs.nagios.com/category/nrds/" class="tag-link-144 tag-link-position-26" title="4 topics" style="font-size: 11.544303797468pt;">NRDS</a>
+<a href="https://labs.nagios.com/category/nrpe/" class="tag-link-155 tag-link-position-27" title="3 topics" style="font-size: 10.658227848101pt;">NRPE</a>
+<a href="https://labs.nagios.com/category/passive-checks/" class="tag-link-22 tag-link-position-28" title="7 topics" style="font-size: 13.316455696203pt;">Passive Checks</a>
+<a href="https://labs.nagios.com/category/performance/" class="tag-link-9 tag-link-position-29" title="9 topics" style="font-size: 14.20253164557pt;">Performance</a>
+<a href="https://labs.nagios.com/category/plugins/" class="tag-link-13 tag-link-position-30" title="10 topics" style="font-size: 14.556962025316pt;">Plugins</a>
+<a href="https://labs.nagios.com/category/release/" class="tag-link-341 tag-link-position-31" title="1 topic" style="font-size: 8pt;">Release</a>
+<a href="https://labs.nagios.com/category/remote-monitoring/" class="tag-link-25 tag-link-position-32" title="6 topics" style="font-size: 12.873417721519pt;">Remote Monitoring</a>
+<a href="https://labs.nagios.com/category/reports/" class="tag-link-28 tag-link-position-33" title="6 topics" style="font-size: 12.873417721519pt;">Reports</a>
+<a href="https://labs.nagios.com/category/sitenews/" class="tag-link-3 tag-link-position-34" title="6 topics" style="font-size: 12.873417721519pt;">Site News</a>
+<a href="https://labs.nagios.com/category/support-issues/" class="tag-link-12 tag-link-position-35" title="1 topic" style="font-size: 8pt;">Support Issues</a>
+<a href="https://labs.nagios.com/category/tech-tips/" class="tag-link-11 tag-link-position-36" title="13 topics" style="font-size: 15.53164556962pt;">Tech Tips</a>
+<a href="https://labs.nagios.com/category/ui/" class="tag-link-40 tag-link-position-37" title="12 topics" style="font-size: 15.177215189873pt;">UI</a>
+<a href="https://labs.nagios.com/category/uncategorized/" class="tag-link-1 tag-link-position-38" title="40 topics" style="font-size: 19.607594936709pt;">Uncategorized</a>
+<a href="https://labs.nagios.com/category/updates/" class="tag-link-126 tag-link-position-39" title="3 topics" style="font-size: 10.658227848101pt;">Updates</a>
+<a href="https://labs.nagios.com/category/videos/" class="tag-link-140 tag-link-position-40" title="1 topic" style="font-size: 8pt;">Videos</a>
+<a href="https://labs.nagios.com/category/visualizations/" class="tag-link-6 tag-link-position-41" title="13 topics" style="font-size: 15.53164556962pt;">Visualizations</a>
+<a href="https://labs.nagios.com/category/vmware-2/" class="tag-link-194 tag-link-position-42" title="2 topics" style="font-size: 9.5949367088608pt;">VMWare</a>
+<a href="https://labs.nagios.com/category/windows/" class="tag-link-24 tag-link-position-43" title="8 topics" style="font-size: 13.759493670886pt;">Windows</a>
+<a href="https://labs.nagios.com/category/wizards-2/" class="tag-link-38 tag-link-position-44" title="14 topics" style="font-size: 15.79746835443pt;">Wizards</a></div>
+</div><div id="linkcat-2" class="widget widget_links"><h4>Quick Links</h4>
+	<ul class="xoxo blogroll">
+<li><a href="http://go.nagios.com/downloadxi">Download Nagios XI</a></li>
+<li><a href="http://exchange.nagios.org/">Nagios Exchange</a></li>
+<li><a href="http://support.nagios.com/">Nagios Support</a></li>
+	</ul>
+</div>
+<div id="text-5" class="widget widget_text"><h4>Live Webinar</h4>			<div class="textwidget"><a href="https://www.nagios.com/products/nagiosxi/webinar?utm_source=Nagios%20Labs&amp;utm_medium=Sidebar&amp;utm_content=Live%20Webinar&amp;utm_campaign=Nagios%20Webinars" target="_blank"><img src="7.nagios_api_files/Webinar-Promo.png" title="Nagios XI - Register for Live Webinar" alt="Nagios XI - Register for Live Webinar" width="180px"></a></div>
+		</div></div> <!-- #sidebar-1 -->
+<hr>
+<div id="sidebar-2" class="secondary">
+	</div><!-- #sidebar-2 -->
+<div class="clear"></div>
+</div><!-- .content -->
+	<div class="clear"></div>
+</div> <!-- Close Page -->
+<hr>
+<div id="footer">
+	<!-- Nagios Footer -->
+	<div id="pagefooter">
+	<div id="pagefootermap">
+	<div id="pagefooterawards" class="pagefootersection pagefootersection-left"><span class="header">Awards:</span>
+	<div class="pagefooteraward"><a href="https://www.nagios.com/awards/"><img src="7.nagios_api_files/award1.png"></a></div>
+	<div class="pagefooteraward"><a href="https://www.nagios.com/awards/"><img src="7.nagios_api_files/award2.png"></a></div>
+	<div class="pagefooteraward"><a href="https://www.nagios.com/awards/"><img src="7.nagios_api_files/award3.png"></a></div>
+	</div>
+	<div id="pagefootersitemap" class="pagefootersection"><span class="header">Sitemap:</span>
+	<ul>
+	<li><span class="sitemapsection"><a href="https://labs.nagios.com/">Home</a></span></li>
+	<li> <span class="sitemapsection"><a href="https://www.nagios.com/about/">About</a></span>
+	<ul class="sitemappages">
+	<li class="sitemappage"><a href="https://www.nagios.com/casestudies/">Case Studies</a></li>
+	<li class="sitemappage"><a href="https://www.nagios.com/testimonials/">Testimonials</a></li>
+	<li class="sitemappage"><a href="https://www.nagios.com/users/">Customers</a></li>
+	<li class="sitemappage"><a href="https://www.nagios.com/about/">Company Info</a></li>
+	<li class="sitemappage"><a href="https://www.nagios.com/contact/">Contact Us</a></li>
+	</ul>
+	</li>
+	<li><span class="sitemapsection"><a href="https://www.nagios.com/legal/">Legal</a></span>
+	<ul class="sitemappages">
+	<li class="sitemappage"><a href="https://www.nagios.com/legal/termsofuse/">Terms of Use</a></li>
+	<li class="sitemappage"><a href="https://www.nagios.com/legal/privacypolicy/">Privacy Policy</a></li>
+	<li class="sitemappage"><a href="https://www.nagios.com/legal/trademarks/">Trademarks</a></li>
+	</ul>
+	</li>
+	</ul>
+	</div>
+	<div id="pagefooternetwork" class="pagefootersection"><span class="header">Network:</span>
+	<ul style="float: left; margin: 0px; padding: 0pt 25px 0pt 15px;">
+		<li><a href="https://www.nagios.com/">Nagios Enterprises</a></li>
+		<li><a href="http://support.nagios.com/">Nagios Support</a></li>
+		<li><a href="https://library.nagios.com/">Nagios Library</a></li>
+		<li><a href="https://www.nagios.org/">Nagios Project</a></li>
+	</ul>
+	<ul style="margin: 0px; padding: 0px;">
+		<li><a href="https://exchange.nagios.org/">Nagios Exchange</a></li>
+		<li><a href="https://labs.nagios.com/">Nagios Labs</a></li>
+		<li><a href="https://network.nagios.org/">More Sites [+]</a></li>
+	</ul>
+	</div>
+	</div>
+<style type="text/css">
+	#solutions-footer{
+		margin-top: 10px;
+		font-family: Verdana,Helvetica,sans-serif;
+		text-align: left;
+		}
+	#solutions-footer a{
+		/*color: blue;*/
+		/*text-decoration: underline;*/
+		text-decoration: none;
+		}
+</style>
+<div id="solutions-footer"><a href="https://www.nagios.com/solutions/"><strong>Nagios Solutions:</strong></a><br><a href="https://www.nagios.com/solutions/network-monitoring/">Monitoring Network</a> |
+<a href="http://logmonitoringsoftware.net/">Log Compliance</a> |
+<a href="https://www.nagios.com/solutions/bandwidth-monitoring/">Bandwidth Monitor</a> |
+<a href="https://www.nagios.com/solutions/power-monitoring/">Monitor Power Supply</a> |
+<a href="https://www.nagios.com/solutions/ups-monitoring/">UPS Battery Monitoring System
+</a> |
+<a href="https://www.nagios.com/solutions/wmi-monitoring/">Monitoring WMI</a> |
+<a href="https://www.nagios.com/solutions/network-monitoring-tools/">Network Monitoring Tools</a> |
+<a href="http://eventlogserver.com/">Event Viewer Server</a> |
+<a href="https://www.nagios.com/solutions/website-monitoring/">Monitor Website</a> |
+<a href="https://www.nagios.com/solutions/centos-monitoring/">CentOS System Monitor
+</a> |
+<a href="http://event-log-monitoring.com/">Windows Event Log Monitoring</a> |
+<a href="https://www.nagios.com/solutions/exchange-monitoring/">Monitor Exchange Server
+</a> |
+<a href="http://event-log-monitoring.org/">Monitoring Event Viewer
+</a> |
+<a href="https://www.nagios.com/solutions/postgres-monitoring/">Monitor Postgres</a> |
+<a href="http://windows-log-management.com/">Windows Log Management</a> |
+ <a href="https://www.nagios.com/solutions/">+</a></div>
+	<div id="pagefootercredits">
+	<div id="nelogo"><a href="https://www.nagios.com/" target="_blank"><img src="7.nagios_api_files/NagiosEnterprises.png"></a></div>
+	<div id="sitelegal">Nagios, Nagios Labs, the Nagios logo, and Nagios 
+graphics are the servicemarks, trademarks, or registered trademarks 
+owned by Nagios Enterprises. All other servicemarks and trademarks are 
+the property of their respective owner. Website Copyright © 2009-2017 
+Nagios Enterprises, LLC. All rights reserved.
+	<ul>
+	<li class="page_item"><a href="https://www.nagios.com/legal/privacypolicy/" title="Privacy Policy">Privacy Policy</a></li>
+	<li class="page_item"><a href="https://www.nagios.com/legal/trademarks/" title="Trademark Policy">Trademarks</a></li>
+	<li class="page_item"><a href="https://www.nagios.com/legal/termsofuse/" title="Terms of Use">Terms of Use</a></li>
+	</ul>
+	</div>
+	<div id="sflogo"><a href="http://www.sf.net/projects/nagios/" target="_blank"><img src="7.nagios_api_files/sflogo.png"></a></div>
+	</div>
+	<span _type="text/javascript" class="mceSCRIPT"></span></div>
+<!--Analytics Code-->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-2887186-1', 'auto', {'allowLinker': true});
+  ga('require', 'linker');
+  ga('require', 'displayfeatures');
+  // List of every domain to share linker parameters.
+  ga('linker:autoLink', ['nagios.com', 'nagios.org', 'nagios-plugins.org'], true);
+  ga('send', 'pageview');
+</script>
+	<!-- End Nagios Footer -->
+	<br clear="all">
+	<br clear="all">
+<p class="footerpoweredby">
+	Powered by <a href="http://wordpress.org/">WordPress</a> and <a href="http://getk2.com/" title="Loves you like a kitten.">K2</a></p>
+<p class="footerfeedlinks">
+	<a href="https://labs.nagios.com/feed/">Entries Feed</a> and <a href="https://labs.nagios.com/comments/feed/">Comments Feed</a></p>
+<p class="footerstats">
+	55 queries. 0.686 seconds.</p>
+	</div><!-- #footer -->
+<style>
+/* Nagios Bar */
+@import url(//fonts.googleapis.com/css?family=Roboto:700,400);
+.nbar { background: #45484d; /* Old browsers */
+        background: -moz-linear-gradient(top, #45484d 0%, #000000 100%);
+ /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, 
+color-stop(0%,#45484d), color-stop(100%,#000000)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top, #45484d 0%,#000000 
+100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top, #45484d 0%,#000000 100%); /*
+ Opera 11.10+ */
+        background: -ms-linear-gradient(top, #45484d 0%,#000000 100%); 
+/* IE10+ */
+        background: linear-gradient(to bottom, #45484d 0%,#000000 100%);
+ /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( 
+startColorstr='#45484d', endColorstr='#000000',GradientType=0 ); /* 
+IE6-9 */
+        line-height: 2.8em; color: #FFF; font-family: 'Roboto',verdana; 
+font-weight: 300; font-size: 1rem; text-align: center; position: 
+relative; z-index: 99999; border-bottom: 2px solid #FFF; /* box-shadow: 
+1px 1px 3px 0px #CCC; margin-bottom: 3px; */ }
+.nbar.fixed { width: 100%; position: fixed; }
+.nbar a.button { font-size: .8125rem; padding-right: .9375rem; 
+padding-left: .9375rem; background-color: #5da423; border-color: 
+#4a831c; color: #fff; padding: 0.3em 0.75em 0.25em 0.75em; transition: 
+background-color 300ms ease-out; font-size: .75rem; text-decoration: 
+none; }
+.nbar a.button.secondary { background-color: #e9e9e9; border-color: 
+#bababa; color: #333; margin-left: 0.75em; }
+.nbar a.button:hover { cursor: pointer; background-color: #4a831c; 
+text-decoration: none; }
+.nbar a.button.secondary:hover { background-color: #bababa; }
+.nbar span.buttons { margin-left: 1em; }
+#headernavbar { height: auto; width: auto; padding: 4px; }
+</style>
+<script>
+/*
+jQuery(document).ready(function($){
+  var nbar = '<div class="nbar"><div>Register for the 
+<strong>2015</strong> Nagios World Conference <span class="buttons"><a 
+href="https://conference.nagios.com/register?utm_source=nagios.com&utm_medium=hello%20bar&utm_content=Nagios.com%20Hello%20Bar%20-%20Register&utm_campaign=Nagios%20World%20Conference%202015#ref=qlOWKY&chan=26"
+ class="button success">Register</a> <a 
+href="https://conference.nagios.com?utm_source=nagios.com&utm_medium=hello%20bar&utm_content=Nagios.com%20Hello%20Bar%20-%20Learn%20More&utm_campaign=Nagios%20World%20Conference%202015#ref=qlOWKY&chan=17"
+ class="button secondary">Learn More</a></span></div></div>';
+  $('body').prepend(nbar);
+});
+jQuery(document).ready(function($){
+  var nbar = '<div class="nbar" style="background: rgba(0, 0, 0, 0) 
+linear-gradient(to bottom, #CE2929 0%, #6d0101 100%) repeat scroll 0 
+0"><div><strong>Flash Sale: </strong> Get your conference pass for only 
+$795! (Limited Passes Remain) <span class="buttons"><a 
+href="https://conference.nagios.com/register?utm_source=nagios.com&utm_medium=hello%20bar&utm_content=Nagios.com%20Hello%20Bar%20-%20Register&utm_campaign=Nagios%20World%20Conference%202015#ref=qlOWKY&chan=26"
+ class="button secondary">Register</a> <a 
+href="https://conference.nagios.com?utm_source=nagios.com&utm_medium=hello%20bar&utm_content=Nagios.com%20Hello%20Bar%20-%20Learn%20More&utm_campaign=Nagios%20World%20Conference%202015#ref=qlOWKY&chan=17"
+ class="button secondary">Learn More</a></span></div></div>';
+  $('body').prepend(nbar);
+});
+*/
+</script>
+
+</body></html>
