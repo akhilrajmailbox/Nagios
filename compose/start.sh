@@ -101,6 +101,6 @@ echo -e '\E[32m'"Configure your config file and reload the server with 'service 
 echo ""
 echo "##################################"
 echo "##################################"
+cp /root/monitor.cfg-reference /usr/local/nagios/etc/servers/monitor.cfg-reference
+chown -R nagios:nagios /usr/local/nagios/etc/servers
 tailf /usr/local/nagios/var/nagios.log
-
-fi
