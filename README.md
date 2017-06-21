@@ -14,6 +14,8 @@ environment variable ::
 MAIL_ADDRESS		=	The mail address for getting the notifications
 HTPASSWORD		=	The password for web user (the web user is 'nagiosadmin')
 HOST_IP			=	The docker-running host ip address 
+LOCAL_MONITOR		=	The value should be 'Y' ; for adding the localhost to monitoring list,
+				If this environment variable is not provided, then localhost(The container) will not monitor by the nagios
 
 ```
 
