@@ -11,6 +11,8 @@ echo -e '\E[33m'"|    1)  MAIL_ADDRESS             | $A"
 echo -e '\E[33m'"----------------------------------- $A"
 echo -e '\E[33m'"|    2)  HOST_IP                  | $A"
 echo -e '\E[33m'"----------------------------------- $A"
+echo -e '\E[33m'"|    3)  LOCAL_MONITOR            | $A"
+echo -e '\E[33m'"----------------------------------- $A"
 echo ""
 echo -e '\E[32m'"###################################### $A"
 echo -e '\E[32m'"###          MAIL_ADDRESS          ### $A"
@@ -27,7 +29,18 @@ echo ""
 echo -e '\E[33m'"If you don't provide 'HOST_IP' then It choose 'container ip' as default ip address for nrpe configuration, $A"
 echo -e '\E[33m'"so communication between 'remote machine' and 'nagios server (this container)' is not possible $A"
 echo ""
+echo ""
+echo -e '\E[32m'"###################################### $A"
+echo -e '\E[32m'"###          LOCAL_MONITOR         ### $A"
+echo -e '\E[32m'"###################################### $A"
+echo -e '\E[33m'"If you want the nagios server to monitor its own host (the container itself [localhost portion in ui]), use this environment variable, value should be 'Y' $A"
+echo -e '\E[33m'"If you don't want to monitor the the container itself, Do not use this Environment variable $A"
+echo ""
+echo -e '\E[33m'"If you don't want localhost monitoring, It will shows some error because of the empty host-list, $A"
+echo -e '\E[33m'"you can add new '<<name>>.cfg' file which have hosts and services under '/usr/local/nagios/etc/servers' and reload the service 'service nagios reload' or mount the location to the docker machine with the cfg file $A"
+echo ""
 echo "Configuring........"
+sleep 10
 
 if [[ ! -f /usr/local/nagios/etc/htpasswd.users ]];then
 if [[ "$HTPASSWORD" = "" ]];then
@@ -78,6 +91,13 @@ EOF
 
 sed -i "s|NOTIFY_MAIL_ADDRESS|$MAIL_ADDRESS|g" /usr/local/nagios/etc/objects/commands.cfg
 
+if [[ $LOCAL_MONITOR == "y" || $LOCAL_MONITOR == "Y" ]]
+then
+echo ""
+else
+sed -i "s|cfg_file=/usr/local/nagios/etc/objects/localhost.cfg|#cfg_file=/usr/local/nagios/etc/objects/localhost.cfg|g" /usr/local/nagios/etc/nagios.cfg
+fi
+
 postconf -e myhostname="`hostname -f`"
 postconf -e mydestination="`hostname -f`, localhost.localdomain, localhost"
 echo "`hostname -f`" > /etc/mailname
@@ -103,4 +123,5 @@ echo "##################################"
 echo "##################################"
 cp /root/monitor.cfg-reference /usr/local/nagios/etc/servers/monitor.cfg-reference
 chown -R nagios:nagios /usr/local/nagios/etc/servers
-tailf /usr/local/nagios/var/nagios.log
+#tailf /usr/local/nagios/var/nagios.log
+tailf /root/start.sh
