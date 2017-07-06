@@ -49,8 +49,12 @@ run sed -i "s|#cfg_dir=/usr/local/nagios/etc/servers|cfg_dir=/usr/local/nagios/e
 run mkdir mkdir /usr/local/nagios/etc/servers
 run mv /etc/xinetd.d/nrpe /etc/xinetd.d/nrpe-org
 run mv /usr/local/nagios/etc/objects/commands.cfg /usr/local/nagios/etc/objects/commands.cfg-org
+
 copy commands.cfg /usr/local/nagios/etc/objects/commands.cfg
 copy monitor.cfg-reference /root/monitor.cfg-reference
+copy specific-monitor.cfg-reference /root/specific-monitor.cfg-reference
+copy specific-template.cfg-reference /root/specific-template.cfg-reference
+
 add start.sh /root/start.sh
 run chmod 777 /root/start.sh
 entrypoint "/root/start.sh"
