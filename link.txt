@@ -8,6 +8,7 @@ https://exchange.nagios.org/directory/Addons/Frontends-%28GUIs-and-CLIs%29/Mobil
 Read only secondary user for monitoring nagios
 
 https://serverfault.com/questions/436886/nagios-is-it-possible-to-create-view-only-users-and-let-them-view-only-speci
+https://github.com/asuknath/Nagios-Status-JSON
 
 =============================================================
 Nagios Object Definitions
@@ -21,4 +22,9 @@ Themes and Skins
 https://www.techietown.info/2017/03/installchange-nagios-theme/
 https://exchange.nagios.org/directory/Addons/Frontends-(GUIs-and-CLIs)/Web-Interfaces/Themes-and-Skins
 
+=============================================================
+plugin creation
+
+http://www.yourownlinux.com/2014/06/how-to-create-nagios-plugin-using-bash-script.html
+https://www.howtoforge.com/tutorial/write-a-custom-nagios-check-plugin/
 =============================================================
