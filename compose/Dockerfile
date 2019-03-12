@@ -46,7 +46,7 @@ run make install-daemon-config
 expose 25 465 587 80 5666
 
 run sed -i "s|#cfg_dir=/usr/local/nagios/etc/servers|cfg_dir=/usr/local/nagios/etc/servers|g" /usr/local/nagios/etc/nagios.cfg
-run mkdir mkdir /usr/local/nagios/etc/servers
+run mkdir /usr/local/nagios/etc/servers
 run mv /etc/xinetd.d/nrpe /etc/xinetd.d/nrpe-org
 run mv /usr/local/nagios/etc/objects/commands.cfg /usr/local/nagios/etc/objects/commands.cfg-org
 
