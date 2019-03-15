@@ -97,7 +97,7 @@ memUsed_m=$(($memTotal_m-$memFree_m-$memBuffer_m-$memCache_m))
 memUsed_g=$(($memUsed_m/1024))
 memUsedPrc=$((($memUsed_b*100)/$memTotal_b))
 
-message="[MEMORY] Total: $memTotal_m MB - Used: $memUsed_m MB - $memUsedPrc% | MCACHE=$memCache_m;;;;"
+message="Total: $memTotal_m MB - Used: $memUsed_m MB - $memUsedPrc% | MCACHE=$memCache_m;;;;"
 
 
 if [ $memUsedPrc -ge $optMC ] ; then
