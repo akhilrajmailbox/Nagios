@@ -2,15 +2,18 @@
 # this script was written for ubuntu 16.04 servers
 
 function depen_on() {
-    if [[ ! -z "$1" ]] ; then
-    	export VPC_RANGE=$1
-	echo "Configuring nrpe with VPC Range :: $VPC_RANGE, If you want to change it, run this script again"
-    else
-    	echo "Pass the vpc range as a user input"
-	echo "example :: ./client.sh 10.0.0.0/16"
-	echo "Task aborting..."
-	exit 1
-    fi
+#     if [[ ! -z "$1" ]] ; then
+#     	export VPC_RANGE=$1
+# 	echo "Configuring nrpe with VPC Range :: $VPC_RANGE, If you want to change it, run this script again"
+#     else
+#     	echo "Pass the vpc range as a user input"
+# 	echo "example :: ./client.sh 10.0.0.0/16"
+# 	echo "Task aborting..."
+# 	exit 1
+#     fi
+read -r -p "Enter VPC Range for your project, ie) 10.1.0.0/16 " response </dev/tty
+read VPC_RANGE
+echo "Configuring nrpe with VPC Range :: $VPC_RANGE, If you want to change it, run this script again"
 }
 
 
