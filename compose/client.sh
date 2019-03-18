@@ -11,8 +11,7 @@ function depen_on() {
 # 	echo "Task aborting..."
 # 	exit 1
 #     fi
-read -r -p "Enter VPC Range for your project, ie) 10.1.0.0/16 " response </dev/tty
-read VPC_RANGE
+read -r -p "Enter VPC Range for your project, ie) 10.1.0.0/16 " VPC_RANGE </dev/tty
 echo "Configuring nrpe with VPC Range :: $VPC_RANGE, If you want to change it, run this script again"
 }
 
