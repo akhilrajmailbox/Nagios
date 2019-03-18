@@ -42,7 +42,7 @@ function nrpe_config() {
         "command[my_procs]=/usr/lib/nagios/plugins/check_procs -w 300 -c 450 -s RSZDT"
         "command[my_users]=/usr/lib/nagios/plugins/check_users -w 5 -c 10"
         "command[my_swap]=/usr/lib/nagios/plugins/check_swap -w 30% -c 20%"
-        "command[my_mem]=/usr/lib/nagios/plugins/check_mem -w 70 -c 80")
+        "command[my_mem]=/usr/lib/nagios/plugins/check_mem -w 80 -c 90")
 
 
 Number_Of_Array=${#Remote_Commands[@]}
