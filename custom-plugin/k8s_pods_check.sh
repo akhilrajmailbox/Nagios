@@ -23,6 +23,7 @@ export KUBECONFIG=/home/nagios/.kube/config
 
 EXITCODE=0
 PODS_READY=0
+PODS_NOT_READY=0
 
 while getopts ":c:w:n:h:v:" OPTIONS; do
     case "${OPTIONS}" in
@@ -33,6 +34,7 @@ while getopts ":c:w:n:h:v:" OPTIONS; do
         *) usage ;;
     esac
 done
+
 
 
 WARN_THRESHOLD=$(($WARN_THRESHOLD + 0))
@@ -58,7 +60,8 @@ if [[ ! -z $NAMESPACE ]]; then
             for TYPE in ${POD_CONDITION_TYPES[*]}; do
                 TYPE_STATUS=$(echo "$POD_STATUS" | jq -r '.status.conditions[] | select(.type=="'$TYPE'") | .status')
                 if [[ "${TYPE_STATUS}" != "True" ]]; then
-                    returnResult OK "Pod: $POD  $TYPE: $TYPE_STATUS"
+                    returnResult Critical "Pod: $POD  $TYPE: $TYPE_STATUS"
+                    PODS_NOT_READY=$((PODS_NOT_READY+1))
                 else
                     if [[ "${TYPE}" == "Ready" ]]; then PODS_READY=$((PODS_READY+1)); fi
                 fi
@@ -84,8 +87,8 @@ fi
 
 case $EXITCODE in
 	0) printf "OK - pods are all OK, found $PODS_READY in ready state.\n" ;;
-	# 1) printf "Warning - pods show warning status, $PODS_READY in ready state.\n" ;;
-	# 2) printf "Critical - pods show critical status, $PODS_READY in ready state.\n" ;;
+	1) printf "Warning - pods show warning status, found $PODS_NOT_READY critical state.\n" ;;
+	2) printf "Critical - pods show critical status, found $PODS_NOT_READY critical state.\n" ;;
 esac
 
 echo "$RESULT"
