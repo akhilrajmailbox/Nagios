@@ -43,6 +43,12 @@ commands ::
 nagios-user <<username>> <<password>>
 ```
 
+
+In client machine, run this commands in order to configure nrpe and nagios client 
+```
+curl -s https://raw.githubusercontent.com/akhilrajmailbox/nagios/master/compose/client.sh | bash
+```
+
 IMPORTANT ::
 
 for using 'check_nrpe' you need to configure in remote machine also, and do not configure with 'argument enable option in remote machine' (security issue)
