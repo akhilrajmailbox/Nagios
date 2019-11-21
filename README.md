@@ -13,7 +13,7 @@ This image can be configured by means of environment variables, that one can set
 | SMTP_PORT | 465 | smtp port number for the "SMTP_SERVER"  |
 | SMTP_USERNAME | -- |  Your smtp username (mail address)   |
 | SMTP_PASSWORD | -- |  Password for the "SMTP_USERNAME"    |
-| NAGIOS_MAIL_SENDER | PagerDuty <mymail@gmail.com> |   The receiver will see the lert mail comes from this sender  |
+| NAGIOS_MAIL_SENDER | PagerDuty \< mymail@gmail.com > |   The receiver will see the lert mail comes from this sender  |
 | LOCAL_MONITOR | N |    for adding the localhost to the monitoring list, variable Value must be "Y / y" for monitor the localhost(The container) by the nagios    |
 
 
