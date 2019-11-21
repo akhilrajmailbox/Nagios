@@ -60,7 +60,7 @@ do
     Initial_Number_Of_Array=`expr $Initial_Number_Of_Array + 1`
 done
 
-curl -s https://raw.githubusercontent.com/akhilrajmailbox/nagios/master/custom-plugin/check_mem -o /usr/lib/nagios/plugins/check_mem
+curl -s https://raw.githubusercontent.com/akhilrajmailbox/nagios/master/compose/CustomPlugins/check_mem -o /usr/lib/nagios/plugins/check_mem
     if [[ $? -ne 0 ]] ; then
       echo "issue while downloading check_mem plugin...."
       exit 1

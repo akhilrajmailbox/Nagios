@@ -1,0 +1,100 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nagios
+  namespace: monitor
+  labels:
+    component: nagios
+    role: monitor
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1        # how many pods we can add at a time
+      maxUnavailable: 1  # how many pods can be unavailable during the rolling update
+  minReadySeconds: 5
+  revisionHistoryLimit: 1
+  template:
+    metadata:
+      labels:
+        component: nagios
+        role: monitor
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: agentpool
+                operator: In
+                values:
+                - monitor
+      hostname: nagios
+      containers:
+      - args:
+        - "-c"
+        - "source /docker_entrypoint.sh"
+        command: 
+        - /bin/bash
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        env:
+        - name: K8S_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+
+        - name : NAGIOS_MAIL_SENDER
+          valueFrom:
+            configMapKeyRef:
+                name: nagios-cm
+                key: NAGIOS_MAIL_SENDER
+
+        - name : SMTP_SERVER
+          valueFrom:
+            configMapKeyRef:
+                name: nagios-cm
+                key: SMTP_SERVER
+
+        - name : SMTP_PORT
+          valueFrom:
+            configMapKeyRef:
+                name: nagios-cm
+                key: SMTP_PORT
+
+        - name : SMTP_USERNAME
+          valueFrom:
+            configMapKeyRef:
+                name: nagios-cm
+                key: SMTP_USERNAME
+
+        - name : SMTP_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+                name: nagios-cm
+                key: SMTP_PASSWORD
+
+        - name : USER_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+                name: nagios-cm
+                key: USER_PASSWORD
+
+        image: akhilrajmailbox/nagios:4.3.4
+        imagePullPolicy: Always
+        name: $K8S_NAMESPACE-nagios
+        volumeMounts:
+        - name: nagios-monitor
+          mountPath: /usr/local/nagios/etc/servers/monitor/
+          readOnly: true
+      volumes:
+      - name: nagios-monitor
+        configMap:
+          name: nagios-monitor-cm
+      restartPolicy: Always
+
