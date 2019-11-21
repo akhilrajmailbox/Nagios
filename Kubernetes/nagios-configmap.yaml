@@ -6,7 +6,7 @@ metadata:
 data:
   NAGIOS_MAIL_SENDER: "PagerDuty <mymail@gmail.com>"
   SMTP_SERVER: "smtp.gmail.com"
-  SMTP_PORT: "465"
+  SMTP_PORT: "587"
   SMTP_USERNAME: "mymail@gmail.com"
   SMTP_PASSWORD: "your-mail-secret"
   USER_PASSWORD: "readonly-user-credential"
