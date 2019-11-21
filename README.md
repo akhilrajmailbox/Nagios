@@ -50,7 +50,7 @@ kubectl apply -f nagios-namespace.yaml
 ### Configure Configmap
 **Note : update the configmap "nagios-configmap.yaml" then run this command. Don't push this file to any cloud storage or to your repo after update the sensitive information**
 ```
-kubectl apply -f nagios-namespace.yaml
+kubectl apply -f nagios-configmap.yaml
 ```
 
 we have to update the configuration files also, this will come under `FromFiles` Folder. 
@@ -63,7 +63,7 @@ we have to update the configuration files also, this will come under `FromFiles`
 * ...
 
 ```
-kubectl -n monitor create configmap nagios-monitor --from-file=FromFiles
+kubectl -n monitor create configmap nagios-monitor-cm --from-file=FromFiles
 ```
 
 ### Deploy Nagios server
