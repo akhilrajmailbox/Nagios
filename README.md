@@ -48,9 +48,7 @@ kubectl apply -f nagios-namespace.yaml
 ```
 
 ### Configure Configmap
-
 **Note : update the configmap "nagios-configmap.yaml" then run this command. Don't push this file to any cloud storage or to your repo after update the sensitive information**
-
 ```
 kubectl apply -f nagios-namespace.yaml
 ```
@@ -80,9 +78,7 @@ kubectl apply -f nagios-service.yaml
 
 
 ## Client machine configurations for nagios
-
 **In client machine, run this commands in order to configure nrpe and nagios client (tested with ubuntu 16.04 machines)**
-
 ```
 curl -s https://raw.githubusercontent.com/akhilrajmailbox/nagios/master/compose/client.sh | bash
 ```
@@ -91,3 +87,80 @@ curl -s https://raw.githubusercontent.com/akhilrajmailbox/nagios/master/compose/
 
 for using 'check_nrpe' you need to configure in remote machine also, do not configure with 'argument enable option in remote machine' (security issue)
 
+
+
+## nrpe Plugin configurations with an example
+
+`Example Plugin name :  check_vpn`
+
+### Nagios client side configurations
+
+* create a shell script with name `check_vpn`
+```
+#!/bin/bash
+VPN_IPAddress=$1
+if ping -c1 $VPN_IPAddress > /dev/null; then
+                echo "OK - VPN is up"
+                exit 0
+        else
+                echo "CRITICAL - VPN is down"
+                exit 2
+fi
+```
+
+* update the nrpe.cfg
+```
+dont_blame_nrpe=1
+command[my_vpn]=/usr/lib/nagios/plugins/check_vpn $ARG1$
+```
+
+* add the scripts to `plugins` folder
+```
+cd /usr/lib/nagios/plugins/
+chmod a+x check_vpn/usr/lib/nagios/plugins/check_vpn
+service nagios-nrpe-server restart
+```
+
+* test the plugin
+```
+/usr/lib/nagios/plugins/check_vpn 159.232.1.1
+```
+
+### Nagios server side configurations
+
+* configure a custom command entry to use check_vpn script / plugin in the remote machine
+
+```
+define command{
+        command_name    check_vpn_server
+        command_line    $USER1$/check_nrpe -H $ARG1$ -c $ARG2$ -a $ARG3$
+        }
+```
+
+#### -H $ARG1$     >>  host where need to run
+#### -c $ARG2$     >>  command, here (my_vpn)
+#### -a $ARG3$     >>  argument for my_vpn
+#### example       >>  check_command                   check_vpn_server!192.168.0.125!my_vpn!159.232.1.1
+
+
+
+
+## Reference Docs
+
+[ServerAlarms apps for ios and android](https://exchange.nagios.org/directory/Addons/Frontends-%28GUIs-and-CLIs%29/Mobile-Device-Interfaces/Nagios-Client--2D-Status-Monitor/details)
+
+[Read only secondary user 1](https://serverfault.com/questions/436886/nagios-is-it-possible-to-create-view-only-users-and-let-them-view-only-speci)
+
+[Read only secondary user 2](https://github.com/asuknath/Nagios-Status-JSON)
+
+[Nagios Object Definitions 1](https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/3/en/objectdefinitions.html?_ga=2.92039834.146004542.1532584157-1578007940.1531140260)
+
+[Nagios Object Definitions 2](https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/3/en/cgis.html#extinfo_cgi)
+
+[Themes and Skin 1](https://www.techietown.info/2017/03/installchange-nagios-theme/)
+
+[Themes and Skin 2](https://exchange.nagios.org/directory/Addons/Frontends-(GUIs-and-CLIs)/Web-Interfaces/Themes-and-Skins)
+
+[plugin creation 1](http://www.yourownlinux.com/2014/06/how-to-create-nagios-plugin-using-bash-script.html)
+
+[plugin creation 2](https://www.howtoforge.com/tutorial/write-a-custom-nagios-check-plugin/)
