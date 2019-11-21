@@ -44,7 +44,7 @@ function Service_Config() {
         if [[ "$DeploymentTime" = "" ]] ; then
             export DeploymentTime=$(date +%F--%H-%M-%S--%Z)
             echo ""
-            echo "ADMIN_USERNAME : NagiosAdmin"
+            echo "ADMIN_USERNAME : nagiosadmin"
             echo "ADMIN_PASSWORD : you have to run the command    AdminPass    in the nagios container to get the admin password"
             echo ""
         else
@@ -53,19 +53,19 @@ function Service_Config() {
 
         echo "$DeploymentTime" > /tmp/DeploymentTime.txt
         ADMIN_PASSWORD=$(base64 /tmp/DeploymentTime.txt)
-        htpasswd -b -c /usr/local/nagios/etc/htpasswd.users NagiosAdmin $ADMIN_PASSWORD
+        htpasswd -b -c /usr/local/nagios/etc/htpasswd.users nagiosadmin $ADMIN_PASSWORD
         unset ADMIN_PASSWORD
 
 cat <<EOF > /usr/local/bin/AdminPass
 #!/bin/bash
 base64 /tmp/DeploymentTime.txt
 EOF
-          chmod a+x /usr/local/bin/AdminPass
+        chmod a+x /usr/local/bin/AdminPass
 
-          if [[ ! "$USER_PASSWORD" = "" ]] ; then
-               htpasswd -b /usr/local/nagios/etc/htpasswd.users NagiosUser $USER_PASSWORD
-               echo "authorized_for_read_only=NagiosUser" >> /usr/local/nagios/etc/cgi.cfg
-          fi
+        if [[ ! "$USER_PASSWORD" = "" ]] ; then
+            htpasswd -b /usr/local/nagios/etc/htpasswd.users NagiosUser $USER_PASSWORD
+            echo "authorized_for_read_only=NagiosUser" >> /usr/local/nagios/etc/cgi.cfg
+        fi
     fi
 
     if [[ $LOCAL_MONITOR == "y" || $LOCAL_MONITOR == "Y" ]] ; then

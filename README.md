@@ -27,7 +27,7 @@ web_ui :: `http://host-ip:9999/nagios`
 
 **Admin Credentials**
 ```
-admin		=		NagiosAdmin
+admin		=		nagiosadmin
 password	=		you have to run the command "AdminPass" in the nagios container to get the admin password. This passowrd will change if the container get redeployed, so no need to save this password anywhere.
 ```
 
