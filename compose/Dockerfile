@@ -4,7 +4,7 @@ MAINTAINER Akhil Raj <akhilrajmailbox@gmail.com>
 
 RUN bash -c 'debconf-set-selections <<< "postfix postfix/mailname string nagios.local"'
 RUN bash -c 'debconf-set-selections <<< "postfix postfix/main_mailer_type string Internet Site"'
-RUN apt-get update && apt-get upgrade -y && apt-get install -y apache2 sudo nano net-tools \
+RUN apt-get update && apt-get upgrade -y && apt-get install -y apache2 sudo vim net-tools curl \
             dnsutils wget build-essential libgd2-xpm-dev openssl libssl-dev xinetd \
             apache2-utils unzip postfix php5 libapache2-mod-php5 php5-mcrypt php5-cli mailutils
 RUN useradd nagios && groupadd nagcmd && usermod -a -G nagcmd nagios
@@ -132,7 +132,7 @@ RUN chmod a+x /usr/local/nagios/libexec/*
 
 
 COPY docker_entrypoint.sh /docker_entrypoint.sh
-RUN chmod 777 /docker_entrypoint.sh
+RUN chmod a+x /docker_entrypoint.sh
 
 
 ENV USER_PASSWORD "MyroUserCreds"
