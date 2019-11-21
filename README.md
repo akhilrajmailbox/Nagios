@@ -137,10 +137,12 @@ define command{
         }
 ```
 
-#### -H $ARG1$     >>  host where need to run
-#### -c $ARG2$     >>  command, here (my_vpn)
-#### -a $ARG3$     >>  argument for my_vpn
-#### example       >>  check_command                   check_vpn_server!192.168.0.125!my_vpn!159.232.1.1
+* example :
+
+ *-H $ARG1$     >>  host where need to run*
+ *-c $ARG2$     >>  command, here (my_vpn)*
+ *-a $ARG3$     >>  argument for my_vpn*
+ *example       >>  check_command                   check_vpn_server!192.168.0.125!my_vpn!159.232.1.1*
 
 
 
