@@ -132,7 +132,7 @@ RUN chmod a+x /usr/local/nagios/libexec/*
 
 ENV USER_PASSWORD "MyroUserCreds"
 ENV SMTP_SERVER "smtp.gmail.com"
-ENV SMTP_PORT "465"
+ENV SMTP_PORT "587"
 ENV SMTP_USERNAME ""
 ENV SMTP_PASSWORD ""
 ENV NAGIOS_MAIL_SENDER "PagerDuty <mymail@gmail.com>"

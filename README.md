@@ -10,7 +10,7 @@ This image can be configured by means of environment variables, that one can set
 |---------------|---------------|---------------|
 | USER_PASSWORD | MyroUserCreds |   Readonly user for Nagios webUI  |
 | SMTP_SERVER | smtp.gmail.com |    smpt server for sending Alert mail  | 
-| SMTP_PORT | 465 | smtp port number for the "SMTP_SERVER"  |
+| SMTP_PORT | 587 | smtp port number for the "SMTP_SERVER"  |
 | SMTP_USERNAME | -- |  Your smtp username (mail address)   |
 | SMTP_PASSWORD | -- |  Password for the "SMTP_USERNAME"    |
 | NAGIOS_MAIL_SENDER | PagerDuty < mymail@gmail.com > |   The receiver will see the lert mail comes from this sender  |
@@ -152,6 +152,17 @@ define command{
  example       >>  check_command                   check_vpn_server!192.168.0.125!my_vpn!159.232.1.1
 ```
 
+
+## Debugging mail configuration
+
+If you are facing any issue in the mail configuration / not able to send mail, please try to send mail manually from the terminal
+
+```
+apt install mailutils -y
+echo "This is message body" | mail -s "from k8s haha" akhilraj@xblockchainlabs.com
+mailq
+postsuper -d ALL
+```
 
 
 ## Reference Docs
