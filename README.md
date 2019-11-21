@@ -76,6 +76,12 @@ kubectl apply -f nagios-deployment.yaml
 kubectl apply -f nagios-service.yaml
 ```
 
+## take the admin password from the nagios pod
+```
+kubectl -n monitor exec -it nagios-f856cc9cc-sthsj AdminPass
+```
+
+
 
 ## Client machine configurations for nagios
 **In client machine, run this commands in order to configure nrpe and nagios client (tested with ubuntu 16.04 machines)**
