@@ -130,11 +130,6 @@ COPY CustomPlugins/k8s_pods_check.sh /usr/local/nagios/libexec/k8s_pods_check.sh
 COPY CustomPlugins/check_mem /usr/local/nagios/libexec/check_mem
 RUN chmod a+x /usr/local/nagios/libexec/*
 
-
-COPY docker_entrypoint.sh /docker_entrypoint.sh
-RUN chmod a+x /docker_entrypoint.sh
-
-
 ENV USER_PASSWORD "MyroUserCreds"
 ENV SMTP_SERVER "smtp.gmail.com"
 ENV SMTP_PORT "465"
@@ -143,5 +138,6 @@ ENV SMTP_PASSWORD ""
 ENV NAGIOS_MAIL_SENDER "PagerDuty <mymail@gmail.com>"
 ENV LOCAL_MONITOR "N"
 
-
+COPY docker_entrypoint.sh /docker_entrypoint.sh
+RUN chmod a+x /docker_entrypoint.sh
 ENTRYPOINT [ "/docker_entrypoint.sh" ]
