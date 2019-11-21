@@ -41,23 +41,24 @@ function Service_Config() {
 #     K8s_Login
     echo "configuring nagios"
     if [[ ! -f /usr/local/nagios/etc/htpasswd.users ]] ; then
-          if [[ "$DeploymentTime" = "" ]] ; then
-                export DeploymentTime=$(date +%F--%H-%M-%S--%Z)
-                echo ""
-                echo "ADMIN_USERNAME : NagiosAdmin"
-                echo "ADMIN_PASSWORD : you have to run the command    AdminPass    in the nagios container to get the admin password"
-                echo ""
-          else
-                sleep 1
-          fi
+        if [[ "$DeploymentTime" = "" ]] ; then
+            export DeploymentTime=$(date +%F--%H-%M-%S--%Z)
+            echo ""
+            echo "ADMIN_USERNAME : NagiosAdmin"
+            echo "ADMIN_PASSWORD : you have to run the command    AdminPass    in the nagios container to get the admin password"
+            echo ""
+        else
+            sleep 1
+        fi
 
-          ADMIN_PASSWORD=$(base64 <<< $DeploymentTime)
-          htpasswd -b -c /usr/local/nagios/etc/htpasswd.users NagiosAdmin $ADMIN_PASSWORD
-          unset ADMIN_PASSWORD
+        echo "$DeploymentTime" > /tmp/DeploymentTime.txt
+        ADMIN_PASSWORD=$(base64 /tmp/DeploymentTime.txt)
+        htpasswd -b -c /usr/local/nagios/etc/htpasswd.users NagiosAdmin $ADMIN_PASSWORD
+        unset ADMIN_PASSWORD
 
 cat <<EOF > /usr/local/bin/AdminPass
 #!/bin/bash
-base64 <<< \$DeploymentTime
+base64 /tmp/DeploymentTime.txt
 EOF
           chmod a+x /usr/local/bin/AdminPass
 
