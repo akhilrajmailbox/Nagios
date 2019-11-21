@@ -42,17 +42,13 @@ function Service_Config() {
     echo "configuring nagios"
     if [[ ! -f /usr/local/nagios/etc/htpasswd.users ]] ; then
           if [[ "$DeploymentTime" = "" ]] ; then
-               echo ""
-               echo "ADMIN_USERNAME : NagiosAdmin"
-               echo "ADMIN_PASSWORD : The password you are providing with 'DeploymentTime' environment variable"
-               echo ""
-               exit 0
+                export DeploymentTime=$(date +%F--%H-%M-%S--%Z)
+                echo ""
+                echo "ADMIN_USERNAME : NagiosAdmin"
+                echo "ADMIN_PASSWORD : you have to run the command    AdminPass    in the nagios container to get the admin password"
+                echo ""
           else
-               sleep 1
-          fi
-
-          if [[ ! "$DeploymentTime" = "" ]] ; then
-               export DeploymentTime=$(date +%F--%H-%M-%S--%Z)
+                sleep 1
           fi
 
           ADMIN_PASSWORD=$(base64 <<< $DeploymentTime)

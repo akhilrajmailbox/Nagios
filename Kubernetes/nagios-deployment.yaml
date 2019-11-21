@@ -87,7 +87,7 @@ spec:
 
         image: akhilrajmailbox/nagios:4.3.4
         imagePullPolicy: Always
-        name: $K8S_NAMESPACE-nagios
+        name: nagios-server
         volumeMounts:
         - name: nagios-monitor
           mountPath: /usr/local/nagios/etc/servers/monitor/
