@@ -86,7 +86,7 @@ kubectl -n monitor exec -it nagios-f856cc9cc-sthsj AdminPass
 ## Client machine configurations for nagios
 **In client machine, run this commands in order to configure nrpe and nagios client (tested with ubuntu 16.04 machines)**
 ```
-curl -s https://raw.githubusercontent.com/akhilrajmailbox/nagios/master/compose/client.sh | bash
+curl -s https://raw.githubusercontent.com/akhilrajmailbox/Nagios/master/compose/client.sh | bash
 ```
 
 *IMPORTANT ::*
@@ -159,15 +159,76 @@ If you are facing any issue in the mail configuration / not able to send mail, p
 
 ```
 apt install mailutils -y
-echo "This is message body" | mail -s "from k8s haha" akhilraj@xblockchainlabs.com
+echo "This is message body" | mail -s "from k8s haha" akhilraj@mycompany.com
 mailq
 postsuper -d ALL
+tail -f  /usr/local/nagios/var/nagios.log
 ```
+
+
+
+## ServerAlarms apps for ios and android
+
+This PHP API script reads Nagios status.dat file and return the JSON result. This API is desinged for Nagios Client unofficial Nagios status monitoring app.  Thanks to [asuknath](https://github.com/asuknath/Nagios-Status-JSON)
+
+
+### Step 1
+
+Upload **nath_status.php** to your Nagios web root folder.
+
+Nagios Core's default Web Root folder Web Root Folder - Centos & Ubuntu
+```
+/usr/local/nagios/share/
+```
+
+### Step 2
+
+Edit **nath_status.php.** *You can use your favourite text editor*
+
+Change status.dat file's path according to your Nagios Server configuration.
+
+```
+vi /usr/local/nagios/share/nath_status.php
+$statusFile = '/usr/local/nagios/var/status.dat';
+```
+
+Use following command to find status.dat location.
+```
+find / -name status.dat
+```
+
+### Step 3
+
+**Download and Configure iPhone or Android Server Alarms Nagios Client**
+
+[Nagios Client](https://play.google.com/store/apps/details?id=com.serveralarms.nagios&hl=en)
+
+* Go to settings
+
+![Settings](https://github.com/akhilrajmailbox/Nagios/blob/master/files/img/SettingPage-A-I.png)
+
+* Update URL
+
+![URL Update](https://github.com/asuknath/Nagios-Status-JSON/blob/master/URLUpdatePage-A-I.png)
+
+
 
 
 ## Reference Docs
 
-[ServerAlarms apps for ios and android](https://exchange.nagios.org/directory/Addons/Frontends-%28GUIs-and-CLIs%29/Mobile-Device-Interfaces/Nagios-Client--2D-Status-Monitor/details)
+[Nagios basics](http://www.tuxradar.com/content/nagios-made-easy)
+
+[Installaiton 1](https://www.digitalocean.com/community/tutorials/how-to-install-nagios-4-and-monitor-your-servers-on-ubuntu-14-04)
+
+[Installation 2](https://www.digitalocean.com/community/tutorials/how-to-install-and-setup-postfix-on-ubuntu-14-04)
+
+[Confifguration 1](http://www.tutorialspoint.com/articles/how-to-configure-nagios-server-for-monitoring-apache-server)
+
+[Configuration 2](http://amar-linux.blogspot.in/2012/08/nagios-monitoring-custom.html)
+
+[Themes and Skin 1](https://www.techietown.info/2017/03/installchange-nagios-theme/)
+
+[Themes and Skin 2](https://exchange.nagios.org/directory/Addons/Frontends-(GUIs-and-CLIs)/Web-Interfaces/Themes-and-Skins)
 
 [Read only secondary user 1](https://serverfault.com/questions/436886/nagios-is-it-possible-to-create-view-only-users-and-let-them-view-only-speci)
 
@@ -177,10 +238,16 @@ postsuper -d ALL
 
 [Nagios Object Definitions 2](https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/3/en/cgis.html#extinfo_cgi)
 
-[Themes and Skin 1](https://www.techietown.info/2017/03/installchange-nagios-theme/)
+[Custom Plugins 1](https://www.unixmen.com/write-nagios-plugin-using-bash-script/)
 
-[Themes and Skin 2](https://exchange.nagios.org/directory/Addons/Frontends-(GUIs-and-CLIs)/Web-Interfaces/Themes-and-Skins)
+[Custom Plugins 2](http://www.yourownlinux.com/2014/06/how-to-create-nagios-plugin-using-bash-script.html)
 
-[plugin creation 1](http://www.yourownlinux.com/2014/06/how-to-create-nagios-plugin-using-bash-script.html)
+[Custom Plugins 3](https://www.howtoforge.com/tutorial/write-a-custom-nagios-check-plugin/)
 
-[plugin creation 2](https://www.howtoforge.com/tutorial/write-a-custom-nagios-check-plugin/)
+[ServerAlarms apps for ios and android](https://exchange.nagios.org/directory/Addons/Frontends-%28GUIs-and-CLIs%29/Mobile-Device-Interfaces/Nagios-Client--2D-Status-Monitor/details)
+
+[Turning 1](http://nagios.manubulon.com/traduction/docs25en/xodtemplate.html)
+
+[Turning 2](http://nagios.manubulon.com/traduction/docs25en/tuning.html)
+
+[Nagios API](https://labs.nagios.com/2014/06/19/exploring-the-new-json-cgis-in-nagios-core-4-0-7-part-1/)
