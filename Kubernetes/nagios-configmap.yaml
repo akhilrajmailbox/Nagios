@@ -4,6 +4,7 @@ metadata:
   name: nagios-cm
   namespace: monitor
 data:
+# <mymail@gmail.com> must be same as SMTP_USERNAME
   NAGIOS_MAIL_SENDER: "PagerDuty <mymail@gmail.com>"
   SMTP_SERVER: "smtp.gmail.com"
   SMTP_PORT: "587"
