@@ -2,12 +2,26 @@
 
 Nagios, now known as Nagios Core, is a free and open-source computer-software application that monitors systems, networks and infrastructure. Nagios offers monitoring and alerting services for servers, switches, applications and services.
 
+
+**Configure your deployment with this label if you don't want to monitor**
+
+```
+.metadata.labels.IgnoreNagios: "enable" 
+```
+
+
 ## Environment variables
 
 This image can be configured by means of environment variables, that one can set on a `Deployment`.
 
 | Variable Name | Default Value |   Description |
 |---------------|---------------|---------------|
+| TARGET_FOLDER | /home/nagios/.kube/ |  location for storing the kubeconfig    |
+| KUBECFG_FILE_NAME | /home/nagios/.kube/config |  kubeconfig file location in pod    |
+| SERVICE_ACCOUNT_NAME | nagiossrvaccount |  service account name for rbac user    |
+| CLUSTER_NAME | -- |  clustername of kubernetes to access and monitor    |
+| ENDPOINT | -- |  endpoint of kubernetes API    |
+| RBAC_USER | disable |  `enable` or `disable` the rbac user credentials inside the pod  |
 | USER_PASSWORD | MyroUserCreds |   Readonly user for Nagios webUI  |
 | SMTP_SERVER | smtp.gmail.com |    smpt server for sending Alert mail  | 
 | SMTP_PORT | 587 | smtp port number for the "SMTP_SERVER"  |

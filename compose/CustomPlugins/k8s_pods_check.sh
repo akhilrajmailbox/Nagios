@@ -48,13 +48,13 @@ function returnResult () {
 }
 
 
-if [[ ! -z $NAMESPACE ]]; then
-    PODS_STATUS=$(kubectl get pods --namespace $NAMESPACE -o json)
+if [[ ! -z ${NAMESPACE} ]]; then
+    PODS_STATUS=$(kubectl get pods --namespace ${NAMESPACE} -o json)
     if [ $(echo "$PODS_STATUS" | wc -l) -le 10 ]; then echo "UNKNOWN - unable to connect to kubernetes cluster!"; exit 3; fi
     PODS=$(echo "$PODS_STATUS" | jq -r '.items[].metadata.name')
 
-
     for POD in ${PODS[*]}; do
+        if [[ $(kubectl --namespace ${NAMESPACE} get pods ${POD} -o jsonpath={.metadata.labels.IgnoreNagios}) != "enable" ]] ; then
             POD_STATUS=$(echo "$PODS_STATUS" | jq -r '.items[] | select(.metadata.name | contains("'$POD'"))')
             POD_CONDITION_TYPES=$(echo "$POD_STATUS" | jq -r '.status.conditions[] | .type')
             for TYPE in ${POD_CONDITION_TYPES[*]}; do
@@ -67,7 +67,7 @@ if [[ ! -z $NAMESPACE ]]; then
                 fi
             done
 
-    CONTAINERS=$(echo "$POD_STATUS" | jq -r '.status.containerStatuses[].name')
+            CONTAINERS=$(echo "$POD_STATUS" | jq -r '.status.containerStatuses[].name')
             for CONTAINER in ${CONTAINERS[*]}; do
                 CONTAINER_READY=$(echo "$POD_STATUS" | jq -r '.status.containerStatuses[] | select(.name=="'$CONTAINER'") | .ready')
                 CONTAINER_RESTARTS=$(echo "$POD_STATUS" | jq -r '.status.containerStatuses[] | select(.name=="'$CONTAINER'") | .restartCount')
@@ -77,11 +77,12 @@ if [[ ! -z $NAMESPACE ]]; then
                     returnResult Critical "Pod: $POD   Container: $CONTAINER    Ready: $CONTAINER_READY   Restarts: $CONTAINER_RESTARTS"
                 fi
             done
+        fi
     done
 
 else
-echo "Namespace need to provide"
-exit 3
+    echo "Namespace need to provide"
+    exit 3
 fi
 
 
