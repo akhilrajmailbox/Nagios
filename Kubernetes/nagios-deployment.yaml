@@ -49,6 +49,24 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
 
+        - name : RBAC_USER
+          valueFrom:
+            configMapKeyRef:
+                name: nagios-cm
+                key: RBAC_USER
+
+        - name : CLUSTER_NAME
+          valueFrom:
+            configMapKeyRef:
+                name: nagios-cm
+                key: CLUSTER_NAME
+
+        - name : ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+                name: nagios-cm
+                key: ENDPOINT
+
         - name : NAGIOS_MAIL_SENDER
           valueFrom:
             configMapKeyRef:

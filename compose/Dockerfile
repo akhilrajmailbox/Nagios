@@ -137,6 +137,12 @@ ENV SMTP_USERNAME ""
 ENV SMTP_PASSWORD ""
 ENV NAGIOS_MAIL_SENDER "PagerDuty <mymail@gmail.com>"
 ENV LOCAL_MONITOR "N"
+ENV TARGET_FOLDER "/home/nagios/.kube/"
+ENV KUBECFG_FILE_NAME "/home/nagios/.kube/config"
+ENV SERVICE_ACCOUNT_NAME "nagiossrvaccount"
+ENV CLUSTER_NAME ""
+ENV ENDPOINT ""
+ENV RBAC_USER "disable"
 
 COPY docker_entrypoint.sh /docker_entrypoint.sh
 RUN chmod a+x /docker_entrypoint.sh

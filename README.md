@@ -47,6 +47,28 @@ password	=		USER_PASSWORD
 kubectl apply -f nagios-namespace.yaml
 ```
 
+### Configure RBAC (require only if you want to monitor your k8s cluster)
+
+**rbac kubeconfig file configuration**
+
+[link 1](https://www.tigera.io/blog/rbac-namespaces-and-cluster-roles/)
+
+[link 2](https://gist.github.com/innovia/fbba8259042f71db98ea8d4ad19bd708)
+
+
+**Run these three commands on your local system to get `CLUSTER_NAME` and `ENDPOINT` and update the same in the configmap before deploying...!**
+
+
+```
+context=$(kubectl config current-context)
+CLUSTER_NAME=$(kubectl config get-contexts "$context" | awk '{print $3}' | tail -n 1)
+ENDPOINT=$(kubectl config view -o jsonpath="{.clusters[?(@.name == \"${CLUSTER_NAME}\")].cluster.server}")
+```
+
+```
+kubectl apply -f nagios-rbac.yaml
+```
+
 ### Configure Configmap
 **Note : update the configmap "nagios-configmap.yaml" then run this command. Don't push this file to any cloud storage or to your repo after update the sensitive information**
 ```

@@ -5,6 +5,9 @@ metadata:
   namespace: monitor
 data:
 # <mymail@gmail.com> must be same as SMTP_USERNAME
+  RBAC_USER: "enable"
+  CLUSTER_NAME: "Test-K8s"
+  ENDPOINT: "https://test-k8s-dns-456136dg.hcp.canadacentral.azmk8s.io:443"
   NAGIOS_MAIL_SENDER: "PagerDuty <mymail@gmail.com>"
   SMTP_SERVER: "smtp.gmail.com"
   SMTP_PORT: "587"

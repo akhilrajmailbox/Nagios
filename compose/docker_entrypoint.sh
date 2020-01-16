@@ -107,8 +107,26 @@ EOF
 
 
 ##########################################
+function rbac_Config() {
+    if [[ ${RBAC_USER} == enable ]] ; then
+        mkdir -p "${TARGET_FOLDER}"
+        SECRET_NAME=$(kubectl get sa "${SERVICE_ACCOUNT_NAME}" --namespace="${K8S_NAMESPACE}" -o json | jq -r .secrets[].name)
+        kubectl get secret --namespace ${K8S_NAMESPACE} "${SECRET_NAME}" -o json | jq -r '.data["ca.crt"]' | base64 --decode > ${TARGET_FOLDER}/ca.crt
+        USER_TOKEN=$(kubectl get secret --namespace ${K8S_NAMESPACE} "${SECRET_NAME}" -o json | jq -r '.data["token"]' | base64 --decode)
+        kubectl config set-cluster "${CLUSTER_NAME}" --kubeconfig="${KUBECFG_FILE_NAME}" --server="${ENDPOINT}" --certificate-authority="${TARGET_FOLDER}/ca.crt" --embed-certs=true
+        kubectl config set-credentials "${SERVICE_ACCOUNT_NAME}" --kubeconfig="${KUBECFG_FILE_NAME}" --token="${USER_TOKEN}"
+        kubectl config set-context "${SERVICE_ACCOUNT_NAME}" --kubeconfig="${KUBECFG_FILE_NAME}" --cluster="${CLUSTER_NAME}" --user="${SERVICE_ACCOUNT_NAME}" --namespace="${K8S_NAMESPACE}"
+        kubectl config use-context "${SERVICE_ACCOUNT_NAME}" --kubeconfig="${KUBECFG_FILE_NAME}"
+        chown -R nagios:nagios /home/nagios/
+    else
+        echo -e "\n RBAC_USER Not configuring...!, \n assuming that you have service principal or any other mode of permission to access kubernetes...! \n "
+    fi
+}
+
+##########################################
 function Service_Start() {
     Service_Config
+    rbac_Config
     a2enmod rewrite
     a2enmod cgi
     service xinetd restart & wait

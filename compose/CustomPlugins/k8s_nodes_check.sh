@@ -33,9 +33,15 @@ for NODE in ${NODES[*]}; do
 		case "$CHECK-$STATUS" in
 			"OutOfDisk-True") returnResult Critical;;
 			"MemoryPressure-True") returnResult Critical;;
-            "PIDPressure-True") returnResult Warning;;
+            "PIDPressure-True") returnResult Critical;;
 			"DiskPressure-True") returnResult Critical;;
 			"Ready-False") returnResult Critical;;
+
+			"OutOfDisk-Unknown") returnResult Critical;;
+			"MemoryPressure-Unknown") returnResult Critical;;
+            "PIDPressure-Unknown") returnResult Critical;;
+			"DiskPressure-Unknown") returnResult Critical;;
+			"Ready-Unknown") returnResult Critical;;
 			# Note the API only checks these 4 conditions at present. Others can be added here.
 			*) returnResult OK;;
 		esac
@@ -45,7 +51,7 @@ done
 
 case $EXITCODE in
 	0) printf "OK - Kubernetes nodes all OK\n" ;;
-	2) printf "" ;;
+	2) printf "Critical - Kubernetes nodes are down. please fix it\n" ;;
 
 esac
 

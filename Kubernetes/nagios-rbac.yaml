@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nagiossrvaccount
+  namespace: monitor
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: nagios-clusterrole
+rules:
+# Just an example, feel free to change it
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: nagios-clusterrolebinding
+subjects:
+- kind: ServiceAccount
+  name: nagiossrvaccount
+  namespace: monitor
+roleRef:
+  kind: ClusterRole
+  name: nagios-clusterrole
+  apiGroup: rbac.authorization.k8s.io
