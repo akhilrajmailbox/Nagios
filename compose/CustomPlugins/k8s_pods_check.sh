@@ -54,29 +54,31 @@ if [[ ! -z ${NAMESPACE} ]]; then
     PODS=$(echo "$PODS_STATUS" | jq -r '.items[].metadata.name')
 
     for POD in ${PODS[*]}; do
-        if [[ $(kubectl --namespace ${NAMESPACE} get pods ${POD} -o jsonpath={.metadata.labels.IgnoreNagios}) != "enable" ]] ; then
-            POD_STATUS=$(echo "$PODS_STATUS" | jq -r '.items[] | select(.metadata.name | contains("'$POD'"))')
-            POD_CONDITION_TYPES=$(echo "$POD_STATUS" | jq -r '.status.conditions[] | .type')
-            for TYPE in ${POD_CONDITION_TYPES[*]}; do
-                TYPE_STATUS=$(echo "$POD_STATUS" | jq -r '.status.conditions[] | select(.type=="'$TYPE'") | .status')
-                if [[ "${TYPE_STATUS}" != "True" ]]; then
-                    returnResult Critical "Pod: $POD  $TYPE: $TYPE_STATUS"
-                    PODS_NOT_READY=$((PODS_NOT_READY+1))
-                else
-                    if [[ "${TYPE}" == "Ready" ]]; then PODS_READY=$((PODS_READY+1)); fi
-                fi
-            done
+        if [[ $(kubectl --namespace ${NAMESPACE} get pods ${POD} -o jsonpath={.metadata.labels.job-name}) == "" ]] ; then
+            if [[ $(kubectl --namespace ${NAMESPACE} get pods ${POD} -o jsonpath={.metadata.labels.IgnoreNagios}) != "enable" ]] ; then
+                POD_STATUS=$(echo "$PODS_STATUS" | jq -r '.items[] | select(.metadata.name | contains("'$POD'"))')
+                POD_CONDITION_TYPES=$(echo "$POD_STATUS" | jq -r '.status.conditions[] | .type')
+                for TYPE in ${POD_CONDITION_TYPES[*]}; do
+                    TYPE_STATUS=$(echo "$POD_STATUS" | jq -r '.status.conditions[] | select(.type=="'$TYPE'") | .status')
+                    if [[ "${TYPE_STATUS}" != "True" ]]; then
+                        returnResult Critical "Pod: $POD  $TYPE: $TYPE_STATUS"
+                        PODS_NOT_READY=$((PODS_NOT_READY+1))
+                    else
+                        if [[ "${TYPE}" == "Ready" ]]; then PODS_READY=$((PODS_READY+1)); fi
+                    fi
+                done
 
-            CONTAINERS=$(echo "$POD_STATUS" | jq -r '.status.containerStatuses[].name')
-            for CONTAINER in ${CONTAINERS[*]}; do
-                CONTAINER_READY=$(echo "$POD_STATUS" | jq -r '.status.containerStatuses[] | select(.name=="'$CONTAINER'") | .ready')
-                CONTAINER_RESTARTS=$(echo "$POD_STATUS" | jq -r '.status.containerStatuses[] | select(.name=="'$CONTAINER'") | .restartCount')
-                if (( $CONTAINER_RESTARTS > $WARN_THRESHOLD && $CONTAINER_RESTARTS < $CRIT_THRESHOLD )); then 
-                    returnResult Warning "Pod: $POD   Container: $CONTAINER    Ready: $CONTAINER_READY   Restarts: $CONTAINER_RESTARTS"
-                elif (( $CONTAINER_RESTARTS > $CRIT_THRESHOLD )); then
-                    returnResult Critical "Pod: $POD   Container: $CONTAINER    Ready: $CONTAINER_READY   Restarts: $CONTAINER_RESTARTS"
-                fi
-            done
+                CONTAINERS=$(echo "$POD_STATUS" | jq -r '.status.containerStatuses[].name')
+                for CONTAINER in ${CONTAINERS[*]}; do
+                    CONTAINER_READY=$(echo "$POD_STATUS" | jq -r '.status.containerStatuses[] | select(.name=="'$CONTAINER'") | .ready')
+                    CONTAINER_RESTARTS=$(echo "$POD_STATUS" | jq -r '.status.containerStatuses[] | select(.name=="'$CONTAINER'") | .restartCount')
+                    if (( $CONTAINER_RESTARTS > $WARN_THRESHOLD && $CONTAINER_RESTARTS < $CRIT_THRESHOLD )); then 
+                        returnResult Warning "Pod: $POD   Container: $CONTAINER    Ready: $CONTAINER_READY   Restarts: $CONTAINER_RESTARTS"
+                    elif (( $CONTAINER_RESTARTS > $CRIT_THRESHOLD )); then
+                        returnResult Critical "Pod: $POD   Container: $CONTAINER    Ready: $CONTAINER_READY   Restarts: $CONTAINER_RESTARTS"
+                    fi
+                done
+            fi
         fi
     done
 
