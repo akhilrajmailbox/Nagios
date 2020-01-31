@@ -40,12 +40,14 @@ web_ui :: `http://host-ip:9999/nagios`
 
 
 **Admin Credentials**
+
 ```
 admin		=		nagiosadmin
 password	=		you have to run the command "AdminPass" in the nagios container to get the admin password. This passowrd will change if the container get redeployed, so no need to save this password anywhere.
 ```
 
 **Readonly User Credentials**
+
 ```
 user		=		NagiosUser
 password	=		USER_PASSWORD
@@ -57,6 +59,7 @@ password	=		USER_PASSWORD
 
 
 ### Create Namespace caled "monitor" for Nagios Deployment
+
 ```
 kubectl apply -f nagios-namespace.yaml
 ```
@@ -84,7 +87,9 @@ kubectl apply -f nagios-rbac.yaml
 ```
 
 ### Configure Configmap
+
 **Note : update the configmap "nagios-configmap.yaml" then run this command. Don't push this file to any cloud storage or to your repo after update the sensitive information**
+
 ```
 kubectl apply -f nagios-configmap.yaml
 ```
@@ -103,16 +108,19 @@ kubectl -n monitor create configmap nagios-monitor-cm --from-file=FromFiles
 ```
 
 ### Deploy Nagios server
+
 ```
 kubectl apply -f nagios-deployment.yaml
 ```
 
 ### Configure k8s service (loadbalancer)
+
 ```
 kubectl apply -f nagios-service.yaml
 ```
 
 ## take the admin password from the nagios pod
+
 ```
 kubectl -n monitor exec -it nagios-f856cc9cc-sthsj AdminPass
 ```
@@ -121,6 +129,7 @@ kubectl -n monitor exec -it nagios-f856cc9cc-sthsj AdminPass
 
 ## Client machine configurations for nagios
 **In client machine, run this commands in order to configure nrpe and nagios client (tested with ubuntu 16.04 machines)**
+
 ```
 curl -s https://raw.githubusercontent.com/akhilrajmailbox/Nagios/master/compose/client.sh | bash
 ```
@@ -138,6 +147,7 @@ for using 'check_nrpe' you need to configure in remote machine also, do not conf
 ### Nagios client side configurations
 
 * create a shell script with name `check_vpn`
+
 ```
 #!/bin/bash
 VPN_IPAddress=$1
@@ -151,12 +161,14 @@ fi
 ```
 
 * update the nrpe.cfg
+
 ```
 dont_blame_nrpe=1
 command[my_vpn]=/usr/lib/nagios/plugins/check_vpn $ARG1$
 ```
 
 * add the scripts to `plugins` folder
+
 ```
 cd /usr/lib/nagios/plugins/
 chmod a+x check_vpn/usr/lib/nagios/plugins/check_vpn
@@ -164,6 +176,7 @@ service nagios-nrpe-server restart
 ```
 
 * test the plugin
+
 ```
 /usr/lib/nagios/plugins/check_vpn 159.232.1.1
 ```
@@ -213,6 +226,7 @@ This PHP API script reads Nagios status.dat file and return the JSON result. Thi
 Upload **nath_status.php** to your Nagios web root folder.
 
 Nagios Core's default Web Root folder Web Root Folder - Centos & Ubuntu
+
 ```
 /usr/local/nagios/share/
 ```
@@ -229,6 +243,7 @@ $statusFile = '/usr/local/nagios/var/status.dat';
 ```
 
 Use following command to find status.dat location.
+
 ```
 find / -name status.dat
 ```
