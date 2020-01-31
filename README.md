@@ -260,7 +260,7 @@ find / -name status.dat
 
 * Update URL
 
-![URL Update](https://github.com/asuknath/Nagios-Status-JSON/blob/master/URLUpdatePage-A-I.png)
+![URL Update](https://raw.githubusercontent.com/akhilrajmailbox/Nagios/master/files/img/URLUpdatePage-A-I.png)
 
 
 
