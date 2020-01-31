@@ -256,7 +256,7 @@ find / -name status.dat
 
 * Go to settings
 
-![Settings](https://github.com/akhilrajmailbox/Nagios/blob/master/files/img/SettingPage-A-I.png)
+![Settings](https://raw.githubusercontent.com/akhilrajmailbox/Nagios/master/files/img/SettingPage-A-I.png)
 
 * Update URL
 
