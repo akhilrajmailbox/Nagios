@@ -31,6 +31,7 @@ spec:
                 values:
                 - monitor
       hostname: nagios
+      serviceAccountName: nagiossrvaccount
       containers:
       - args:
         - "-c"
